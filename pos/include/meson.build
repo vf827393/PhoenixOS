@@ -1,45 +1,11 @@
-# close all default macros, which is enable for editing
-add_global_arguments('-DPOS_ENABLE_MACRO_FOR_DEBUG', language: ['c', 'cpp'])
-
-if enable_runtime_debug_check == 1
-    add_global_arguments('-DPOS_ENABLE_DEBUG_CHECK=1', language: ['c', 'cpp'])
-else
-    add_global_arguments('-DPOS_ENABLE_DEBUG_CHECK=0', language: ['c', 'cpp'])
-endif
-
-if enable_hijack_api_check == 1
-    add_global_arguments('-DPOS_ENABLE_HIJACK_API_CHECK=1', language: ['c', 'cpp'])
-else
-    add_global_arguments('-DPOS_ENABLE_HIJACK_API_CHECK=0', language: ['c', 'cpp'])
-endif
-
-if enable_print_error == 1
-    add_global_arguments('-DPOS_PRINT_ERROR=1', language: ['c', 'cpp'])
-else
-    add_global_arguments('-DPOS_PRINT_ERROR=0', language: ['c', 'cpp'])
-endif
-
-if enable_print_warn == 1
-    add_global_arguments('-DPOS_PRINT_WARN=1', language: ['c', 'cpp'])
-else
-    add_global_arguments('-DPOS_PRINT_WARN=0', language: ['c', 'cpp'])
-endif
-
-if enable_print_log == 1
-    add_global_arguments('-DPOS_PRINT_LOG=1', language: ['c', 'cpp'])
-else
-    add_global_arguments('-DPOS_PRINT_LOG=0', language: ['c', 'cpp'])
-endif
-
-if enable_print_debug == 1
-    add_global_arguments('-DPOS_PRINT_DEBUG=1', language: ['c', 'cpp'])
-else
-    add_global_arguments('-DPOS_PRINT_DEBUG=0', language: ['c', 'cpp'])
-endif
-
-if enable_print_with_color == 1
-    add_global_arguments('-DPOS_PRINT_WITH_COLOR=1', language: ['c', 'cpp'])
-else
-    add_global_arguments('-DPOS_PRINT_WITH_COLOR=0', language: ['c', 'cpp'])
-endif
-
+common_conf = configuration_data()
+log_conf = configuration_data()
+common_conf.set('pos_enable_debug_check', enable_runtime_debug_check)
+common_conf.set('pos_enable_hijack_api_check', enable_hijack_api_check)
+log_conf.set('pos_print_error', enable_print_error)
+log_conf.set('pos_print_warn', enable_print_warn)
+log_conf.set('pos_print_log', enable_print_log)
+log_conf.set('pos_print_debug', enable_print_debug)
+log_conf.set('pos_print_with_color', enable_print_with_color)
+configure_file(input : 'switches.h.in', output : 'switches.h', configuration : common_conf)
+configure_file(input : 'log.h.in', output : 'log.h', configuration : log_conf)

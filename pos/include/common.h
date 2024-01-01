@@ -61,9 +61,4 @@ using POSMem_ptr = std::shared_ptr<uint8_t[]>;
 /*!
  *  \brief  switch group
  */
-#ifndef POS_ENABLE_MACRO_FOR_DEBUG
-
-#define POS_ENABLE_DEBUG_CHECK          1
-#define POS_ENABLE_HIJACK_API_CHECK     1
-
-#endif // POS_ENABLE_MACRO_FOR_DEBUG
+#include "pos/include/switches.h"

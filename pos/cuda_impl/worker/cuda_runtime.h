@@ -38,8 +38,6 @@ namespace cuda_malloc {
             memset(wqe->api_cxt->ret_data, 0, sizeof(uint64_t));
         }
 
-        POS_LOG("malloc addr: %p", memory_handle->server_addr);
-
     exit:
         return retval;
     }
@@ -75,8 +73,6 @@ namespace cuda_free {
         POS_CHECK_POINTER(wqe);
 
         POSHandleView_t &memory_handle_view = pos_api_handle_view(wqe, kPOS_ResourceTypeId_CUDA_Memory, 0);
-
-        POS_LOG("free addr: %p", memory_handle_view.handle->server_addr);
 
         wqe->api_cxt->return_code = cudaFree(
             /* devPtr */ memory_handle_view.handle->server_addr

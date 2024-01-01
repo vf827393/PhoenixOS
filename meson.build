@@ -36,11 +36,11 @@ target = 'cuda'
 
 # switch:   whether to check correctness of function parameters, return values, etc.,
 #           which might cause extra runtime burden, should be enabled while debuging
-enable_runtime_debug_check = 1
+enable_runtime_debug_check = 0
 
 # switch:   whether to check whether POS finish the hijacking logic of called APIs,
 #           which might cause extra runtime burden, should be enabled while debuging
-enable_hijack_api_check = 1
+enable_hijack_api_check = 0
 
 # switch:   whether to print all fatal messages
 enable_print_error = 1
@@ -52,13 +52,13 @@ enable_print_warn = 1
 enable_print_log = 1
 
 # switch:   whether to print all debug messages
-enable_print_debug = 1
+enable_print_debug = 0
 
 # switch:   whether to print fatal/warn/debug/log with colors
 #           should be disabled when try to dump all outputs to a file
 enable_print_with_color = 1
 
-# sumary: add macros based on above configurations
+# we need to hardcoded some configurations as source code
 subdir('pos/include')
 
 # print configurations
