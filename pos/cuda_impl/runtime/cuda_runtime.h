@@ -91,6 +91,67 @@ namespace cuda_malloc {
 
 
 /*!
+ *  \related    cudaFree
+ *  \brief      release a CUDA memory area
+ */
+namespace cuda_free {
+    // parser function
+    POS_RT_FUNC_PARSER(){
+        pos_retval_t retval = POS_SUCCESS;
+        POSClient_CUDA *client;
+        POSHandle_CUDA_Memory_ptr memory_handle;
+        POSHandleManager<POSHandle_CUDA_Memory>* hm_memory;
+
+        POS_CHECK_POINTER(wqe);
+        POS_CHECK_POINTER(ws);
+
+        client = (POSClient_CUDA*)(wqe->client);
+        POS_CHECK_POINTER(client);
+
+        // check whether given parameter is valid
+    #if POS_ENABLE_DEBUG_CHECK
+        if(unlikely(wqe->api_cxt->params.size() != 1)){
+            POS_WARN(
+                "parse(cuda_free): failed to parse, given %lu params, %lu expected",
+                wqe->api_cxt->params.size(), 1
+            );
+            retval = POS_FAILED_INVALID_INPUT;
+            goto exit;
+        }
+    #endif
+
+        hm_memory = client->handle_managers[kPOS_ResourceTypeId_CUDA_Memory];
+        POS_CHECK_POINTER(hm_memory);
+
+        // operate on handler manager
+        retval = hm_memory->get_handle_by_client_addr(
+            /* client_addr */ (void*)pos_api_param_value(wqe, 0, void*),
+            /* handle */ &memory_handle
+        );
+        if(unlikely(retval != POS_SUCCESS)){
+            POS_WARN(
+                "parse(cuda_free): no CUDA memory was founded: client_addr(%p)",
+                (void*)pos_api_param_value(wqe, 0, void*)
+            );
+            goto exit;
+        }
+
+        memory_handle->status = kPOS_HandleStatus_Delete_Pending;
+
+        wqe->record_handle(
+            kPOS_ResourceTypeId_CUDA_Memory, POSHandleView_t(memory_handle, kPOS_Edge_Direction_Delete)
+        );
+
+        // launch the op to the dag
+        retval = client->dag.launch_op(wqe);
+        
+    exit:
+        return retval;
+    }
+} // namespace cuda_free
+
+
+/*!
  *  \related    cudaLaunchKernel
  *  \brief      launch a user-define computation kernel
  */
@@ -280,6 +341,7 @@ namespace cuda_memcpy_h2d {
                 "parse(cuda_memcpy_h2d): no memory was founded: client_addr(%p)",
                 (void*)pos_api_param_value(wqe, 0, uint64_t)
             );
+            goto exit;
         } else {
             wqe->record_handle(
                 kPOS_ResourceTypeId_CUDA_Memory, 
@@ -343,6 +405,7 @@ namespace cuda_memcpy_d2h {
                 "parse(cuda_memcpy_d2h): no memory was founded: client_addr(%p)",
                 (void*)pos_api_param_value(wqe, 0, uint64_t)
             );
+            goto exit;
         } else {
             wqe->record_handle(
                 kPOS_ResourceTypeId_CUDA_Memory, 
@@ -1195,6 +1258,9 @@ namespace cuda_event_destory {
             );
             goto exit;
         }
+
+        event_handle->status = kPOS_HandleStatus_Delete_Pending;
+    
         wqe->record_handle(
             kPOS_ResourceTypeId_CUDA_Event, POSHandleView_t(event_handle, kPOS_Edge_Direction_Delete)
         );

@@ -249,7 +249,7 @@ class POSWorker {
                                  *  \note   we don't need to restore the bottom handle while haven't create them yet
                                  */
                                 if(unlikely(api_meta.api_type == kPOS_API_Type_Create_Resource && layer_id_keeper == 0)){
-                                    if(likely(broken_handle->state == kPOS_HandleState_Create_Pending)){
+                                    if(likely(broken_handle->status == kPOS_HandleStatus_Create_Pending)){
                                         continue;
                                     }
                                 }
@@ -258,7 +258,7 @@ class POSWorker {
                                     POS_ERROR_C(
                                         "failed to restore broken handle: resource_type_id(%lu), client_addr(%p), server_addr(%p), state(%u)",
                                         broken_handle->resource_type_id, broken_handle->client_addr, broken_handle->server_addr,
-                                        broken_handle->state
+                                        broken_handle->status
                                     );
                                 } else {
                                     POS_DEBUG_C(

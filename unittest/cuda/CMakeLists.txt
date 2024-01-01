@@ -19,16 +19,20 @@ find_library(CUDA_NVTX_LIBRARY
   NO_DEFAULT_PATH
 )
 
-# test program
-SET(SRC_POS_UNITTEST_APIS ./apis)
-file(GLOB_RECURSE SRC_POS_UNITTEST_API_C ${SRC_POS_UNITTEST_APIS}/*.cpp ${SRC_POS_UNITTEST_APIS}/*.cu)
+# common src file
+SET(SRC_POS_UNITTEST_COMMON_SRC_PATH ./src)
+file(GLOB_RECURSE SRC_POS_UNITTEST_COMMON_SRC ${SRC_POS_UNITTEST_COMMON_SRC_PATH}/*.cpp ${SRC_POS_UNITTEST_COMMON_SRC_PATH}/*.cu)
 
-SET(SRC_POS_UNITTEST_SRC ./src)
-file(GLOB_RECURSE SRC_POS_UNITTEST_SRC_C ${SRC_POS_UNITTEST_SRC}/*.cpp ${SRC_POS_UNITTEST_SRC}/*.cu)
+# per-API test
+SET(SRC_POS_UNITTEST_PERAPI_SRC_PATH ./apis)
+file(GLOB_RECURSE SRC_POS_UNITTEST_PERAPI_SRC ${SRC_POS_UNITTEST_PERAPI_SRC_PATH}/*.cpp ${SRC_POS_UNITTEST_PERAPI_SRC_PATH}/*.cu)
+add_executable(per_api_test ./perapi.cu ${SRC_POS_UNITTEST_COMMON_SRC} ${SRC_POS_UNITTEST_PERAPI_SRC})
 
-add_executable(unittest ./main.cu ${SRC_POS_UNITTEST_API_C} ${SRC_POS_UNITTEST_SRC_C})
+# hidden API test
+# add_executable(hidden_api_test ./hidden.cpp ${SRC_POS_UNITTEST_COMMON_SRC})
 
-set(TEST_TARGETS unittest)
+# set(TEST_TARGETS per_api_test hidden_api_test)
+set(TEST_TARGETS per_api_test)
 
 foreach( test_target ${TEST_TARGETS} )
     set_target_properties(${test_target} PROPERTIES LINKER_LANGUAGE CUDA)
@@ -39,8 +43,12 @@ foreach( test_target ${TEST_TARGETS} )
 
     target_include_directories(${test_target} PUBLIC ${CUDA_TOOLKIT_ROOT_DIR}/include)
 
-    # Cricket include path
+    # POS root path
     target_include_directories(${test_target} PUBLIC ../../)
+
+    # link POS
+    find_library(pos_so NAMES pos HINTS ${CMAKE_CURRENT_SOURCE_DIR}/../../build)
+    target_link_libraries(${test_target} ${pos_so})
 
     # important here to set cuda as dynamically linked
     set_target_properties(${test_target} PROPERTIES CUDA_RUNTIME_LIBRARY Shared)

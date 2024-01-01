@@ -81,7 +81,7 @@ class POSHandle_CUDA_Context : public POSHandle {
 
         // TODO: should we append to DAG here?
 
-        this->state = kPOS_HandleState_Active;
+        this->status = kPOS_HandleStatus_Active;
 
         return POS_SUCCESS;
     }
@@ -414,7 +414,7 @@ class POSHandleManager_CUDA_Stream : public POSHandleManager<POSHandle_CUDA_Stre
             POS_ERROR_C_DETAIL("failed to allocate mocked CUDA stream in the manager");
         }
         stream_handle->set_server_addr((void*)(0));
-        stream_handle->state = kPOS_HandleState_Active;
+        stream_handle->status = kPOS_HandleStatus_Active;
 
         // record in the manager
         this->_handles.push_back(stream_handle);
@@ -662,7 +662,7 @@ class POSHandleManager_CUDA_Device : public POSHandleManager<POSHandle_CUDA_Devi
                 POS_ERROR_C_DETAIL("failed to allocate mocked CUDA device in the manager");
             }
             device_handle->device_id = i;
-            device_handle->state = kPOS_HandleState_Active;
+            device_handle->status = kPOS_HandleStatus_Active;
         }
 
         this->latest_used_handle = this->_handles[0];

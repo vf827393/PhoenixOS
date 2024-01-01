@@ -32,11 +32,13 @@ namespace cuda_malloc {
             memory_handle = pos_api_handle(wqe, kPOS_ResourceTypeId_CUDA_Memory, 0);
             POS_CHECK_POINTER(memory_handle);
             memory_handle->set_passthrough_addr(ptr);
-            memory_handle->state = kPOS_HandleState_Active;
+            memory_handle->status = kPOS_HandleStatus_Active;
             memcpy(wqe->api_cxt->ret_data, &(memory_handle->client_addr), sizeof(uint64_t));
         } else {
             memset(wqe->api_cxt->ret_data, 0, sizeof(uint64_t));
         }
+
+        POS_LOG("malloc addr: %p", memory_handle->server_addr);
 
     exit:
         return retval;
@@ -58,6 +60,52 @@ namespace cuda_malloc {
         return retval;
     }
 } // namespace cuda_malloc
+
+
+/*!
+ *  \related    cudaFree
+ *  \brief      release a CUDA memory area
+ */
+namespace cuda_free {
+    // launch function
+    POS_WK_FUNC_LAUNCH(){
+        pos_retval_t retval = POS_SUCCESS;
+
+        POS_CHECK_POINTER(ws);
+        POS_CHECK_POINTER(wqe);
+
+        POSHandleView_t &memory_handle_view = pos_api_handle_view(wqe, kPOS_ResourceTypeId_CUDA_Memory, 0);
+
+        POS_LOG("free addr: %p", memory_handle_view.handle->server_addr);
+
+        wqe->api_cxt->return_code = cudaFree(
+            /* devPtr */ memory_handle_view.handle->server_addr
+        );
+
+        if(likely(cudaSuccess == wqe->api_cxt->return_code)){
+            memory_handle_view.handle->status = kPOS_HandleStatus_Deleted;
+        }
+
+    exit:
+        return retval;
+    }
+
+    // landing function
+    POS_WK_FUNC_LANDING(){
+        pos_retval_t retval = POS_SUCCESS;
+        
+        POS_CHECK_POINTER(ws);
+        POS_CHECK_POINTER(wqe);
+
+        if(unlikely(cudaSuccess != wqe->api_cxt->return_code)){ 
+            POSWorker<T_POSTransport, T_POSClient>::__restore(ws, wqe);
+        } else {
+            POSWorker<T_POSTransport, T_POSClient>::__done(ws, wqe);
+        }
+
+        return retval;
+    }
+} // namespace cuda_free
 
 
 /*!
@@ -724,7 +772,7 @@ namespace cuda_event_create_with_flags {
             event_handle = pos_api_handle(wqe, kPOS_ResourceTypeId_CUDA_Event, 0);
             POS_CHECK_POINTER(event_handle);
             event_handle->set_server_addr(ptr);
-            event_handle->state = kPOS_HandleState_Active;
+            event_handle->status = kPOS_HandleStatus_Active;
         }
 
     exit:
@@ -768,7 +816,11 @@ namespace cuda_event_destory {
         wqe->api_cxt->return_code = cudaEventDestroy(
             /* event */ event_handle_view.handle->server_addr
         );
-    
+
+        if(likely(cudaSuccess == wqe->api_cxt->return_code)){
+            event_handle_view.handle->status = kPOS_HandleStatus_Deleted;
+        }
+
     exit:
         return retval;
     }

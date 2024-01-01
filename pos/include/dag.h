@@ -91,7 +91,7 @@ class POSDag {
             /* resource_name */     [&](){ result += handle->get_resource_name(); },
             /* client_addr */       [&](){ sprintf(t, "%p", handle->client_addr); result += std::string(t); },
             /* server_addr */       [&](){ sprintf(t, "%p", handle->server_addr); result += std::string(t); },
-            /* state */             [&](){ result += std::to_string(handle->state); },
+            /* status */            [&](){ result += std::to_string(handle->status); },
             /* size */              [&](){ result += std::to_string(handle->size); },
             /* parent_idx */        [&](){
                                         uint64_t i;

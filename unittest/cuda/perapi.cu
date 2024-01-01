@@ -6,15 +6,20 @@
 #include <cuda.h>
 #include <cuda_runtime.h>
 
-#include "pos/common.h"
-#include "pos/log.h"
-#include "pos/unittest/unittest.h"
+#include "pos/include/common.h"
+#include "pos/include/log.h"
+#include "unittest/cuda/unittest.h"
 
 int main(){
     std::map<uint64_t, pos_retval_t> result_map;
+    bool has_error;
 
     POSUnitTest ut;
-    ut.run_all();
+
+    has_error = ut.run_all();
+    if(has_error){
+        exit(1);
+    }
 
     return 0;
 }

@@ -5,10 +5,10 @@
 #include <cublas_v2.h>
 #include <cublas_api.h>
 
-#include "pos/common.h"
-#include "pos/log.h"
-#include "pos/unittest/apis/base.h"
-#include "pos/unittest/unittest.h"
+#include "pos/include/common.h"
+#include "pos/include/log.h"
+#include "unittest/cuda/apis/base.h"
+#include "unittest/cuda/unittest.h"
 
 pos_retval_t test_cublas_create(test_cxt* cxt){
     pos_retval_t retval = POS_SUCCESS;

@@ -42,6 +42,15 @@ class POSApiManager_CUDA : public POSApiManager {
                     /* api_name */      "cudaMalloc"
                 }
             },
+            { 
+                /* api_id */ CUDA_FREE, 
+                { 
+                    /* is_sync */       true, 
+                    /* api_type */      kPOS_API_Type_Delete_Resource,
+                    /* library_id */    kPOS_CUDA_Library_Id_Runtime,
+                    /* api_name */      "cudaFree"
+                }
+            },
             {
                 /* api_id */ CUDA_MEMCPY_HTOD, 
                 { 

@@ -5,11 +5,11 @@
 #include <stdint.h>
 #include <string.h>
 
-#include "pos/common.h"
-#include "pos/transport.h"
-#include "pos/cuda_impl/workspace.h"
+#include "pos/include/common.h"
+#include "pos/include/transport.h"
 
-#include "cpu_rpc_prot.h"
+#include "pos/cuda_impl/workspace.h"
+#include "pos/cuda_impl/api_index.h"
 
 POSWorkspace_CUDA<POSTransport_SHM> *pos_cuda_ws;
 bool mock_stop = false;
@@ -44,6 +44,7 @@ void test_cuModuleLoadData(){
         uint64_t size;
     } fat_elf_header_t;
 
+    // TODO: fix this path
     std::ifstream file("/testdir/cpu/pos/unittest/pos-test.fatbin", std::ios::binary | std::ios::ate);
     std::streamsize size = file.tellg();
     file.seekg(0, std::ios::beg);

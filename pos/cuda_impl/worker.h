@@ -15,6 +15,7 @@
 namespace wk_functions {
     /* CUDA runtime functions */
     POS_WK_DECLARE_FUNCTIONS(cuda_malloc);
+    POS_WK_DECLARE_FUNCTIONS(cuda_free);
     POS_WK_DECLARE_FUNCTIONS(cuda_launch_kernel);
     POS_WK_DECLARE_FUNCTIONS(cuda_memcpy_h2d);
     POS_WK_DECLARE_FUNCTIONS(cuda_memcpy_d2h);
@@ -383,6 +384,7 @@ class POSWorker_CUDA : public POSWorker<T_POSTransport, POSClient_CUDA> {
         this->_launch_functions.insert({
             /* CUDA runtime functions */
             {   CUDA_MALLOC,                    wk_functions::cuda_malloc::launch                       },
+            {   CUDA_FREE,                      wk_functions::cuda_free::launch                         },
             {   CUDA_LAUNCH_KERNEL,             wk_functions::cuda_launch_kernel::launch                },
             {   CUDA_MEMCPY_HTOD,               wk_functions::cuda_memcpy_h2d::launch                   },
             {   CUDA_MEMCPY_DTOH,               wk_functions::cuda_memcpy_d2h::launch                   },
@@ -417,6 +419,7 @@ class POSWorker_CUDA : public POSWorker<T_POSTransport, POSClient_CUDA> {
         this->_landing_functions.insert({
             /* CUDA runtime functions */
             {   CUDA_MALLOC,                    wk_functions::cuda_malloc::landing                      },
+            {   CUDA_FREE,                      wk_functions::cuda_free::landing                        },
             {   CUDA_LAUNCH_KERNEL,             wk_functions::cuda_launch_kernel::landing               },
             {   CUDA_MEMCPY_HTOD,               wk_functions::cuda_memcpy_h2d::landing                  },
             {   CUDA_MEMCPY_DTOH,               wk_functions::cuda_memcpy_d2h::landing                  },

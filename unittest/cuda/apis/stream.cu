@@ -3,10 +3,10 @@
 #include <cuda.h>
 #include <cuda_runtime_api.h>
 
-#include "pos/common.h"
-#include "pos/log.h"
-#include "pos/unittest/apis/base.h"
-#include "pos/unittest/unittest.h"
+#include "pos/include/common.h"
+#include "pos/include/log.h"
+#include "unittest/cuda/apis/base.h"
+#include "unittest/cuda/unittest.h"
 
 __global__ void kernel_1(const float* in_a, float* out_a, float* out_b, float* out_c, int len){
     int flat_thread_idx = blockIdx.x * blockDim.x + threadIdx.x;

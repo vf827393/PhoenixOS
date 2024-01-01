@@ -15,6 +15,7 @@
 static const std::vector<uint64_t> __pos_hijacked_apis({
     /* CUDA Runtime */
     CUDA_MALLOC,
+    CUDA_FREE,
     CUDA_LAUNCH_KERNEL,
     CUDA_MEMCPY_HTOD,
     CUDA_MEMCPY_DTOH,

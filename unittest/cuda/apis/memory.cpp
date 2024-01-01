@@ -4,14 +4,14 @@
 #include <cuda.h>
 #include <cuda_runtime_api.h>
 
-#include "pos/common.h"
-#include "pos/log.h"
-#include "pos/unittest/apis/base.h"
-#include "pos/unittest/unittest.h"
+#include "pos/include/common.h"
+#include "pos/include/log.h"
+#include "unittest/cuda/apis/base.h"
+#include "unittest/cuda/unittest.h"
 
 const int kNbElement = 8;
 
-pos_retval_t test_cuda_malloc_free(test_cxt* cxt){
+pos_retval_t test_cuda_malloc(test_cxt* cxt){
     pos_retval_t retval = POS_SUCCESS;
     uint64_t s_tick, e_tick;
     
@@ -29,13 +29,29 @@ pos_retval_t test_cuda_malloc_free(test_cxt* cxt){
     cudaMalloc((void**)&d_buf_5, kNbElement*sizeof(float));
 
     if(d_buf_1 != nullptr && d_buf_2 != nullptr && d_buf_3 != nullptr && d_buf_4 != nullptr && d_buf_5 != nullptr){
-        cudaFree(d_buf_1);
-        cudaFree(d_buf_2);
-        cudaFree(d_buf_3);
-        cudaFree(d_buf_4);
-        cudaFree(d_buf_5);
         retval = POS_SUCCESS;
     } else {
+        retval = POS_FAILED;
+    }
+
+    return retval;
+}
+
+
+pos_retval_t test_cuda_free(test_cxt* cxt){
+    pos_retval_t retval = POS_SUCCESS;
+    cudaError_t cuda_rt_retval;
+    uint64_t s_tick, e_tick;
+    float *d_buf_1 = nullptr;
+    cudaMalloc((void**)&d_buf_1, kNbElement*sizeof(float));
+
+    s_tick = pos_utils_get_tsc();    
+    cuda_rt_retval = cudaFree(d_buf_1);
+    e_tick = pos_utils_get_tsc();
+
+    cxt->duration_ticks = e_tick - s_tick;
+
+    if(unlikely(cuda_rt_retval != cudaSuccess)){
         retval = POS_FAILED;
     }
 

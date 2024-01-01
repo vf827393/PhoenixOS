@@ -26,27 +26,42 @@ enum pos_handle_type_id_t : uint64_t {
 };
 
 /*!
- *  \brief  state of a handle instance
+ *  \brief  status of a handle instance
  */
-enum pos_handle_state_t : uint8_t {
+enum pos_handle_status_t : uint8_t {
     /*!
      *  \brief  the resource behind this handle is active 
      *          on the XPU device, if an op rely on this 
      *          handle, it's ok to launch
      */
-    kPOS_HandleState_Active = 0,
+    kPOS_HandleStatus_Active = 0,
 
     /*!
      *  \brief  the resource behind this handle has been
-     *          released manually by the client   
+     *          released manually by the client
+     *  \note   this status is marked under worker function
      */
-    kPOS_HandleState_Deleted,
+    kPOS_HandleStatus_Deleted,
+
+    /*!
+     *  \brief  the resource behind this handle are going
+     *          to be deleted
+     *  \note   this status is marked under runtime function
+     *  \note   once the handle is marked as this status in
+     *          the runtime function, subsequent runtime
+     *          function won't obtain this handle under
+     *          get_handle_by_client_addr
+     *  \note   it's ok for collect_broken_handles to skip
+     *          such handle, as they still active currently
+     *          (will be deleted under subsequent op)   
+     */
+    kPOS_HandleStatus_Delete_Pending,
 
     /*!
      *  \brief  the resource behind this handle is pending
      *          to be created on XPU
      */
-    kPOS_HandleState_Create_Pending,
+    kPOS_HandleStatus_Create_Pending,
 
     /*!
      *  \brief  the resource behind this handle is broken
@@ -54,7 +69,7 @@ enum pos_handle_state_t : uint8_t {
      *          resource before launching any op that rely
      *          on it
      */
-    kPOS_HandleState_Broken
+    kPOS_HandleStatus_Broken
 };
 
 /*!
@@ -72,7 +87,7 @@ class POSHandle {
     POSHandle(void *client_addr_, size_t size_, size_t state_size_=0) 
         :   client_addr(client_addr_), server_addr(nullptr), size(size_),
             dag_vertex_id(0), resource_type_id(kPOS_ResourceTypeId_Unknown),
-            state(kPOS_HandleState_Create_Pending), state_size(state_size_),
+            status(kPOS_HandleStatus_Create_Pending), state_size(state_size_),
             ckpt_bag(state_size_) {}
     
     /*!
@@ -84,7 +99,7 @@ class POSHandle {
     POSHandle(size_t size_, size_t state_size_=0)
         :   client_addr(nullptr), server_addr(nullptr), size(size_),
             dag_vertex_id(0), resource_type_id(kPOS_ResourceTypeId_Unknown),
-            state(kPOS_HandleState_Create_Pending), state_size(state_size_),
+            status(kPOS_HandleStatus_Create_Pending), state_size(state_size_),
             ckpt_bag(state_size_) {}
     
     virtual ~POSHandle() = default;
@@ -208,7 +223,7 @@ class POSHandle {
         POS_CHECK_POINTER(broken_handle_list);
 
         // insert itself to the nonactive_handles map if itsn't active
-        if(unlikely(state != kPOS_HandleState_Active)){
+        if(unlikely(status != kPOS_HandleStatus_Active && status != kPOS_HandleStatus_Delete_Pending)){
             broken_handle_list->add_handle(layer_id, this);
         }
         
@@ -240,7 +255,7 @@ class POSHandle {
     }
 
     /*!
-     *  \brief  restore the current handle when it becomes broken state
+     *  \brief  restore the current handle when it becomes broken status
      *  \return POS_SUCCESS for successfully restore
      */
     virtual pos_retval_t restore(){ return POS_FAILED_NOT_IMPLEMENTED; }
@@ -258,9 +273,8 @@ class POSHandle {
      */
     virtual std::string get_resource_name(){ return std::string("unknown"); }
 
-    // state of the resource behind this handle
-    // TODO: change the name to be status
-    pos_handle_state_t state;
+    // status of the resource behind this handle
+    pos_handle_status_t status;
 
     // the mocked client-side address of the handle
     void *client_addr;
@@ -578,6 +592,11 @@ pos_retval_t POSHandleManager<T_POSHandle>::__get_handle_by_client_addr(void* cl
     for(i=0; i<_handles.size(); i++){
         POS_CHECK_POINTER(handle_ptr = _handles[i]);
         if(unlikely(handle_ptr->is_client_addr_in_range(client_addr, offset))){
+            if(unlikely(
+                handle_ptr->status == kPOS_HandleStatus_Deleted || handle_ptr->status == kPOS_HandleStatus_Delete_Pending
+            )){
+                continue;
+            }
             *handle = handle_ptr;
             goto exit;
         }

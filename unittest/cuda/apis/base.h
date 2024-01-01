@@ -5,14 +5,15 @@
 #include <cuda.h>
 #include <cuda_runtime_api.h>
 
-#include "pos/common.h"
-#include "pos/log.h"
+#include "pos/include/common.h"
+#include "pos/include/log.h"
 
 typedef struct test_cxt_t {
     uint64_t duration_ticks;
 } test_cxt;
 
-pos_retval_t test_cuda_malloc_free(test_cxt* cxt);
+pos_retval_t test_cuda_malloc(test_cxt* cxt);
+pos_retval_t test_cuda_free(test_cxt* cxt);
 pos_retval_t test_cuda_memcpy_h2d(test_cxt* cxt);
 pos_retval_t test_cuda_memcpy_d2h(test_cxt* cxt);
 pos_retval_t test_cuda_memcpy_d2d(test_cxt* cxt);

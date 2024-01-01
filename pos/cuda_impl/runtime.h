@@ -14,6 +14,7 @@
 namespace rt_functions {
     /* CUDA runtime functions */
     POS_RT_DECLARE_FUNCTIONS(cuda_malloc);
+    POS_RT_DECLARE_FUNCTIONS(cuda_free);
     POS_RT_DECLARE_FUNCTIONS(cuda_launch_kernel);
     POS_RT_DECLARE_FUNCTIONS(cuda_memcpy_h2d);
     POS_RT_DECLARE_FUNCTIONS(cuda_memcpy_d2h);
@@ -98,6 +99,7 @@ class POSRuntime_CUDA : public POSRuntime<T_POSTransport, POSClient_CUDA> {
         this->_parser_functions.insert({
             /* CUDA runtime functions */
             {   CUDA_MALLOC,                    rt_functions::cuda_malloc::parse                        },
+            {   CUDA_FREE,                      rt_functions::cuda_free::parse                          },
             {   CUDA_LAUNCH_KERNEL,             rt_functions::cuda_launch_kernel::parse                 },
             {   CUDA_MEMCPY_HTOD,               rt_functions::cuda_memcpy_h2d::parse                    },
             {   CUDA_MEMCPY_DTOH,               rt_functions::cuda_memcpy_d2h::parse                    },

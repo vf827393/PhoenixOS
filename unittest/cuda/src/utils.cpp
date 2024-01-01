@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#include "pos/unittest/include/utils.h"
+#include "unittest/cuda/include/utils.h"
 
 uint64_t pos_utils_get_tsc(){
     uint64_t a, d;

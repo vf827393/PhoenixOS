@@ -4,13 +4,15 @@
 #include <map>
 #include <vector>
 
-#include "pos/common.h"
-#include "pos/log.h"
+#include "pos/include/common.h"
+#include "pos/include/log.h"
 
-#include "pos/unittest/apis/base.h"
-#include "pos/unittest/include/utils.h"
+#include "pos/cuda_impl/api_index.h"
 
-#include "cpu_rpc_prot.h"
+#include "unittest/cuda/apis/base.h"
+#include "unittest/cuda/include/utils.h"
+
+
 
 using pos_unittest_func_t = pos_retval_t(*)(test_cxt*);
 
@@ -24,8 +26,8 @@ class POSUnitTest {
     void insert_unittest_funcs(){
         func_map.insert({
             /* memory related apis */
-            {   CUDA_MALLOC, test_cuda_malloc_free },
-            {   CUDA_FREE, test_cuda_malloc_free },
+            {   CUDA_MALLOC, test_cuda_malloc },
+            {   CUDA_FREE, test_cuda_free },
             {   CUDA_MEMCPY_HTOD, test_cuda_memcpy_h2d },
             {   CUDA_MEMCPY_DTOH, test_cuda_memcpy_d2h },
             {   CUDA_MEMCPY_DTOD, test_cuda_memcpy_d2d },
@@ -56,8 +58,9 @@ class POSUnitTest {
         });
     }
 
-    void run_all(){
+    bool run_all(){
         pos_retval_t retval;
+        bool has_error = false;
         std::map<uint64_t, pos_unittest_func_t>::iterator iter;
 
         for(iter=func_map.begin(); iter!=func_map.end(); iter++){
@@ -70,7 +73,12 @@ class POSUnitTest {
                 retval,
                 POS_TSC_TO_USEC(cxt.duration_ticks)
             );
+            if(unlikely(retval != POS_SUCCESS)){
+                has_error = true;
+            }
         }
+
+        return has_error;
     }
 
     pos_retval_t run_one(uint64_t api_id, test_cxt* cxt){
