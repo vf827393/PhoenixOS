@@ -7,8 +7,8 @@
 #include <gelf.h>
 #include <string.h>
 
-#include "pos/common.h"
-#include "pos/log.h"
+#include "pos/include/common.h"
+#include "pos/include/log.h"
 
 #define FATBIN_STRUCT_MAGIC 0x466243b1
 #define FATBIN_TEXT_MAGIC   0xBA55ED50

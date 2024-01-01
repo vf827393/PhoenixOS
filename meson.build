@@ -54,7 +54,11 @@ enable_print_log = 1
 # switch:   whether to print all debug messages
 enable_print_debug = 1
 
-# we need to hardcoded some configurations as source code
+# switch:   whether to print fatal/warn/debug/log with colors
+#           should be disabled when try to dump all outputs to a file
+enable_print_with_color = 1
+
+# sumary: add macros based on above configurations
 subdir('pos/include')
 
 # print configurations
@@ -103,11 +107,15 @@ message('>>> Detecting CUDA toolkit done\n')
 
 
 # >>>>>>>>>>>>>> setup sources and includes >>>>>>>>>>>>>>
-sources += [
-    'pos/include/api_context.c',
-    'pos/include/oob.c'
-]
+sources += []
+if target == 'cuda'
+    sources += ['pos/cuda_impl/api_context.cpp']
+else
+    assert(false, 'target ' + target + ' is currently not supported')
+endif
+
 inc_dirs += ['./']
+
 
 # >>>>>>>>>>>>>> setup build options >>>>>>>>>>>>>>
 c_args += ['--std=c++17']

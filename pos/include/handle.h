@@ -8,10 +8,10 @@
 #include <stdint.h>
 #include <assert.h>
 
-#include "pos/common.h"
-#include "pos/log.h"
-#include "pos/utils/bipartite_graph.h"
-#include "pos/checkpoint.h"
+#include "pos/include/common.h"
+#include "pos/include/log.h"
+#include "pos/include/utils/bipartite_graph.h"
+#include "pos/include/checkpoint.h"
 
 #define kPOS_HandleDefaultSize   (1<<4)
 
@@ -479,9 +479,9 @@ template<class T_POSHandle>
 pos_retval_t POSHandleManager<T_POSHandle>::allocate_mocked_resource(
     std::shared_ptr<T_POSHandle>* handle,
     std::map</* type */ uint64_t, std::vector<POSHandle_ptr>> related_handles,
-    size_t size=kPOS_HandleDefaultSize,
-    uint64_t expected_addr = 0,
-    uint64_t state_size = 0
+    size_t size,
+    uint64_t expected_addr,
+    uint64_t state_size
 ){
     return __allocate_mocked_resource(handle, size, state_size);
 }
@@ -498,9 +498,9 @@ pos_retval_t POSHandleManager<T_POSHandle>::allocate_mocked_resource(
 template<class T_POSHandle>
 pos_retval_t POSHandleManager<T_POSHandle>::__allocate_mocked_resource(
     std::shared_ptr<T_POSHandle>* handle,
-    size_t size = kPOS_HandleDefaultSize,
-    uint64_t expected_addr = 0,
-    uint64_t state_size = 0
+    size_t size,
+    uint64_t expected_addr,
+    uint64_t state_size
 ){
     pos_retval_t ret = POS_SUCCESS;
 
@@ -553,7 +553,7 @@ pos_retval_t POSHandleManager<T_POSHandle>::__allocate_mocked_resource(
  *          POS_SUCCESS for successfully founded
  */
 template<class T_POSHandle>
-pos_retval_t POSHandleManager<T_POSHandle>::get_handle_by_client_addr(void* client_addr, std::shared_ptr<T_POSHandle>* handle, uint64_t* offset=nullptr){
+pos_retval_t POSHandleManager<T_POSHandle>::get_handle_by_client_addr(void* client_addr, std::shared_ptr<T_POSHandle>* handle, uint64_t* offset){
     return __get_handle_by_client_addr(client_addr, handle, offset);
 }
 
@@ -568,7 +568,7 @@ pos_retval_t POSHandleManager<T_POSHandle>::get_handle_by_client_addr(void* clie
  *          POS_SUCCESS for successfully founded
  */
 template<class T_POSHandle>
-pos_retval_t POSHandleManager<T_POSHandle>::__get_handle_by_client_addr(void* client_addr, std::shared_ptr<T_POSHandle>* handle, uint64_t* offset=nullptr){
+pos_retval_t POSHandleManager<T_POSHandle>::__get_handle_by_client_addr(void* client_addr, std::shared_ptr<T_POSHandle>* handle, uint64_t* offset){
     pos_retval_t ret = POS_SUCCESS;
     std::shared_ptr<T_POSHandle> handle_ptr;
     uint64_t i;

@@ -5,8 +5,8 @@
 
 #include <stdint.h>
 
-#include <pos/common.h>
-#include <pos/log.h>
+#include "pos/include/common.h"
+#include "pos/include/log.h"
 
 class POSCheckpointSlot {
  public:

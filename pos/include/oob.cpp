@@ -1,11 +1,11 @@
 #include <iostream>
 #include <vector>
 
-#include "pos/common.h"
-#include "pos/oob.h"
-#include "pos/log.h"
-#include "pos/transport.h"
-#include "pos/api_context.h"
+#include "pos/include/common.h"
+#include "pos/include/oob.h"
+#include "pos/include/log.h"
+#include "pos/include/transport.h"
+#include "pos/include/api_context.h"
 
 namespace oob_functions {
 

@@ -2,10 +2,10 @@
 
 #include <iostream>
 
-#include "pos/common.h"
-#include "pos/log.h"
-#include "pos/workspace.h"
-#include "pos/runtime.h"
+#include "pos/include/common.h"
+#include "pos/include/log.h"
+#include "pos/include/workspace.h"
+#include "pos/include/runtime.h"
 
 #include "pos/cuda_impl/client.h"
 #include "pos/cuda_impl/runtime.h"

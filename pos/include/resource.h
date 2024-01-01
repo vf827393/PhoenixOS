@@ -3,8 +3,8 @@
 #include <iostream>
 #include <stdint.h>
 
-#include "pos/common.h"
-#include "pos/log.h"
+#include "pos/include/common.h"
+#include "pos/include/log.h"
 
 /*!
  *  \brief  represent an instance of a specific kind of physical resource on the XPU

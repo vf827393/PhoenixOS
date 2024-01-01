@@ -3,15 +3,16 @@
 
 #include <stdint.h>
 
-#include "cpu_rpc_prot.h"
 
-#include "pos/common.h"
-#include "pos/api_context.h"
+#include "pos/include/common.h"
+#include "pos/include/api_context.h"
+
+#include "pos/cuda_impl/api_index.h"
 
 /*!
  *  \brief  all POS-hijacked should be record here, used for debug checking
  */
-const std::vector<uint64_t> pos_hijacked_apis({
+static const std::vector<uint64_t> __pos_hijacked_apis({
     /* CUDA Runtime */
     CUDA_MALLOC,
     CUDA_LAUNCH_KERNEL,
@@ -52,3 +53,13 @@ const std::vector<uint64_t> pos_hijacked_apis({
     rpc_elf_unload,
     rpc_deinit
 });
+
+bool pos_is_hijacked(uint64_t api_id){
+    uint64_t i=0;
+    for(i=0; i<__pos_hijacked_apis.size(); i++){
+        if(unlikely(__pos_hijacked_apis[i] == api_id)){
+            return true;
+        }
+    }
+    return false;
+}

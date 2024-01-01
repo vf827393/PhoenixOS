@@ -2,15 +2,15 @@
 
 #include <cuda_runtime_api.h>
 
-#include "pos/common.h"
-#include "pos/workspace.h"
-#include "pos/client.h"
-#include "pos/transport.h"
-#include "pos/worker.h"
-#include "pos/checkpoint.h"
+#include "pos/include/common.h"
+#include "pos/include/workspace.h"
+#include "pos/include/client.h"
+#include "pos/include/transport.h"
+#include "pos/include/worker.h"
+#include "pos/include/checkpoint.h"
 #include "pos/cuda_impl/client.h"
 
-#include "cpu_rpc_prot.h"
+#include "pos/cuda_impl/api_index.h"
 
 namespace wk_functions {
     /* CUDA runtime functions */

@@ -6,9 +6,9 @@
 
 #include <stdint.h>
 
-#include "pos/common.h"
-#include "pos/log.h"
-#include "pos/utils/timestamp.h"
+#include "pos/include/common.h"
+#include "pos/include/log.h"
+#include "pos/include/utils/timestamp.h"
 
 #define POS_ENABLE_TRANSPORT_SHM 1
 
@@ -114,7 +114,7 @@ class POSTransport {
 #include <boost/interprocess/creation_tags.hpp>
 #include <boost/date_time/microsec_time_clock.hpp>
 
-#include "pos/utils/mempool.h"
+#include "pos/include/utils/mempool.h"
 
 #define POS_TRANSPORT_SHM_SEGMENT_SIZE                                                                  \
     2 * (                                                                                               \

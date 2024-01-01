@@ -1,14 +1,13 @@
 #pragma once
 
 #include <iostream>
-#include "pos/common.h"
-#include "pos/workspace.h"
-#include "pos/client.h"
-
-#include "cpu_rpc_prot.h"
+#include "pos/include/common.h"
+#include "pos/include/workspace.h"
+#include "pos/include/client.h"
 
 #include "pos/cuda_impl/handle.h"
 #include "pos/cuda_impl/handle/cublas.h"
+#include "pos/cuda_impl/api_index.h"
 
 class POSClient_CUDA : public POSClient {
  public:

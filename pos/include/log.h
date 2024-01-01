@@ -2,12 +2,15 @@
 
 #include <stdio.h>
 
-#define POS_PRINT_ERROR         @pos_print_error@
-#define POS_PRINT_WARN          @pos_print_warn@
-#define POS_PRINT_LOG           @pos_print_log@
-#define POS_PRINT_DEBUG         @pos_print_debug@
+#ifndef POS_ENABLE_MACRO_FOR_DEBUG
 
-#define POS_PRINT_WITH_COLOR    @pos_print_with_color@
+#define POS_PRINT_ERROR         1
+#define POS_PRINT_WARN          1
+#define POS_PRINT_LOG           1
+#define POS_PRINT_DEBUG         1
+#define POS_PRINT_WITH_COLOR    1
+
+#endif // POS_ENABLE_MACRO_FOR_DEBUG
 
 #define _POS_PRINT_POSITION(stream)                                                 \
 {                                                                                   \
@@ -61,9 +64,9 @@ fprintf(stdout, "\n");                                          \
 }
 
 /*!
-    * \brief   print error message with class info (internal-used)
-    * \note    this macro should only be expanded within c++ class
-    */
+ * \brief   print error message with class info (internal-used)
+ * \note    this macro should only be expanded within c++ class
+ */
 #define _POS_ERROR_C(...)                                   \
 {                                                           \
 if constexpr(POS_PRINT_WITH_COLOR)                          \

@@ -9,11 +9,11 @@
 #include <stdint.h>
 #include <assert.h>
 
-#include "pos/common.h"
-#include "pos/log.h"
-#include "pos/utils/timestamp.h"
-#include "pos/handle.h"
-#include "pos/utils/bipartite_graph.h"
+#include "pos/include/common.h"
+#include "pos/include/log.h"
+#include "pos/include/utils/timestamp.h"
+#include "pos/include/handle.h"
+#include "pos/include/utils/bipartite_graph.h"
 
 /*!
  *  \brief  type of api
@@ -419,5 +419,3 @@ typedef struct POSAPIContext_QE {
     ((*(qe_ptr->handle_view_map[typeid]))[index])
 
 using POSAPIContext_QE_ptr = std::shared_ptr<POSAPIContext_QE_t>;
-
-extern const std::vector<uint64_t> pos_hijacked_apis;

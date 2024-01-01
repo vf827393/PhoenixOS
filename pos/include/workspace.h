@@ -9,14 +9,14 @@
 template<class T_POSTransport, class T_POSClient>
 class POSWorkspace;
 
-#include "pos/common.h"
-#include "pos/log.h"
-#include "pos/client.h"
-#include "pos/handle.h"
-#include "pos/transport.h"
-#include "pos/oob.h"
-#include "pos/api_context.h"
-#include "pos/utils/lockfree_queue.h"
+#include "pos/include/common.h"
+#include "pos/include/log.h"
+#include "pos/include/client.h"
+#include "pos/include/handle.h"
+#include "pos/include/transport.h"
+#include "pos/include/oob.h"
+#include "pos/include/api_context.h"
+#include "pos/include/utils/lockfree_queue.h"
 
 enum pos_queue_position_t : uint8_t {
     kPOS_Queue_Position_Worker = 0,

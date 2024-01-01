@@ -8,10 +8,10 @@
 #include <sched.h>
 #include <pthread.h>
 
-#include "pos/common.h"
-#include "pos/log.h"
-#include "pos/utils/lockfree_queue.h"
-#include "pos/api_context.h"
+#include "pos/include/common.h"
+#include "pos/include/log.h"
+#include "pos/include/utils/lockfree_queue.h"
+#include "pos/include/api_context.h"
 
 /*!
  *  \brief prototype for worker launch function for each API call

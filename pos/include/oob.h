@@ -12,8 +12,8 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 
-#include "pos/common.h"
-#include "pos/log.h"
+#include "pos/include/common.h"
+#include "pos/include/log.h"
 
 template<class T_POSTransport, class T_POSClient>
 class POSWorkspace;
@@ -389,4 +389,4 @@ class POSOobClient {
     std::map<pos_oob_msg_typeid_t, oob_client_function_t<T_POSTransport>> _request_map;
 };
 
-#include "pos/oob.c"
+#include "pos/include/oob.cpp"

@@ -2,10 +2,10 @@
 
 #include <iostream>
 
-#include "pos/common.h"
-#include "pos/transport.h"
-#include "pos/oob.h"
-#include "pos/api_context.h"
+#include "pos/include/common.h"
+#include "pos/include/transport.h"
+#include "pos/include/oob.h"
+#include "pos/include/api_context.h"
 
 /*!
  *  \brief  client-side PhoenixOS agent, manages all POS resources

@@ -1,16 +1,17 @@
 #pragma once
 
 #include <iostream>
+#include <vector>
 
 #include <cuda.h>
 #include <cuda_runtime_api.h>
 #include <cublas_v2.h>
 #include <cublas_api.h>
 
-#include "cpu_rpc_prot.h"
+#include "pos/include/common.h"
+#include "pos/include/api_context.h"
 
-#include "pos/common.h"
-#include "pos/api_context.h"
+#include "pos/cuda_impl/api_index.h"
 
 enum pos_cuda_library_id_t : uint8_t {
     kPOS_CUDA_Library_Id_Runtime = 0,
@@ -318,3 +319,5 @@ class POSApiManager_CUDA : public POSApiManager {
         }
     }
 };
+
+bool pos_is_hijacked(uint64_t api_id);

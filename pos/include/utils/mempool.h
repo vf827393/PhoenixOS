@@ -7,7 +7,7 @@
 #include <stdint.h>
 #include <string.h>
 
-#include "pos/common.h"
+#include "pos/include/common.h"
 
 enum pos_mempool_elt_state_t {
     kPOS_Mempool_Elt_State_Free=0,

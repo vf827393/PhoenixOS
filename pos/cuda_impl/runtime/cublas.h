@@ -6,15 +6,15 @@
 
 #include "cublas_v2.h"
 
-#include "pos/common.h"
+#include "pos/include/common.h"
+#include "pos/include/utils/bipartite_graph.h"
+#include "pos/include/dag.h"
+
 #include "pos/cuda_impl/handle.h"
 #include "pos/cuda_impl/runtime.h"
 #include "pos/cuda_impl/client.h"
 #include "pos/cuda_impl/api_context.h"
 #include "pos/cuda_impl/utils/fatbin.h"
-#include "pos/utils/bipartite_graph.h"
-#include "pos/dag.h"
-
 
 namespace rt_functions {
 

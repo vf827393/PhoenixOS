@@ -61,5 +61,9 @@ using POSMem_ptr = std::shared_ptr<uint8_t[]>;
 /*!
  *  \brief  switch group
  */
-#define POS_ENABLE_DEBUG_CHECK          @pos_enable_debug_check@
-#define POS_ENABLE_HIJACK_API_CHECK     @pos_enable_hijack_api_check@
+#ifndef POS_ENABLE_MACRO_FOR_DEBUG
+
+#define POS_ENABLE_DEBUG_CHECK          1
+#define POS_ENABLE_HIJACK_API_CHECK     1
+
+#endif // POS_ENABLE_MACRO_FOR_DEBUG

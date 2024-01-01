@@ -2,8 +2,8 @@
 
 #include <iostream>
 
-#include "pos/utils/readerwriterqueue/atomicops.h"
-#include "pos/utils/readerwriterqueue/readerwriterqueue.h"
+#include "pos/include/utils/readerwriterqueue/atomicops.h"
+#include "pos/include/utils/readerwriterqueue/readerwriterqueue.h"
 
 #define POS_LOCKLESS_Q_DEFAULT_LEN  64
 

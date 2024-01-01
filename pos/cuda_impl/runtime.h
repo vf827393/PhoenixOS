@@ -2,14 +2,14 @@
 
 #include <cuda_runtime_api.h>
 
-#include "pos/common.h"
-#include "pos/workspace.h"
-#include "pos/client.h"
-#include "pos/transport.h"
-#include "pos/runtime.h"
+#include "pos/include/common.h"
+#include "pos/include/workspace.h"
+#include "pos/include/client.h"
+#include "pos/include/transport.h"
+#include "pos/include/runtime.h"
 #include "pos/cuda_impl/client.h"
 
-#include "cpu_rpc_prot.h"
+#include "pos/cuda_impl/api_index.h"
 
 namespace rt_functions {
     /* CUDA runtime functions */

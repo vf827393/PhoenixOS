@@ -2,11 +2,11 @@
 
 #include <string>
 
-#include "pos/common.h"
-#include "pos/log.h"
-#include "pos/handle.h"
-#include "pos/api_context.h"
-#include "pos/utils/bipartite_graph.h"
+#include "pos/include/common.h"
+#include "pos/include/log.h"
+#include "pos/include/handle.h"
+#include "pos/include/api_context.h"
+#include "pos/include/utils/bipartite_graph.h"
 
 typedef struct pos_handle_meta {
     POSHandle_ptr handle;

@@ -8,9 +8,9 @@
 
 class POSClient;
 
-#include "pos/client.h"
-#include "pos/handle.h"
-#include "pos/dag.h"
+#include "pos/include/client.h"
+#include "pos/include/handle.h"
+#include "pos/include/dag.h"
 
 /*!
  *  \brief  base state of a remote client

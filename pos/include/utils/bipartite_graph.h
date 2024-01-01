@@ -8,8 +8,8 @@
 #include <iostream>
 #include <string>
 
-#include "pos/common.h"
-#include "pos/log.h"
+#include "pos/include/common.h"
+#include "pos/include/log.h"
 
 using pos_vertex_id_t = uint64_t;
 

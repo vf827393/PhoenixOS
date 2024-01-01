@@ -1,4 +1,4 @@
 [submodule "remoting/cuda"]
 	path = remoting/cuda
 	url = git@ipads.se.sjtu.edu.cn:scaleaisys/cricket.git
-	branch = zhuobin/ckpt_v2
+	branch = zhuobin/ckpt_v2_reorg

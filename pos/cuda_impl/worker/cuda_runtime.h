@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "pos/common.h"
+#include "pos/include/common.h"
 #include "pos/cuda_impl/worker.h"
 
 #include <cuda_runtime_api.h>

@@ -10,11 +10,11 @@
 
 #include <cuda_runtime_api.h>
 
-#include "pos/common.h"
-#include "pos/log.h"
-#include "pos/utils/lockfree_queue.h"
-#include "pos/api_context.h"
-#include "pos/workspace.h"
+#include "pos/include/common.h"
+#include "pos/include/log.h"
+#include "pos/include/utils/lockfree_queue.h"
+#include "pos/include/api_context.h"
+#include "pos/include/workspace.h"
 
 // /*!
 //  *  \brief  pre-declaration

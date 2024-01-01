@@ -7,8 +7,8 @@
 #include <cuda.h>
 #include <cuda_runtime_api.h>
 
-#include "pos/common.h"
-#include "pos/handle.h"
+#include "pos/include/common.h"
+#include "pos/include/handle.h"
 
 #include "pos/cuda_impl/utils/fatbin.h"
 
