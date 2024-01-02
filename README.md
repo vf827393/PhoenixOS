@@ -8,6 +8,8 @@ TODO: give effect of training migration here
 
 ## I. Build
 
+TODO: give an architecture figure here (e.g., remoting module, POS)
+
 ### 1. Preparation docker image for specified target
 
 TODO:
@@ -20,7 +22,12 @@ python3 -m pip install meson
 python3 -m pip install ninja
 ```
 
-TODO: give an architecture figure here (e.g., remoting module, POS)
+### 3. Build From Source
+
+```bash
+bash build -t cuda -c
+bash build -t cuda -j -u true
+```
 
 ## II. Example
 
@@ -32,7 +39,9 @@ TODO: give an architecture figure here (e.g., remoting module, POS)
 
 ## IV. Roadmap
 
-1. fix meson to use g++ to compile
-2. write a script to compile both pos and remoting framework automatically
-3. add auto-unit test script
- 
+[] (Jan.2) Fast checkpoint of all stateful resources
+[] (Jan.2) Develop central node (using golang)
+[] Develop communication channel across multiple POS servers
+[] Develop client-server switch of POS and cricket
+[] Develop dumping checkpoint state to memory / file
+[] Try migration development (i.e., restore mechanism)

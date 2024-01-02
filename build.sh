@@ -35,6 +35,9 @@ build_cuda() {
             if [ -d "./build" ]; then
                 rm -rf build
             fi
+            if [ -d "./bin" ]; then
+                rm -rf bin
+            fi
     else
         echo "build target: cuda"
         echo "[1] building POS"
@@ -53,12 +56,14 @@ build_cuda() {
             else
                 LOG=DEBUG make cricket-rpc-server cricket-client.so
             fi
-        
         echo "[3] building unittest"
             cd $script_dir
             cd unittest/cuda
             if [ -d "./build" ]; then
                 rm -rf build
+            fi
+            if [ -d "./bin" ]; then
+                rm -rf bin
             fi
             mkdir build
             cd build
