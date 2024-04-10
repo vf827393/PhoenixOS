@@ -12,6 +12,52 @@
 #include "pos/include/checkpoint.h"
 #include "pos/include/utils/timestamp.h"
 
+
+POSCheckpointBag::POSCheckpointBag(
+    uint64_t state_size,
+    pos_custom_ckpt_allocate_func_t allocator,
+    pos_custom_ckpt_deallocate_func_t deallocator,
+    pos_custom_ckpt_allocate_func_t dev_allocator,
+    pos_custom_ckpt_deallocate_func_t dev_deallocator
+) : is_latest_ckpt_finished(false) {
+    pos_retval_t tmp_retval;
+    uint64_t i=0;
+    POSCheckpointSlot *tmp_ptr;
+
+    this->_state_size = state_size;
+    this->_allocate_func = allocator;
+    this->_deallocate_func = deallocator;
+    this->_dev_allocate_func = dev_allocator;
+    this->_dev_deallocate_func = dev_deallocator;
+
+    if(allocator != nullptr && deallocator != nullptr){
+    #define __CKPT_PREFILL_SIZE 1
+        for(i=0; i<__CKPT_PREFILL_SIZE; i++){
+            tmp_retval = apply_checkpoint_slot</* on_device */false>(i, &tmp_ptr, /* force_overwrite */ false);
+            POS_ASSERT(tmp_retval == POS_SUCCESS);
+        }
+        for(i=0; i<__CKPT_PREFILL_SIZE; i++){
+            tmp_retval = invalidate_by_version</* on_deivce */ false>(i);
+            POS_ASSERT(tmp_retval == POS_SUCCESS);
+        }
+    #undef __CKPT_PREFILL_SIZE
+    }
+
+    if(dev_allocator != nullptr && dev_deallocator != nullptr){
+    #define __DEV_CKPT_PREFILL_SIZE 1
+        for(i=0; i<__DEV_CKPT_PREFILL_SIZE; i++){
+            tmp_retval = apply_checkpoint_slot</* on_device */true>(i, &tmp_ptr, /* force_overwrite */ false);
+            POS_ASSERT(tmp_retval == POS_SUCCESS);
+        }
+        for(i=0; i<__DEV_CKPT_PREFILL_SIZE; i++){
+            tmp_retval = invalidate_by_version</* on_deivce */ true>(i);
+            POS_ASSERT(tmp_retval == POS_SUCCESS);
+        }
+    #undef __DEV_CKPT_PREFILL_SIZE
+    }
+}
+
+
 /*!
  *  \brief  clear current checkpoint bag
  */
@@ -125,13 +171,12 @@ template pos_retval_t POSCheckpointBag::apply_checkpoint_slot<false>(uint64_t ve
  *  \brief  obtain checkpointed data by given checkpoint version
  *  \tparam on_device   whether to apply the slot on the device
  *  \param  ckpt_slot   pointer to the checkpoint slot if successfully obtained
- *  \param  size        size of the checkpoin data
  *  \param  version     the specified version
  *  \return POS_SUCCESS for successfully obtained
  *          POS_FAILED_NOT_EXIST for no checkpoint is found
  */
 template<bool on_device>
-pos_retval_t POSCheckpointBag::get_checkpoint_slot(POSCheckpointSlot** ckpt_slot, uint64_t& size, uint64_t version){
+pos_retval_t POSCheckpointBag::get_checkpoint_slot(POSCheckpointSlot** ckpt_slot, uint64_t version){
     pos_retval_t retval = POS_SUCCESS;
 
     if constexpr (on_device){
@@ -141,10 +186,8 @@ pos_retval_t POSCheckpointBag::get_checkpoint_slot(POSCheckpointSlot** ckpt_slot
         }
         if(likely(_dev_ckpt_map.count(version) > 0)){
             *ckpt_slot = _dev_ckpt_map[version];
-            size = _state_size;
         } else {
             *ckpt_slot = nullptr;
-            size = 0;
             retval = POS_FAILED_NOT_EXIST;
         }
     } else {
@@ -154,10 +197,8 @@ pos_retval_t POSCheckpointBag::get_checkpoint_slot(POSCheckpointSlot** ckpt_slot
         }
         if(likely(_ckpt_map.count(version) > 0)){
             *ckpt_slot = _ckpt_map[version];
-            size = _state_size;
         } else {
             *ckpt_slot = nullptr;
-            size = 0;
             retval = POS_FAILED_NOT_EXIST;
         }
     }
@@ -165,8 +206,51 @@ pos_retval_t POSCheckpointBag::get_checkpoint_slot(POSCheckpointSlot** ckpt_slot
 exit:
     return retval;
 }
-template pos_retval_t POSCheckpointBag::get_checkpoint_slot<true>(POSCheckpointSlot** ckpt_slot, uint64_t& size, uint64_t version);
-template pos_retval_t POSCheckpointBag::get_checkpoint_slot<false>(POSCheckpointSlot** ckpt_slot, uint64_t& size, uint64_t version);
+template pos_retval_t POSCheckpointBag::get_checkpoint_slot<true>(POSCheckpointSlot** ckpt_slot, uint64_t version);
+template pos_retval_t POSCheckpointBag::get_checkpoint_slot<false>(POSCheckpointSlot** ckpt_slot, uint64_t version);
+
+
+/*!
+ *  \brief  obtain the number of recorded checkpoints inside this bag
+ *  \tparam on_device   whether the slot to be applied is on the device
+ *  \return number of recorded checkpoints
+ */
+template<bool on_device>
+uint64_t POSCheckpointBag::get_nb_checkpoint_slots(){
+    if constexpr (on_device){
+        return _dev_ckpt_map.size(); 
+    } else {
+        return _ckpt_map.size();
+    }
+}
+template uint64_t POSCheckpointBag::get_nb_checkpoint_slots<true>();
+template uint64_t POSCheckpointBag::get_nb_checkpoint_slots<false>();
+
+
+/*!
+ *  \brief  obtain the checkpoint version list
+ *  \tparam on_device   whether the slot to be applied is on the device
+ *  \return the checkpoint version list
+ */
+template<bool on_device>
+std::set<uint64_t> POSCheckpointBag::get_checkpoint_version_set(){
+    if constexpr (on_device){
+        return _dev_ckpt_version_set;
+    } else {
+        return _ckpt_version_set;
+    }
+}
+template std::set<uint64_t> POSCheckpointBag::get_checkpoint_version_set<true>();
+template std::set<uint64_t> POSCheckpointBag::get_checkpoint_version_set<false>();
+
+
+/*!
+ *  \brief  obtain overall memory consumption of this checkpoint bag
+ *  \return overall memory consumption of this checkpoint bag
+ */
+uint64_t POSCheckpointBag::get_memory_consumption(){
+    return _ckpt_map.size() * _state_size;
+}
 
 
 /*!
@@ -180,11 +264,10 @@ template<bool on_device>
 pos_retval_t POSCheckpointBag::invalidate_by_version(uint64_t version) {
     pos_retval_t retval = POS_SUCCESS;
     POSCheckpointSlot *ckpt_slot;
-    uint64_t ckpt_size;
 
     if constexpr (on_device){
         // check whether checkpoint exit
-        retval = get_checkpoint_slot</* on_device */ true>(&ckpt_slot, ckpt_size, version);
+        retval = get_checkpoint_slot</* on_device */ true>(&ckpt_slot, version);
         if(POS_SUCCESS != retval){
             goto exit;
         }
@@ -199,7 +282,7 @@ pos_retval_t POSCheckpointBag::invalidate_by_version(uint64_t version) {
         );
     } else {
         // check whether checkpoint exit
-        retval = get_checkpoint_slot</* on_device */ false>(&ckpt_slot, ckpt_size, version);
+        retval = get_checkpoint_slot</* on_device */ false>(&ckpt_slot, version);
         if(POS_SUCCESS != retval){
             goto exit;
         }
@@ -219,6 +302,33 @@ exit:
 }
 template pos_retval_t POSCheckpointBag::invalidate_by_version<true>(uint64_t version);
 template pos_retval_t POSCheckpointBag::invalidate_by_version<false>(uint64_t version);
+
+
+/*!
+ *  \brief  invalidate all checkpoint from this bag
+ *  \tparam on_device   whether the checkpoints are on the device
+ *  \return POS_SUCCESS for successfully invalidate
+ *          POS_NOT_READY for no checkpoint had been record
+ */
+template<bool on_device>
+pos_retval_t POSCheckpointBag::invalidate_all_version(){
+    pos_retval_t retval = POS_SUCCESS;
+    std::set<uint64_t> version_set;
+    typename std::set<uint64_t>::iterator version_set_iter;
+
+    version_set = this->get_checkpoint_version_set<on_device>();
+    for(version_set_iter = version_set.begin(); version_set_iter != version_set.end(); version_set_iter++){
+        retval = this->invalidate_by_version<on_device>(*version_set_iter);
+        if(unlikely(retval != POS_SUCCESS)){
+            goto exit;
+        }
+    }
+    
+exit:
+    return retval;
+}
+template pos_retval_t POSCheckpointBag::invalidate_all_version<true>();
+template pos_retval_t POSCheckpointBag::invalidate_all_version<false>();
 
 
 /*!
