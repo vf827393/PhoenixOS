@@ -41,3 +41,26 @@ After succesfully installed PhOS inside the container (See [Build and Install Ph
     # inference
     env $phos python3 ./inference.py
     ```
+
+    Note that the first run would be longer, as PhOS would parse and instrument all registered .fatbin/.cubin.
+
+3. To C/R using PhOS
+
+    ```bash
+    # checkpoint
+    mkdir /root/ckpt
+    pos_cli --dump --dir /root/ckpt --pid [your program pid]
+
+    # restore
+    pos_cli --restore --dir /root/ckpt
+    ```
+
+4. To C/R using [nvidia/cuda-checkpoint](https://github.com/NVIDIA/cuda-checkpoint) for comparison
+
+    ```bash
+    # checkpoint
+    bash run_nvcr_ckpt.sh -s true -g
+
+    # restore
+    bash run_nvcr_restore.sh -g
+    ```
