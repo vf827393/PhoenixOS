@@ -14,11 +14,6 @@
     <b>PhoenixOS</b> (PhOS) is an OS-level GPU checkpoint/restore (C/R) system. It can <b>transparently</b> C/R processes that use the GPU, without requiring any cooperation from the application, a key feature required by modern systems like the cloud. Most importantly, PhOS is the first OS-level C/R system that can <b>concurrently execute C/R without stopping the execution of application</b>.
     <p>
     Note that PhOS is aimming to be a generic design that towards various hardware platforms from different vendors, by providing a set of interfaces which should be implemented by specific hardware platforms. We currently provide the C/R implementation on CUDA platform, support for ROCm and Ascend are under development.
-    <table style="margin:20px 0px;">
-        <tr><td><b>
-        PhOS is currently under active development. If you're interested in contributing to this project, please join our <a href="https://phoenixoshq.slack.com/archives/C07V2QWVB8Q">slack workspace</a> for more upcoming cool features on PhOS.
-        </b></td></tr>
-    </table>
     <div style="padding: 0px 10px;">
         <p>
         <h3 style="margin:0px; margin-bottom:5px;">📑 Latest News</h3>
@@ -41,10 +36,33 @@
             </li>
         </ul>
     </div>
+    <table style="margin:20px 0px;">
+        <tr><td><b>
+        PhOS is currently under heavy development. If you're interested in contributing to this project, please join our <a href="https://phoenixoshq.slack.com/archives/C07V2QWVB8Q">slack workspace</a> for more upcoming cool features on PhOS.
+        </b></td></tr>
+    </table>
 </div>
 
 
-## I. Build and Install PhOS
+<br />
+
+## I. Showcase
+
+Under CUDA platform, we compared the C/R performace of PhOS with [nvidia/cuda-checkpoint](https://github.com/NVIDIA/cuda-checkpoint):
+
+<table>
+    <tr><th align="center">Checkpointing Llama2-13b-chat</th></tr>
+    <tr><td align="center"><img src="./docs/docs/source/_static/images/home/llama2_ckpt.gif" /></td></tr>
+</table>
+<table>
+    <tr><th align="center">Restoring Llama2-13b-chat</th></tr>
+    <tr><td align="center"><img src="./docs/docs/source/_static/images/home/llama2_restore.gif" /></td></tr>
+</table>
+
+
+<br />
+
+## II. Build and Install PhOS
 
 ### 💡 Option 1: Build and Install From Source
 
@@ -70,7 +88,10 @@
     cd PhoenixOS
 
     # start container
-    sudo docker run -dit --gpus all -v.:/root --name phos nvidia/cuda:11.3.1-cudnn8-devel-ubuntu20.04
+    sudo docker run -dit --gpus all                                         \
+                -v.:/root                                                   \
+                --privileged --network=host --ipc=host                      \
+                --name phos nvidia/cuda:11.3.1-cudnn8-devel-ubuntu20.04
 
     # enter container
     sudo docker exec -it phos /bin/bash
@@ -84,12 +105,14 @@
 
     ```bash
     # inside container
-    cd /root/scripts/build_scripts
-    bash download_assets.sh
 
     # install basic dependencies from OS pkg manager
     sudo apt-get update
     sudo apt-get install git wget
+    
+    # download assets
+    cd /root/scripts/build_scripts
+    bash download_assets.sh
     ```
 
 
@@ -156,35 +179,96 @@
 
 ### 💡 Option 2: Install From Pre-built Binaries
 
-1. **[Download Pre-built Package]**
-    One can also download pre-built binaries from repo's release page:
+    Will soon be updated :)
+
+
+<br />
+
+## III. Usage
+
+Once successfully installed PhOS, you can now try run your program with PhOS support!
+
+<table style="margin:20px 0px;">
+    <tr><td><b>
+    For more details, you can refer to <a href="https://github.com/SJTU-IPADS/PhoenixOS/tree/zhuobin/fix_cli/examples"><code>examples</code></a> for step-by-step tutorials to run PhOS.
+    </b></td></tr>
+</table>
+
+### (1) Start `phosd` and your program
+
+1. Start the PhOS daemon (`phosd`), which takes over all GPU reousces on the node:
 
     ```bash
-    wget
+    pos_cli --start daemon --detach
     ```
 
+2. To run your program with PhOS support, one need to put a `yaml` configure file under the directory which your program would regard as `$PWD`.
+This file contains all necessary informations for PhOS to hijack your program. An example file looks like:
 
-## II. Usage
+    ```yaml
+    # [Field]   name of the job
+    # [Note]    job with same name would share some resources in posd, e.g., CUModule, etc.
+    job_name: "llama2-13b-chat-hf"
 
-**TODO**
+    # [Field]   remote address of posd, default is local
+    daemon_addr: "127.0.0.1"
+    ```
+
+3. You are going for launch now! Try run your program with `env $phos` prefix, for example:
+
+    ```bash
+    env $phos python3 train.py
+    ```
+
+### (2) Pre-dump your program
+
+To pre-dump your program, which save the CPU & GPU state without stopping your execution, simple run:
+
+```bash
+# create directory to store checkpoing files
+mkdir /root/ckpt
+
+# pre-dump command
+pos_cli --pre-dump --dir /root/ckpt --pid [your program's pid]
+```
+
+### (3) Dump your program
+
+To dump your program, which save the CPU & GPU state and stop your execution, simple run:
+
+```bash
+# create directory to store checkpoing files
+mkdir /root/ckpt
+
+# pre-dump command
+pos_cli --dump --dir /root/ckpt --pid [your program's pid]
+```
 
 
-## III. How PhOS Works?
+### (4) Restore your program
 
-As migration is essentially the combination of checkpoint and restore, we below discuss the workflow in PhOS by demonstrating the migration process.
+To restore your program, simply run:
+
+```bash
+# restore command
+pos_cli --restore --dir /root/ckpt
+```
+
+
+<br />
+
+## IV. How PhOS Works?
 
 <div align="center">
     <img src="./docs/docs/source/_static/images/pos_mechanism.jpg" width="80%" />
 </div>
 
-### 🌟 Checkpoint
-
-During checkpoint, PhOS leverages CRIU to checkpoint the state on CPU-side
-
 For more details, please check our [paper](https://arxiv.org/abs/2405.12079).
 
 
-## IV. Paper
+<br />
+
+## V. Paper
 
 If you use PhOS in your research, please cite our paper:
 
@@ -196,6 +280,9 @@ If you use PhOS in your research, please cite our paper:
   year={2024}
 }
 ```
+
+
+<br />
 
 ## V. Contributors
 
