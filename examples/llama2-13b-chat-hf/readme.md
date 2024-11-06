@@ -40,8 +40,8 @@ After succesfully installed PhOS inside the container (See [Build and Install Ph
 
     ```bash
     # inside container
-    pos_cli --start daemon --detach
-    # CUDA_VISIBLE_DEVICES=0 pos_cli --start daemon --detach
+    pos_cli --start --target daemon
+    # CUDA_VISIBLE_DEVICES=0 pos_cli --start --target daemon
     ```
 
 4. Running the training / inference script:

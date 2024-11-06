@@ -26,7 +26,7 @@ After succesfully installed PhOS inside the container (See [Build and Install Ph
 
     ```bash
     # inside container
-    pos_cli --start daemon --detach
+    pos_cli --start --target daemon
     ```
 
 2. Running the training / inference script:

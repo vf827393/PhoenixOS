@@ -109,7 +109,7 @@ func main() {
 			"All system go, PhOS is go for launch :)\n" +
 			"========================================\n" +
 			"1. Please \"source /etc/profile\" to let PhOS installation take effect\n" + 
-			"2. PhOS daemon (phosd) is not running yet, please start it by \"pos_cli --start daemon\"\n" +
+			"2. PhOS daemon (phosd) is not running yet, please start it by \"pos_cli --start --target daemon\"\n" +
 			"3. To run program with PhOS support, an example looks like \"env $phos python3 train.py \"",
 		)
 	}

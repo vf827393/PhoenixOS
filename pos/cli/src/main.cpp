@@ -26,8 +26,6 @@
 
 
 #define CLIENT_IP "0.0.0.0"
-#define SERVER_IP "10.66.10.1"
-#define SERVER_UDP_PORT POS_OOB_SERVER_DEFAULT_PORT
 
 
 typedef struct migration_cli_meta {
@@ -36,23 +34,47 @@ typedef struct migration_cli_meta {
 
 
 inline void __readin_raw_cli(int argc, char *argv[], pos_cli_options_t &clio){
-    int opt;
+    int opt_val;
     int option_index = 0;
+    struct option *opt;
     char short_opt[1024] = { 0 };
+
+    auto __get_opt_by_val = [](struct option* opt_list, int len, int val, struct option** opt){
+        int i;
+        struct option tmp_opt;
+
+        POS_CHECK_POINTER(opt);
+        POS_CHECK_POINTER(opt_list);
+
+        for(i=0; i<len; i++){
+            tmp_opt = opt_list[i];
+            if(tmp_opt.val == val){
+                (*opt) = &tmp_opt;
+                goto exit;
+            }
+        }
+
+        (*opt) = nullptr;
+
+    exit:
+        ;
+    };
 
     sprintf(
         short_opt,
-        /* action */    "%d%d%d%d%d%d%d"
-        /* meta */      "%d:%d:%d:%d:%d:",
+        /* action */    "%d%d%d%d%d%d%d%d"
+        /* meta */      "%d:%d:%d:%d:%d:%d:",
         kPOS_CliAction_Help,
         kPOS_CliAction_PreDump,
         kPOS_CliAction_Dump,
         kPOS_CliAction_Restore,
-        kPOS_CliAction_TraceResource,
         kPOS_CliAction_Migrate,
+        kPOS_CliAction_Start,
+        kPOS_CliAction_TraceResource,
         kPOS_CliAction_Preserve,
         kPOS_CliMeta_SubAction,
         kPOS_CliMeta_Pid,
+        kPOS_CliMeta_Target,
         kPOS_CliMeta_Dir,
         kPOS_CliMeta_Dip,
         kPOS_CliMeta_Dport
@@ -66,23 +88,30 @@ inline void __readin_raw_cli(int argc, char *argv[], pos_cli_options_t &clio){
         {"restore",         no_argument,        NULL,   kPOS_CliAction_Restore},
         {"migrate",         no_argument,        NULL,   kPOS_CliAction_Migrate},
         {"preserve",        no_argument,        NULL,   kPOS_CliAction_Preserve},
+        {"start",           no_argument,        NULL,   kPOS_CliAction_Start},
         {"trace-resource",  no_argument,        NULL,   kPOS_CliAction_TraceResource},
 
         // metadatas
+        {"target",      required_argument,  NULL,   kPOS_CliMeta_Target},
         {"subaction",   required_argument,  NULL,   kPOS_CliMeta_SubAction},
         {"pid",         required_argument,  NULL,   kPOS_CliMeta_Pid},
         {"dir",         required_argument,  NULL,   kPOS_CliMeta_Dir},
         {"dip",         required_argument,  NULL,   kPOS_CliMeta_Dip},
         {"dport",       required_argument,  NULL,   kPOS_CliMeta_Dport},
-        
+    
         {NULL,          0,                  NULL,   0}
     };
 
-    while ((opt = getopt_long(argc, argv, (const char*)(short_opt), long_opt, &option_index)) != -1) {
-        if (opt < kPOS_CliAction_PLACEHOLDER) {
-            clio.action_type = static_cast<pos_cli_action>(opt);
-        } else if (opt < kPOS_CliMeta_PLACEHOLDER) {
-            clio.record_raw(static_cast<pos_cli_meta>(opt), optarg);
+    while ((opt_val = getopt_long(argc, argv, (const char*)(short_opt), long_opt, &option_index)) != -1) {
+        if (opt_val < kPOS_CliAction_PLACEHOLDER) {
+            clio.action_type = static_cast<pos_cli_action>(opt_val);
+        } else if (opt_val < kPOS_CliMeta_PLACEHOLDER) {
+            __get_opt_by_val(long_opt, sizeof(long_opt), opt_val, &opt);
+            POS_CHECK_POINTER(opt);
+            if(opt->has_arg == true)
+                clio.record_raw(static_cast<pos_cli_meta>(opt_val), optarg);
+            else
+                clio.record_raw(static_cast<pos_cli_meta>(opt_val), "");
         }
     }
 }
@@ -105,7 +134,10 @@ inline pos_retval_t __dispatch(pos_cli_options_t &clio){
 
     case kPOS_CliAction_TraceResource:
         return handle_trace(clio);
-    
+
+    case kPOS_CliAction_Start:
+        return handle_start(clio);
+
     default:
         return POS_FAILED_NOT_IMPLEMENTED;
     }

@@ -66,6 +66,12 @@ enum pos_cli_arg : int {
     kPOS_CliAction_TraceResource,
 
     /*!
+     *  \brief  start certain PhOS components
+     *  \param  target      [Required] target to start (options: daemon)
+     */
+    kPOS_CliAction_Start,
+
+    /*!
      *  \brief  migrate context of a XPU process to a new process
      *  \param  pid     [Required] PID of the process to be migrated
      *  \param  oip     [Required] out-of-band control plane IP of the remote host
@@ -87,6 +93,8 @@ enum pos_cli_arg : int {
     /* ============ metadatas ============ */
     // subaction of the action
     kPOS_CliMeta_SubAction,
+    // generic operation target
+    kPOS_CliMeta_Target,
     // target process id
     kPOS_CliMeta_Pid,
     // file path for checkpoint / trace, etc.
@@ -97,7 +105,7 @@ enum pos_cli_arg : int {
     kPOS_CliMeta_Dport,
     // file path to the kernel metadata
     kPOS_CliMeta_KernelMeta,
-    kPOS_CliMeta_PLACEHOLDER,
+    kPOS_CliMeta_PLACEHOLDER
 };
 
 typedef pos_cli_arg     pos_cli_action;
@@ -127,6 +135,10 @@ typedef struct pos_cli_ckpt_metas {
     uint64_t pid;
     char ckpt_dir[oob_functions::cli_ckpt_predump::kCkptFilePathMaxLen];
 } pos_cli_ckpt_metas_t;
+
+typedef struct pos_cli_start_metas {
+    char target_name[512];
+} pos_cli_start_metas_t;
 
 typedef struct pos_cli_trace_resource_metas {
     oob_functions::cli_trace_resource::trace_action action;
@@ -160,8 +172,9 @@ typedef struct pos_cli_options {
     // metadata of corresponding cli option
     union {
         pos_cli_ckpt_metas_t ckpt;
-        pos_cli_migrate_metas migrate;
+        pos_cli_migrate_metas_t migrate;
         pos_cli_trace_resource_metas_t trace_resource;
+        pos_cli_start_metas_t start;
     } metas;
 
     pos_cli_options() : local_oob_client(nullptr), remote_oob_client(nullptr), action_type(kPOS_CliAction_Unknown) {}
@@ -189,12 +202,16 @@ typedef struct pos_cli_meta_check_rule {
 static void validate_and_cast_args(pos_cli_options_t &clio, std::vector<pos_arg_check_rule_t> &&rules){
     for(auto& rule : rules){
         if(clio._raw_metas.count(rule.meta_type) == 0){
-            POS_ERROR(
-                "%s action requires option '%s'(%s)",
-                pos_cli_action_name(clio.action_type).c_str(),
-                rule.meta_name.c_str(),
-                rule.meta_desp.c_str()
-            );
+            if(rule.is_required){
+                POS_ERROR(
+                    "%s action requires option '%s'(%s)",
+                    pos_cli_action_name(clio.action_type).c_str(),
+                    rule.meta_name.c_str(),
+                    rule.meta_desp.c_str()
+                );
+            } else {
+                continue;
+            }
         }
 
         if(unlikely(POS_SUCCESS != rule.cast_func(clio, clio._raw_metas[rule.meta_type]))){
@@ -208,3 +225,4 @@ pos_retval_t handle_dump(pos_cli_options_t &clio);
 pos_retval_t handle_migrate(pos_cli_options_t &clio);
 pos_retval_t handle_trace(pos_cli_options_t &clio);
 pos_retval_t handle_restore(pos_cli_options_t &clio);
+pos_retval_t handle_start(pos_cli_options_t &clio);
