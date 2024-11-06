@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 // ©2013-2020 Cameron Desrochers.
 // Distributed under the simplified BSD license (see the license file that
 // should have come with this header).

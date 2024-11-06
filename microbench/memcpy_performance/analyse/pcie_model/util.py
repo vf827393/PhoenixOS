@@ -1,19 +1,18 @@
-## Copyright (C) 2015-2018 Rolf Neugebauer.  All rights reserved.
-## Copyright (C) 2015 Netronome Systems, Inc.  All rights reserved.
-##
-## Licensed under the Apache License, Version 2.0 (the "License");
-## you may not use this file except in compliance with the License.
-## You may obtain a copy of the License at
-##
-##   http://www.apache.org/licenses/LICENSE-2.0
-##
-## Unless required by applicable law or agreed to in writing, software
-## distributed under the License is distributed on an "AS IS" BASIS,
-## WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-## See the License for the specific language governing permissions and
-## limitations under the License.
+# Copyright 2024 The PhoenixOS Authors. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
-"""Utility functions"""
+#"""Utility functions"""
 
 from . import pcie
 
@@ -133,5 +132,8 @@ def gen_res(bwspec, direction, data_sz,
             num_batches = eff_rx_bw / float(data_sz)
             req_raw_tx_bw = num_batches * raw_tx_B
             req_raw_rx_bw = eff_rx_bw * raw_rx_B / float(data_sz)
+
+    return pcie.BW_Res(req_raw_rx_bw, eff_rx_bw, req_raw_tx_bw, eff_tx_bw)
+ata_sz)
 
     return pcie.BW_Res(req_raw_rx_bw, eff_rx_bw, req_raw_tx_bw, eff_tx_bw)

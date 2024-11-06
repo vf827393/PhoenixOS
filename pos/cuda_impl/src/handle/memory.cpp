@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 #include <iostream>
 #include <map>
 
@@ -454,7 +455,7 @@ pos_retval_t POSHandleManager_CUDA_Memory::init(std::map<uint64_t, std::vector<P
         CUmemGenericAllocationHandle hdl;
         CUmemAccessDesc accessDesc;
         CUdeviceptr ptr;
-        pos_retval_t retval = POS_SUCCESS;
+        pos_retval_t retval = POS_SUCCESS, tmp_retval;
         cudaError_t rt_retval;
         CUresult dv_retval;
         CUcontext old_ctx;
@@ -525,7 +526,12 @@ pos_retval_t POSHandleManager_CUDA_Memory::init(std::map<uint64_t, std::vector<P
                 "failed to preserve memory on CUDA device, failed to call cuMemAddressReserve: retval(%d), device_id(%d)",
                 dv_retval, device_id
             );
-            retval = POS_FAILED_DRIVER;
+            if(likely(dv_retval == CUDA_ERROR_OUT_OF_MEMORY)){
+                retval = POS_FAILED_OOM;
+            } else {
+                retval = POS_FAILED_DRIVER;
+            }
+
             goto exit;
         }
         POSHandleManager_CUDA_Memory::alloc_ptrs[device_id] = ptr;
@@ -568,11 +574,18 @@ pos_retval_t POSHandleManager_CUDA_Memory::init(std::map<uint64_t, std::vector<P
         if(unlikely(POS_SUCCESS != (
             retval = __reserve_device_vm_space(context_handle)
         ))){
-            POS_WARN_C(
-                "failed to preserve memory space on device: context_client_addr(%p)",
-                context_handle->client_addr
-            );
-            goto exit;
+            if(retval == POS_FAILED_OOM){
+                POS_WARN_C(
+                    "failed to preserve memory space on device, out of memory, omit this device",
+                    context_handle->client_addr
+                );
+                retval = POS_SUCCESS;
+            } else {
+                POS_WARN_C(
+                    "failed to preserve memory space on device: context_client_addr(%p), retval(%u)",
+                    context_handle->client_addr, retval
+                );
+            }
         }
     }
 

@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 #pragma once
 
 #include <iostream>
@@ -48,6 +49,7 @@ enum pos_retval : uint8_t {
     POS_FAILED_INCORRECT_OUTPUT,
     POS_FAILED_NETWORK,
     POS_FAILED_DRIVER,
+    POS_FAILED_OOM,
 };
 
 

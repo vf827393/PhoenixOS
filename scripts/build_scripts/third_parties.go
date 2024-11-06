@@ -1,3 +1,19 @@
+/*
+ * Copyright 2024 The PhoenixOS Authors. All rights reserved.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package main
 
 import (
@@ -292,11 +308,11 @@ func CRIB_LibClang(cmdOpt CmdOptions, buildConf BuildConfigs, logger *log.Logger
 		set -e
 		{{.CMD_EXPRORT_ENV_VAR__}}
 		cd %s/%s
-		if [ ! -d "./build" ]; then
-			mkdir build && cd build
-			cmake .. -DCMAKE_INSTALL_PREFIX=.. 									>>{{.LOG_PATH__}} 2>&1
-			make install -j 													>>{{.LOG_PATH__}} 2>&1
-		fi
+		
+		rm -rf build
+		mkdir build && cd build
+		cmake .. -DCMAKE_INSTALL_PREFIX=.. 										>>{{.LOG_PATH__}} 2>&1
+		make install -j 														>>{{.LOG_PATH__}} 2>&1
 		cp ../lib/libclang.so {{.LOCAL_LIB_PATH__}}/libclang.so 				>>{{.LOG_PATH__}} 2>&1
 		cp ../lib/libclang.so.13 {{.LOCAL_LIB_PATH__}}/libclang.so.13 			>>{{.LOG_PATH__}} 2>&1
 		cp ../lib/libclang.so.VERSION {{.LOCAL_LIB_PATH__}}/libclang.so.VERSION >>{{.LOG_PATH__}} 2>&1

@@ -100,8 +100,8 @@
     # inside container
 
     # install basic dependencies from OS pkg manager
-    sudo apt-get update
-    sudo apt-get install git wget
+    apt-get update
+    apt-get install git wget
     
     # download assets
     cd /root/scripts/build_scripts
@@ -183,7 +183,7 @@ Once successfully installed PhOS, you can now try run your program with PhOS sup
 
 <table style="margin:20px 0px;">
     <tr><td><b>
-    For more details, you can refer to <a href="https://github.com/SJTU-IPADS/PhoenixOS/tree/zhuobin/fix_cli/examples"><code>examples</code></a> for step-by-step tutorials to run PhOS.
+    For more details, you can refer to <a href="https://github.com/SJTU-IPADS/PhoenixOS/tree/main/examples"><code>examples</code></a> for step-by-step tutorials to run PhOS.
     </b></td></tr>
 </table>
 

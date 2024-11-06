@@ -1,5 +1,6 @@
 import datetime
 import os
+from typing import List
 
 YEAR = str(datetime.date.today().year)
 
@@ -37,13 +38,16 @@ sharp_license_text = """# Copyright {} The PhoenixOS Authors. All rights reserve
 # limitations under the License.""".format(YEAR)
 
 
-def add_copyright(scan_dirs:list[str], file_suffixs:list[str], license_text:str):
+def add_copyright(scan_dirs:List[str], file_suffixs:List[str], license_text:str):
     if license_text != slash_license_text and license_text != sharp_license_text:
         raise RuntimeError("unsupported license format")
 
     for scan_dir in scan_dirs:
         for root, dirs, files in os.walk(scan_dir):
             for file in files:
+                if file == "pre_merge.sh" or file == "add_copyright.py":
+                    continue
+
                 # check whether suffix satisfy
                 has_suffix = False
                 for file_suffix in file_suffixs:
@@ -59,34 +63,36 @@ def add_copyright(scan_dirs:list[str], file_suffixs:list[str], license_text:str)
                 directory_names = os.path.dirname(file_path).split('/')
                 if "build" in directory_names:
                     continue
-
-                with open(file_path, 'r+') as f:
-                    content = f.read()
-                    
-                    # remove old copyright if exists
-                    while True:
+                
+                try:
+                    with open(file_path, 'r+') as f:
+                        content = f.read()
+                        
+                        # remove old copyright if exists
                         if license_text == slash_license_text:
                             start_index = content.find("/*\n * Copyright ")
                         elif license_text == sharp_license_text:
                             start_index = content.find("# Copyright ")
-
-                        if start_index == -1:
-                            break
-
-                        if license_text == slash_license_text:
-                            end_index = content.find(" * limitations under the License.\n */\n", start_index)   \
-                                + len(" * limitations under the License.\n */\n")
-                        elif license_text == sharp_license_text:
-                            end_index = content.find("# limitations under the License.\n", start_index) \
-                                + len("# limitations under the License.\n")                           
-                        content = content[:start_index] + content[end_index:]
-
-                    # add new copyright
-                    f.seek(0, 0)
-                    f.write(license_text + '\n' + content)
+                        if start_index != -1:
+                            if license_text == slash_license_text:
+                                end_index = content.find(" * limitations under the License.\n */\n\n", start_index)   \
+                                    + len(" * limitations under the License.\n */\n\n")
+                            elif license_text == sharp_license_text:
+                                end_index = content.find("# limitations under the License.\n\n", start_index) \
+                                    + len("# limitations under the License.\n\n")
+                            content = content[:start_index] + content[end_index:]                       
+                        
+                        # add new copyright
+                        f.seek(0, 0)
+                        f.write(license_text + '\n\n' + content)
+                        print(f"processed {file_path}")
+                except PermissionError:
+                    print(f"skipped {file_path}: permission denied")
+                except Exception as e:
+                    print(f"skipped {file_path}: {e}")
 
 add_copyright(
-    scan_dirs = ['./autogen', './microbench', './pos', './unittest', './utils', './scripts'],
+    scan_dirs = ['./autogen', './microbench', './pos', './unittest', './utils', './scripts', './examples'],
     file_suffixs = [
         # c/cpp/cuda files
         '.cpp', '.hpp', '.c', '.h', 'cu', '.cuh', '.c.in', '.cpp.in', '.h.in', '.hpp.in',
@@ -97,7 +103,7 @@ add_copyright(
 )
 
 add_copyright(
-    scan_dirs = ['./autogen', './microbench', './pos', './unittest', './utils', './scripts'],
-    file_suffixs = ['.py', 'meson.build', '.sh'],
+    scan_dirs = ['./autogen', './microbench', './pos', './unittest', './utils', './scripts', './examples'],
+    file_suffixs = ['.py', 'meson.build', '.yaml', '.sh'],
     license_text = sharp_license_text
 )

@@ -1,19 +1,18 @@
-## Copyright (C) 2015-2018 Rolf Neugebauer.  All rights reserved.
-## Copyright (C) 2015 Netronome Systems, Inc.  All rights reserved.
-##
-## Licensed under the Apache License, Version 2.0 (the "License");
-## you may not use this file except in compliance with the License.
-## You may obtain a copy of the License at
-##
-##   http://www.apache.org/licenses/LICENSE-2.0
-##
-## Unless required by applicable law or agreed to in writing, software
-## distributed under the License is distributed on an "AS IS" BASIS,
-## WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-## See the License for the specific language governing permissions and
-## limitations under the License.
+# Copyright 2024 The PhoenixOS Authors. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
-"""A simple NIC model"""
+#"""A simple NIC model"""
 
 import math
 from . import pcie
@@ -114,4 +113,6 @@ def bw(pcicfg, bwspec, direction, pkt_size):
     # we now know how many bytes are transfered in each direction for
     # both RX and TX. Lets work out how much we can transfer etc.
     return util.gen_res(bwspec, direction, data_B,
+                        tx_rx_data_B, tx_tx_data_B, rx_rx_data_B, rx_tx_data_B)
+_B,
                         tx_rx_data_B, tx_tx_data_B, rx_rx_data_B, rx_tx_data_B)
