@@ -23,10 +23,10 @@
                     <b>[Nov.4, 2024]</b> PhOS is open sourced 🎉 [<a href="https://github.com/PhoenixOS-IPADS/PhoenixOS">Repo</a>] [<a href="http://phoenixos-docs.readthedocs-hosted.com/">Documentations</a>]
                 </p>
                 <p style="margin:0px; margin-bottom:1px;">
-                    👉 PhOS is currently fully supporting continuous checkpoint and fast restore
+                    👉 PhOS is currently fully supporting single-GPU checkpoint and restore
                 </p>
                 <p style="margin:0px; margin-bottom:1px;">
-                    👉 We will soon release codes for live migration and multi-GPU support :)
+                    👉 We will soon release codes for cross-node live migration and multi-GPU support :)
                 </p>                
             </li>
             <li>
