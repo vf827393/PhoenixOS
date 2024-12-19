@@ -6,20 +6,26 @@ This documentation contains `yaml` files for descriptors of CUDA 11.3 APIs for a
 ## Supported API List
 
 > **Quick Access**
-> 1. [CUDA Runtime APIs]()
+> 1. [CUDA Runtime APIs](https://github.com/SJTU-IPADS/PhoenixOS/tree/dev/api_support/autogen/autogen_cuda/supported/11.3#cuda-runtime-apis)
 >       * [Device Management](https://github.com/SJTU-IPADS/PhoenixOS/tree/dev/api_support/autogen/autogen_cuda/supported/11.3#device-management)
 >       * [Error Handling](https://github.com/SJTU-IPADS/PhoenixOS/tree/dev/api_support/autogen/autogen_cuda/supported/11.3#error-handling)
+>       * [Stream Management](https://github.com/SJTU-IPADS/PhoenixOS/tree/dev/api_support/autogen/autogen_cuda/supported/11.3#stream-management)
 >       * [Event Management](https://github.com/SJTU-IPADS/PhoenixOS/tree/dev/api_support/autogen/autogen_cuda/supported/11.3#event-management)
+>       * [External Resource Interoperability](https://github.com/SJTU-IPADS/PhoenixOS/tree/dev/api_support/autogen/autogen_cuda/supported/11.3#external-resource-interoperability)
 >       * [Execution Control](https://github.com/SJTU-IPADS/PhoenixOS/tree/dev/api_support/autogen/autogen_cuda/supported/11.3#execution-control)
 >       * [Memory Management](https://github.com/SJTU-IPADS/PhoenixOS/tree/dev/api_support/autogen/autogen_cuda/supported/11.3#memory-management)
 >       * [Occupancy](https://github.com/SJTU-IPADS/PhoenixOS/tree/dev/api_support/autogen/autogen_cuda/supported/11.3#occupancy)
->       * [Stream Management](https://github.com/SJTU-IPADS/PhoenixOS/tree/dev/api_support/autogen/autogen_cuda/supported/11.3#stream-management)
+>       * [Stream Ordered Memory Allocator](https://github.com/SJTU-IPADS/PhoenixOS/tree/dev/api_support/autogen/autogen_cuda/supported/11.3#stream-ordered-memory-allocator)
+>       * [Unified Addressing](https://github.com/SJTU-IPADS/PhoenixOS/tree/dev/api_support/autogen/autogen_cuda/supported/11.3#unified-addressing)
+>       * [Peer Device Memory Access](https://github.com/SJTU-IPADS/PhoenixOS/tree/dev/api_support/autogen/autogen_cuda/supported/11.3#peer-device-memory-access)
+
 > 2. [CUDA Driver APIs]()
 >       * []()
 > 3. [cuBLAS APIs]()
 > 4. [cuBLASLt APIs]()
 > 5. [cuDNN APIs]()
 > 6. [cuSparse APIs]()
+
 
 ### 1. CUDA Runtime APIs
 
@@ -403,6 +409,236 @@ Returns the last error from a runtime call.
 </table>
 
 
+#### [Stream Management](https://docs.nvidia.com/cuda/archive/11.3.0/cuda-runtime-api/group__CUDART__STREAM.html)
+
+<table>
+<tr>
+<th>Supported</th>
+<th>Test Passed</th>
+</tr>
+<tr>
+<td colspan=2>
+<code>cudaError_t cudaCtxResetPersistingL2Cache ( void )</code><br>
+Resets all persisting lines in cache to normal status.
+</td>
+</tr>
+<tr>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td colspan=2>
+<code>cudaError_t cudaStreamAddCallback ( cudaStream_t stream, cudaStreamCallback_t callback, void* userData, unsigned int  flags )</code><br>
+Add a callback to a compute stream.
+</td>
+</tr>
+<tr>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td colspan=2>
+<code>cudaError_t cudaStreamAttachMemAsync ( cudaStream_t stream, void* devPtr, size_t length = 0, unsigned int  flags = cudaMemAttachSingle )</code><br>
+Attach memory to a stream asynchronously.
+</td>
+</tr>
+<tr>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td colspan=2>
+<code>cudaError_t cudaStreamBeginCapture ( cudaStream_t stream, cudaStreamCaptureMode mode )</code><br>
+Begins graph capture on a stream.
+</td>
+</tr>
+<tr>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td colspan=2>
+<code>cudaError_t cudaStreamCopyAttributes ( cudaStream_t dst, cudaStream_t src )</code><br>
+Copies attributes from source stream to destination stream.
+</td>
+</tr>
+<tr>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td colspan=2>
+<code>cudaError_t cudaStreamCreate ( cudaStream_t* pStream )</code><br>
+Create an asynchronous stream.
+</td>
+</tr>
+<tr>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td colspan=2>
+<code>cudaError_t cudaStreamCreateWithFlags ( cudaStream_t* pStream, unsigned int  flags )</code><br>
+Create an asynchronous stream.
+</td>
+</tr>
+<tr>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td colspan=2>
+<code>cudaError_t cudaStreamCreateWithPriority ( cudaStream_t* pStream, unsigned int  flags, int  priority )</code><br>
+Create an asynchronous stream with the specified priority.
+</td>
+</tr>
+<tr>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td colspan=2>
+<code>cudaError_t cudaStreamDestroy ( cudaStream_t stream )</code><br>
+Destroys and cleans up an asynchronous stream.
+</td>
+</tr>
+<tr>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td colspan=2>
+<code>cudaError_t cudaStreamEndCapture ( cudaStream_t stream, cudaGraph_t* pGraph )</code><br>
+Ends capture on a stream, returning the captured graph.
+</td>
+</tr>
+<tr>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td colspan=2>
+<code>cudaError_t cudaStreamGetAttribute ( cudaStream_t hStream, cudaStreamAttrID attr, cudaStreamAttrValue* value_out )</code><br>
+Queries stream attribute.
+</td>
+</tr>
+<tr>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td colspan=2>
+<code>cudaError_t cudaStreamGetCaptureInfo ( cudaStream_t stream, cudaStreamCaptureStatus ** pCaptureStatus, unsigned long long* pId )</code><br>
+Query capture status of a stream.
+</td>
+</tr>
+<tr>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td colspan=2>
+<code>cudaError_t cudaStreamGetCaptureInfo_v2 ( cudaStream_t stream, cudaStreamCaptureStatus ** captureStatus_out, unsigned long long* id_out = 0, cudaGraph_t* graph_out = 0, const cudaGraphNode_t** dependencies_out = 0, size_t* numDependencies_out = 0 )</code><br>
+Query a stream's capture state (11.3+).
+</td>
+</tr>
+<tr>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td colspan=2>
+<code>cudaError_t cudaStreamGetFlags ( cudaStream_t hStream, unsigned int* flags )</code><br>
+Query the flags of a stream.
+</td>
+</tr>
+<tr>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td colspan=2>
+<code>cudaError_t cudaStreamGetPriority ( cudaStream_t hStream, int* priority )</code><br>
+Query the priority of a stream.
+</td>
+</tr>
+<tr>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td colspan=2>
+<code>cudaError_t cudaStreamIsCapturing ( cudaStream_t stream, cudaStreamCaptureStatus ** pCaptureStatus )</code><br>
+Returns a stream's capture status.
+</td>
+</tr>
+<tr>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td colspan=2>
+<code>cudaError_t cudaStreamQuery ( cudaStream_t stream )</code><br>
+Queries an asynchronous stream for completion status.
+</td>
+</tr>
+<tr>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td colspan=2>
+<code>cudaError_t cudaStreamSetAttribute ( cudaStream_t hStream, cudaStreamAttrID attr, const cudaStreamAttrValue* value )</code><br>
+Sets stream attribute.
+</td>
+</tr>
+<tr>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td colspan=2>
+<code>cudaError_t cudaStreamSynchronize ( cudaStream_t stream )</code><br>
+Waits for stream tasks to complete.
+</td>
+</tr>
+<tr>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td colspan=2>
+<code>cudaError_t cudaStreamUpdateCaptureDependencies ( cudaStream_t stream, cudaGraphNode_t* dependencies, size_t numDependencies, unsigned int  flags = 0 )</code><br>
+Update the set of dependencies in a capturing stream (11.3+).
+</td>
+</tr>
+<tr>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td colspan=2>
+<code>cudaError_t cudaStreamWaitEvent ( cudaStream_t stream, cudaEvent_t event, unsigned int  flags = 0 )</code><br>
+Make a compute stream wait on an event.
+</td>
+</tr>
+<tr>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td colspan=2>
+<code>cudaError_t cudaThreadExchangeStreamCaptureMode ( cudaStreamCaptureMode ** mode )</code><br>
+Swaps the stream capture interaction mode for a thread.
+</td>
+</tr>
+<tr>
+<td>✗</td>
+<td>✗</td>
+</tr>
+</table>
+
+
 #### [Event Management](https://docs.nvidia.com/cuda/archive/11.3.0/cuda-runtime-api/group__CUDART__EVENT.html#group__CUDART__EVENT)
 
 <table>
@@ -491,6 +727,98 @@ Waits for an event to complete.
 <td>✗</td>
 </tr>
 </table>
+
+
+#### [External Resource Interoperability](https://docs.nvidia.com/cuda/archive/11.3.0/cuda-runtime-api/group__CUDART__EXTRES__INTEROP.html#group__CUDART__EXTRES__INTEROP)
+
+
+<table>
+<tr>
+<th>Supported</th>
+<th>Test Passed</th>
+</tr>
+<tr>
+<td colspan=2>
+<code>cudaError_t cudaDestroyExternalMemory ( cudaExternalMemory_t extMem )</code><br>
+Destroys an external memory object.
+</td>
+</tr>
+<tr>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td colspan=2>
+<code>cudaError_t cudaDestroyExternalSemaphore ( cudaExternalSemaphore_t extSem )</code><br>
+Destroys an external semaphore.
+</td>
+</tr>
+<tr>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td colspan=2>
+<code>cudaError_t cudaExternalMemoryGetMappedBuffer ( void** devPtr, cudaExternalMemory_t extMem, const cudaExternalMemoryBufferDesc* bufferDesc )</code><br>
+Maps a buffer onto an imported memory object.
+</td>
+</tr>
+<tr>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td colspan=2>
+<code>cudaError_t cudaExternalMemoryGetMappedMipmappedArray ( cudaMipmappedArray_t* mipmap, cudaExternalMemory_t extMem, const cudaExternalMemoryMipmappedArrayDesc* mipmapDesc )</code><br>
+Maps a CUDA mipmapped array onto an external memory object.
+</td>
+</tr>
+<tr>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td colspan=2>
+<code>cudaError_t cudaImportExternalMemory ( cudaExternalMemory_t* extMem_out, const cudaExternalMemoryHandleDesc* memHandleDesc )</code><br>
+Imports an external memory object.
+</td>
+</tr>
+<tr>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td colspan=2>
+<code>cudaError_t cudaImportExternalSemaphore ( cudaExternalSemaphore_t* extSem_out, const cudaExternalSemaphoreHandleDesc* semHandleDesc )</code><br>
+Imports an external semaphore.
+</td>
+</tr>
+<tr>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td colspan=2>
+<code>cudaError_t cudaSignalExternalSemaphoresAsync ( const cudaExternalSemaphore_t* extSemArray, const cudaExternalSemaphoreSignalParams* paramsArray, unsigned int  numExtSems, cudaStream_t stream = 0 )</code><br>
+Signals a set of external semaphore objects.
+</td>
+</tr>
+<tr>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td colspan=2>
+<code>cudaError_t cudaWaitExternalSemaphoresAsync ( const cudaExternalSemaphore_t* extSemArray, const cudaExternalSemaphoreWaitParams* paramsArray, unsigned int  numExtSems, cudaStream_t stream = 0 )</code><br>
+Waits on a set of external semaphore objects.
+</td>
+</tr>
+<tr>
+<td>✗</td>
+<td>✗</td>
+</tr>
+</table>
+
 
 #### [Execution Control](https://docs.nvidia.com/cuda/archive/11.3.0/cuda-runtime-api/group__CUDART__EXECUTION.html#group__CUDART__EXECUTION)
 
@@ -1240,8 +1568,7 @@ Returns occupancy for a device function with the specified flags.
 </tr>
 </table>
 
-
-#### [Stream Management](https://docs.nvidia.com/cuda/archive/11.3.0/cuda-runtime-api/group__CUDART__STREAM.html)
+#### [Stream Ordered Memory Allocator](https://docs.nvidia.com/cuda/archive/11.3.0/cuda-runtime-api/group__CUDART__MEMORY__POOLS.html#group__CUDART__MEMORY__POOLS)
 
 <table>
 <tr>
@@ -1250,8 +1577,8 @@ Returns occupancy for a device function with the specified flags.
 </tr>
 <tr>
 <td colspan=2>
-<code>cudaError_t cudaCtxResetPersistingL2Cache ( void )</code><br>
-Resets all persisting lines in cache to normal status.
+<code>cudaError_t cudaFreeAsync ( void* devPtr, cudaStream_t hStream )</code><br>
+Frees memory with stream ordered semantics.
 </td>
 </tr>
 <tr>
@@ -1260,8 +1587,8 @@ Resets all persisting lines in cache to normal status.
 </tr>
 <tr>
 <td colspan=2>
-<code>cudaError_t cudaStreamAddCallback ( cudaStream_t stream, cudaStreamCallback_t callback, void* userData, unsigned int  flags )</code><br>
-Add a callback to a compute stream.
+<code>cudaError_t cudaMallocAsync ( void** devPtr, size_t size, cudaStream_t hStream )</code><br>
+Allocates memory with stream ordered semantics.
 </td>
 </tr>
 <tr>
@@ -1270,8 +1597,8 @@ Add a callback to a compute stream.
 </tr>
 <tr>
 <td colspan=2>
-<code>cudaError_t cudaStreamAttachMemAsync ( cudaStream_t stream, void* devPtr, size_t length = 0, unsigned int  flags = cudaMemAttachSingle )</code><br>
-Attach memory to a stream asynchronously.
+<code>cudaError_t cudaMallocFromPoolAsync ( void** ptr, size_t size, cudaMemPool_t memPool, cudaStream_t stream )</code><br>
+Allocates memory from a specified pool with stream ordered semantics.
 </td>
 </tr>
 <tr>
@@ -1280,8 +1607,8 @@ Attach memory to a stream asynchronously.
 </tr>
 <tr>
 <td colspan=2>
-<code>cudaError_t cudaStreamBeginCapture ( cudaStream_t stream, cudaStreamCaptureMode mode )</code><br>
-Begins graph capture on a stream.
+<code>cudaError_t cudaMemPoolCreate ( cudaMemPool_t* memPool, const cudaMemPoolProps* poolProps )</code><br>
+Creates a memory pool.
 </td>
 </tr>
 <tr>
@@ -1290,8 +1617,8 @@ Begins graph capture on a stream.
 </tr>
 <tr>
 <td colspan=2>
-<code>cudaError_t cudaStreamCopyAttributes ( cudaStream_t dst, cudaStream_t src )</code><br>
-Copies attributes from source stream to destination stream.
+<code>cudaError_t cudaMemPoolDestroy ( cudaMemPool_t memPool )</code><br>
+Destroys the specified memory pool.
 </td>
 </tr>
 <tr>
@@ -1300,8 +1627,8 @@ Copies attributes from source stream to destination stream.
 </tr>
 <tr>
 <td colspan=2>
-<code>cudaError_t cudaStreamCreate ( cudaStream_t* pStream )</code><br>
-Create an asynchronous stream.
+<code>cudaError_t cudaMemPoolExportPointer ( cudaMemPoolPtrExportData* exportData, void* ptr )</code><br>
+Export data to share a memory pool allocation between processes.
 </td>
 </tr>
 <tr>
@@ -1310,8 +1637,8 @@ Create an asynchronous stream.
 </tr>
 <tr>
 <td colspan=2>
-<code>cudaError_t cudaStreamCreateWithFlags ( cudaStream_t* pStream, unsigned int  flags )</code><br>
-Create an asynchronous stream.
+<code>cudaError_t cudaMemPoolExportToShareableHandle ( void* shareableHandle, cudaMemPool_t memPool, cudaMemAllocationHandleType handleType, unsigned int  flags )</code><br>
+Exports a memory pool to the requested handle type.
 </td>
 </tr>
 <tr>
@@ -1320,8 +1647,8 @@ Create an asynchronous stream.
 </tr>
 <tr>
 <td colspan=2>
-<code>cudaError_t cudaStreamCreateWithPriority ( cudaStream_t* pStream, unsigned int  flags, int  priority )</code><br>
-Create an asynchronous stream with the specified priority.
+<code>cudaError_t cudaMemPoolGetAccess ( cudaMemAccessFlags ** flags, cudaMemPool_t memPool, cudaMemLocation* location )</code><br>
+Returns the accessibility of a pool from a device.
 </td>
 </tr>
 <tr>
@@ -1330,8 +1657,8 @@ Create an asynchronous stream with the specified priority.
 </tr>
 <tr>
 <td colspan=2>
-<code>cudaError_t cudaStreamDestroy ( cudaStream_t stream )</code><br>
-Destroys and cleans up an asynchronous stream.
+<code>cudaError_t cudaMemPoolGetAttribute ( cudaMemPool_t memPool, cudaMemPoolAttr attr, void* value )</code><br>
+Gets attributes of a memory pool.
 </td>
 </tr>
 <tr>
@@ -1340,8 +1667,8 @@ Destroys and cleans up an asynchronous stream.
 </tr>
 <tr>
 <td colspan=2>
-<code>cudaError_t cudaStreamEndCapture ( cudaStream_t stream, cudaGraph_t* pGraph )</code><br>
-Ends capture on a stream, returning the captured graph.
+<code>cudaError_t cudaMemPoolImportFromShareableHandle ( cudaMemPool_t* memPool, void* shareableHandle, cudaMemAllocationHandleType handleType, unsigned int  flags )</code><br>
+imports a memory pool from a shared handle.
 </td>
 </tr>
 <tr>
@@ -1350,8 +1677,8 @@ Ends capture on a stream, returning the captured graph.
 </tr>
 <tr>
 <td colspan=2>
-<code>cudaError_t cudaStreamGetAttribute ( cudaStream_t hStream, cudaStreamAttrID attr, cudaStreamAttrValue* value_out )</code><br>
-Queries stream attribute.
+<code>cudaError_t cudaMemPoolImportPointer ( void** ptr, cudaMemPool_t memPool, cudaMemPoolPtrExportData* exportData )</code><br>
+Import a memory pool allocation from another process.
 </td>
 </tr>
 <tr>
@@ -1360,8 +1687,8 @@ Queries stream attribute.
 </tr>
 <tr>
 <td colspan=2>
-<code>cudaError_t cudaStreamGetCaptureInfo ( cudaStream_t stream, cudaStreamCaptureStatus ** pCaptureStatus, unsigned long long* pId )</code><br>
-Query capture status of a stream.
+<code>cudaError_t cudaMemPoolSetAccess ( cudaMemPool_t memPool, const cudaMemAccessDesc* descList, size_t count )</code><br>
+Controls visibility of pools between devices.
 </td>
 </tr>
 <tr>
@@ -1370,8 +1697,8 @@ Query capture status of a stream.
 </tr>
 <tr>
 <td colspan=2>
-<code>cudaError_t cudaStreamGetCaptureInfo_v2 ( cudaStream_t stream, cudaStreamCaptureStatus ** captureStatus_out, unsigned long long* id_out = 0, cudaGraph_t* graph_out = 0, const cudaGraphNode_t** dependencies_out = 0, size_t* numDependencies_out = 0 )</code><br>
-Query a stream's capture state (11.3+).
+<code>cudaError_t cudaMemPoolSetAttribute ( cudaMemPool_t memPool, cudaMemPoolAttr attr, void* value )</code><br>
+Sets attributes of a memory pool.
 </td>
 </tr>
 <tr>
@@ -1380,88 +1707,28 @@ Query a stream's capture state (11.3+).
 </tr>
 <tr>
 <td colspan=2>
-<code>cudaError_t cudaStreamGetFlags ( cudaStream_t hStream, unsigned int* flags )</code><br>
-Query the flags of a stream.
+<code>cudaError_t cudaMemPoolTrimTo ( cudaMemPool_t memPool, size_t minBytesToKeep )</code><br>
+Tries to release memory back to the OS.
 </td>
 </tr>
 <tr>
 <td>✗</td>
 <td>✗</td>
 </tr>
+</table> 
+
+
+#### [Unified Addressing](https://docs.nvidia.com/cuda/archive/11.3.0/cuda-runtime-api/group__CUDART__UNIFIED.html)
+
+<table>
 <tr>
-<td colspan=2>
-<code>cudaError_t cudaStreamGetPriority ( cudaStream_t hStream, int* priority )</code><br>
-Query the priority of a stream.
-</td>
-</tr>
-<tr>
-<td>✗</td>
-<td>✗</td>
-</tr>
-<tr>
-<td colspan=2>
-<code>cudaError_t cudaStreamIsCapturing ( cudaStream_t stream, cudaStreamCaptureStatus ** pCaptureStatus )</code><br>
-Returns a stream's capture status.
-</td>
-</tr>
-<tr>
-<td>✗</td>
-<td>✗</td>
+<th>Supported</th>
+<th>Test Passed</th>
 </tr>
 <tr>
 <td colspan=2>
-<code>cudaError_t cudaStreamQuery ( cudaStream_t stream )</code><br>
-Queries an asynchronous stream for completion status.
-</td>
-</tr>
-<tr>
-<td>✗</td>
-<td>✗</td>
-</tr>
-<tr>
-<td colspan=2>
-<code>cudaError_t cudaStreamSetAttribute ( cudaStream_t hStream, cudaStreamAttrID attr, const cudaStreamAttrValue* value )</code><br>
-Sets stream attribute.
-</td>
-</tr>
-<tr>
-<td>✗</td>
-<td>✗</td>
-</tr>
-<tr>
-<td colspan=2>
-<code>cudaError_t cudaStreamSynchronize ( cudaStream_t stream )</code><br>
-Waits for stream tasks to complete.
-</td>
-</tr>
-<tr>
-<td>✗</td>
-<td>✗</td>
-</tr>
-<tr>
-<td colspan=2>
-<code>cudaError_t cudaStreamUpdateCaptureDependencies ( cudaStream_t stream, cudaGraphNode_t* dependencies, size_t numDependencies, unsigned int  flags = 0 )</code><br>
-Update the set of dependencies in a capturing stream (11.3+).
-</td>
-</tr>
-<tr>
-<td>✗</td>
-<td>✗</td>
-</tr>
-<tr>
-<td colspan=2>
-<code>cudaError_t cudaStreamWaitEvent ( cudaStream_t stream, cudaEvent_t event, unsigned int  flags = 0 )</code><br>
-Make a compute stream wait on an event.
-</td>
-</tr>
-<tr>
-<td>✗</td>
-<td>✗</td>
-</tr>
-<tr>
-<td colspan=2>
-<code>cudaError_t cudaThreadExchangeStreamCaptureMode ( cudaStreamCaptureMode ** mode )</code><br>
-Swaps the stream capture interaction mode for a thread.
+<code>cudaError_t cudaPointerGetAttributes ( cudaPointerAttributes* attributes, const void* ptr )</code><br>
+Returns attributes about a specified pointer.
 </td>
 </tr>
 <tr>
@@ -1470,6 +1737,45 @@ Swaps the stream capture interaction mode for a thread.
 </tr>
 </table>
 
+
+#### [Peer Device Memory Access](https://docs.nvidia.com/cuda/archive/11.3.0/cuda-runtime-api/group__CUDART__PEER.html#group__CUDART__PEER)
+
+<table>
+<tr>
+<th>Supported</th>
+<th>Test Passed</th>
+</tr>
+<tr>
+<td colspan=2>
+<code>cudaError_t cudaDeviceCanAccessPeer ( int* canAccessPeer, int  device, int  peerDevice )</code><br>
+Queries if a device may directly access a peer device's memory.
+</td>
+</tr>
+<tr>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td colspan=2>
+<code>cudaError_t cudaDeviceDisablePeerAccess ( int  peerDevice )</code><br>
+Disables direct access to memory allocations on a peer device.
+</td>
+</tr>
+<tr>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td colspan=2>
+<code>cudaError_t cudaDeviceEnablePeerAccess ( int  peerDevice, unsigned int  flags )</code><br>
+Enables direct access to memory allocations on a peer device.
+</td>
+</tr>
+<tr>
+<td>✗</td>
+<td>✗</td>
+</tr>
+</table>
 
 ## Refs:
 * [CUDA Toolkit Documentation 11.3](https://docs.nvidia.com/cuda/archive/11.3.0/cuda-runtime-api/index.html)
