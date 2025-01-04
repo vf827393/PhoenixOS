@@ -253,13 +253,13 @@ Wait for compute device to finish.
 <td>✗</td>
 </tr>
 
-<tr style="background-color: #f0f0f0;">
+<tr style="color:green;">
 <td colspan=3>
 <code>cudaError_t  cudaGetDevice ( int* device )</code><br>
 Returns which device is currently being used.
 </td>
 </tr>
-<tr style="background-color: #f0f0f0;">
+<tr style="color:green;">
 <td>120</td>
 <td>✓</td>
 <td>✗</td>
