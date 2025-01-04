@@ -13,7 +13,6 @@ Documentation: https://docs.nvidia.com/cuda/archive/11.3.0/cuda-runtime-api/grou
 <tr>
 <td colspan=3>
 <code>cudaError_t cudaPointerGetAttributes ( cudaPointerAttributes* attributes, const void* ptr )</code><br>
-<code>cudaError_t cudaPointerGetAttributes ( cudaPointerAttributes* attributes, const void* ptr )</code><br>
 Returns attributes about a specified pointer.
 </td>
 </tr>
