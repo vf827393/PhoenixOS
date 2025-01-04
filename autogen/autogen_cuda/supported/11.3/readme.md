@@ -1,34 +1,12 @@
 <h1>PhOS Support for CUDA 11.3</h1>
 
 <p>
-This documentation contains `yaml` files for descriptors of CUDA 11.3 APIs for autogenerating processing logic of PhOS parser and worker functions.
-
-
-<h2>1. Supported Data Structures</h2>
+This directory contains `yaml` files which contain descriptors of CUDA 11.3 APIs for autogenerating processing logic of PhOS parser and worker functions.
 
 <p>
-PhOS is supporting various data structures for CUDA 11.3. This section lists all supported data structures.
+PhOS is supporting popular SDKs on nVIDIA CUDA platforms. Below we list supporting status of all data structures and APIs under CUDA 11.3.
 
-TODO
 
-<h2>2. Supported API List</h2>
-
-<p>
-PhOS is supporting popular SDKs on nVIDIA CUDA platforms. This section lists all supporting status of APIS under CUDA 11.3.
-
-> **Quick Access**
-> 1. [CUDA Runtime APIs](https://github.com/SJTU-IPADS/PhoenixOS/tree/dev/api_support/autogen/autogen_cuda/supported/11.3#cuda-runtime-apis)
->       * [Device Management](https://github.com/SJTU-IPADS/PhoenixOS/tree/dev/api_support/autogen/autogen_cuda/supported/11.3#device-management)
->       * [Error Handling](https://github.com/SJTU-IPADS/PhoenixOS/tree/dev/api_support/autogen/autogen_cuda/supported/11.3#error-handling)
->       * [Stream Management](https://github.com/SJTU-IPADS/PhoenixOS/tree/dev/api_support/autogen/autogen_cuda/supported/11.3#stream-management)
->       * [Event Management](https://github.com/SJTU-IPADS/PhoenixOS/tree/dev/api_support/autogen/autogen_cuda/supported/11.3#event-management)
->       * [External Resource Interoperability](https://github.com/SJTU-IPADS/PhoenixOS/tree/dev/api_support/autogen/autogen_cuda/supported/11.3#external-resource-interoperability)
->       * [Execution Control](https://github.com/SJTU-IPADS/PhoenixOS/tree/dev/api_support/autogen/autogen_cuda/supported/11.3#execution-control)
->       * [Memory Management](https://github.com/SJTU-IPADS/PhoenixOS/tree/dev/api_support/autogen/autogen_cuda/supported/11.3#memory-management)
->       * [Occupancy](https://github.com/SJTU-IPADS/PhoenixOS/tree/dev/api_support/autogen/autogen_cuda/supported/11.3#occupancy)
->       * [Stream Ordered Memory Allocator](https://github.com/SJTU-IPADS/PhoenixOS/tree/dev/api_support/autogen/autogen_cuda/supported/11.3#stream-ordered-memory-allocator)
->       * [Unified Addressing](https://github.com/SJTU-IPADS/PhoenixOS/tree/dev/api_support/autogen/autogen_cuda/supported/11.3#unified-addressing)
->       * [Peer Device Memory Access](https://github.com/SJTU-IPADS/PhoenixOS/tree/dev/api_support/autogen/autogen_cuda/supported/11.3#peer-device-memory-access)
 > 2. [CUDA Driver APIs]()
 >       * []()
 > 3. [cuBLAS APIs]()
@@ -42,6 +20,12 @@ PhOS is supporting popular SDKs on nVIDIA CUDA platforms. This section lists all
 
 <h3>CUDA Runtime APIs</h3>
 
+<p>
+Reference: Official CUDA Documentation for Runtime APIs: https://docs.nvidia.com/cuda/archive/11.3.0/cuda-runtime-api/index.html
+
+<p>
+Below lists supported status of each API under different categories.
+
 <ul>
     <li><a href="docs/cudart_device_management.md">Device Management</a></li>
     <li><a href="docs/cudart_error_handling.md">Error Handling</a></li>
@@ -54,20 +38,25 @@ PhOS is supporting popular SDKs on nVIDIA CUDA platforms. This section lists all
     <li><a href="docs/cudart_stream_ordered_memory_allocator.md">Stream Ordered Memory Allocator</a></li>
     <li><a href="docs/cudart_unified_addressing.md">Unified Addressing</a></li>
     <li><a href="docs/cudart_peer_device_memory_access.md">Peer Device Memory Access</a></li>
+    <li><a href="docs/cudart_opengl_interoperability.md">OpenGL Interoperability</a></li>
+    <li><a href="docs/cudart_direct3d_9_interoperability.md">Direct3D 9 Interoperability</a></li>
+    <li><a href="docs/cudart_direct3d_10_interoperability.md">Direct3D 10 Interoperability</a></li>
+    <li><a href="docs/cudart_direct3d_11_interoperability.md">Direct3D 11 Interoperability</a></li>
+    <li><a href="docs/cudart_vdpau_interoperability.md">VDPAU Interoperability</a></li>
+    <li><a href="docs/cudart_egl_interoperability.md">EGL Interoperability</a></li>
+    <li><a href="docs/cudart_graphics_interoperability.md">Graphics Interoperability</a></li>
+    <li><a href="docs/cudart_texture_object_management.md">Texture Object Management</a></li>
+    <li><a href="docs/cudart_surface_object_management.md">Surface Object Management</a></li>
+    <li><a href="docs/cudart_version_management.md">Version Management</a></li>
+    <li><a href="docs/cudart_graph_management.md">Graph Management</a></li>
+    <li><a href="docs/cudart_driver_entry_point_access.md">Driver Entry Point Access</a></li>
+    <li><a href="docs/cudart_profiler_control.md">Profiler Control</a></li>
 </ul>
 
+<h3>CUDA Driver APIs</h3>
+
 <p>
-Official CUDA Documentation: https://docs.nvidia.com/cuda/archive/11.3.0/cuda-runtime-api/index.html
+Reference: Official CUDA Documentation for Driver APIs: https://docs.nvidia.com/cuda/archive/11.3.0/cuda-driver-api/index.html
 
-#### [CUDA Driver APIs (0/?)](https://docs.nvidia.com/cuda/archive/11.3.0/cuda-driver-api/index.html)
-
-TODO
-
-
-
-## Refs:
-* [CUDA Toolkit Documentation 11.3](https://docs.nvidia.com/cuda/archive/11.3.0/cuda-runtime-api/index.html)
-
-
-## TODO:
-* we still need to add return value description to support restore recomputation (allocate potential memory space)
+<p>
+Below lists supported status of each API under different categories.
