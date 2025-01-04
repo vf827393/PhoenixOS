@@ -26,9 +26,12 @@ PhOS is supporting popular SDKs on nVIDIA CUDA platforms. This section lists all
 > 4. [cuBLASLt APIs]()
 > 5. [cuDNN APIs]()
 > 6. [cuSparse APIs]()
+> 7. [NVML]() x3
+> 8. [nvRTC]()
+> 9. [NCCL]()
 
 
-### 1. [CUDA Runtime APIs (0/164)](https://docs.nvidia.com/cuda/archive/11.3.0/cuda-runtime-api/index.html)
+### 1. [CUDA Runtime APIs (0/236)](https://docs.nvidia.com/cuda/archive/11.3.0/cuda-runtime-api/index.html)
 
 
 #### [CUDA Driver APIs (0/?)](https://docs.nvidia.com/cuda/archive/11.3.0/cuda-driver-api/index.html)
