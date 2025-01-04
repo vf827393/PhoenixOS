@@ -1,4 +1,4 @@
-<h2>PhOS Support: CUDA Runtime APIS - Device Management (0/32)</h2>
+<h2>PhOS Support: CUDA 11.3 - Runtime APIs - Device Management (2/32)</h2>
 
 <p>
 Documentation: https://docs.nvidia.com/cuda/archive/11.3.0/cuda-runtime-api/group__CUDART__DEVICE.html#group__CUDART__DEVICE
@@ -361,7 +361,7 @@ Opens an interprocess memory handle exported from another process and returns a 
 <td>✗</td>
 </tr>
 
-<tr>
+<tr style="background-color:green;">
 <td colspan=3>
 <code>cudaError_t cudaSetDevice ( int  device )</code><br>
 Set device to be used for GPU executions.
@@ -369,7 +369,7 @@ Set device to be used for GPU executions.
 </tr>
 <tr>
 <td>129</td>
-<td>✗</td>
+<td>☑</td>
 <td>✗</td>
 </tr>
 
