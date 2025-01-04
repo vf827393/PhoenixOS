@@ -47,7 +47,6 @@ exit:
 }
 
 
-
 pos_retval_t POSAutogener::__collect_pos_support_yaml(
     const std::string& file_path,
     pos_support_header_file_meta_t *header_file_meta,
