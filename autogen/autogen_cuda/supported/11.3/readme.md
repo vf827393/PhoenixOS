@@ -8,8 +8,8 @@ PhOS is supporting popular SDKs on nVIDIA CUDA platforms. Below we list supporti
 
 
 <h3>CUDA Runtime APIs</h3>
-<p>
-Reference: Official CUDA Documentation for Runtime APIs: https://docs.nvidia.com/cuda/archive/11.3.0/cuda-runtime-api/index.html
+<p style="color:grey;">
+Reference: https://docs.nvidia.com/cuda/archive/11.3.0/cuda-runtime-api/index.html
 <p>
 Below lists supported status of each API under different categories.
 <ul>
@@ -41,8 +41,8 @@ Below lists supported status of each API under different categories.
 
 
 <h3>CUDA Driver APIs</h3>
-<p>
-Reference: Official CUDA Documentation for Driver APIs: https://docs.nvidia.com/cuda/archive/11.3.0/cuda-driver-api/index.html
+<p style="color:grey;">
+Reference: https://docs.nvidia.com/cuda/archive/11.3.0/cuda-driver-api/index.html
 <p>
 Below lists supported status of each API under different categories.
 <ul>
@@ -75,8 +75,8 @@ Below lists supported status of each API under different categories.
 
 
 <h3>cuBLAS APIs</h3>
-<p>
-Reference: Official CUDA Documentation for cuBLAS APIs: https://docs.nvidia.com/cuda/archive/11.3.0/cublas/index.html#using-the-cublas-api
+<p style="color:grey;">
+Reference: https://docs.nvidia.com/cuda/archive/11.3.0/cublas/index.html#using-the-cublas-api
 <p>
 Below lists supported status of each API under different categories.
 <ul>
@@ -89,8 +89,8 @@ Below lists supported status of each API under different categories.
  
 
 <h3>cuBLASLt APIs</h3>
-<p>
-Reference: Official CUDA Documentation for cuBLASLt APIs: https://docs.nvidia.com/cuda/archive/11.3.0/cublas/index.html#using-the-cublasLt-api
+<p style="color:grey;">
+Reference: https://docs.nvidia.com/cuda/archive/11.3.0/cublas/index.html#using-the-cublasLt-api
 <p>
 Below lists supported status of each API under different categories.
 <ul>
@@ -99,8 +99,8 @@ Below lists supported status of each API under different categories.
 
 
 <h3>cuBLASXt APIs</h3>
-<p>
-Reference: Official CUDA Documentation for cuBLASXt APIs: https://docs.nvidia.com/cuda/archive/11.3.0/cublas/index.html#using-the-cublasXt-api
+<p style="color:grey;">
+Reference: https://docs.nvidia.com/cuda/archive/11.3.0/cublas/index.html#using-the-cublasXt-api
 <p>
 Below lists supported status of each API under different categories.
 <ul>
@@ -110,8 +110,8 @@ Below lists supported status of each API under different categories.
 
 
 <h3>cuDNN 8 APIs</h3>
-<p>
-Reference: Official CUDA Documentation for cuDNN 8 APIs: https://docs.nvidia.com/deeplearning/cudnn/archives/cudnn-897/api/index.html. Note that cuDNN 8.0 is supported for CUDA 11.3.
+<p style="color:grey;">
+Reference: https://docs.nvidia.com/deeplearning/cudnn/archives/cudnn-897/api/index.html. Note that cuDNN 8.0 is supported for CUDA 11.3.
 <p>
 Below lists supported status of each API under different categories.
 <ul>
@@ -126,21 +126,21 @@ Below lists supported status of each API under different categories.
 
 
 <h3>NVML APIs</h3>
-<p>
-Reference: Official CUDA Documentation for NVML APIs: https://docs.nvidia.com/deploy/nvml-api/modules.html#modules
+<p >
+Reference: https://docs.nvidia.com/deploy/nvml-api/modules.html#modules
 <p>
 TODO: Add NVML APIs support status.
 
 
 <h3>nvRTC APIs</h3>
-<p>
-Reference: Official CUDA Documentation for nvRTC APIs: https://docs.nvidia.com/cuda/archive/11.3.0/nvrtc/index.html
+<p style="color:grey;">
+Reference: https://docs.nvidia.com/cuda/archive/11.3.0/nvrtc/index.html
 <p>
 TODO: Add nvRTC APIs support status.
 
 
 <h3>NCCL APIs</h3>
-<p>
-Reference: Official CUDA Documentation for NCCL APIs: https://docs.nvidia.com/deeplearning/nccl/archives/nccl_299/user-guide/docs/index.html. Note that NCCL 2.99 is supported for CUDA 11.3.
+<p style="color:grey;">
+Reference: https://docs.nvidia.com/deeplearning/nccl/archives/nccl_299/user-guide/docs/index.html. Note that NCCL 2.99 is supported for CUDA 11.3.
 <p>
 TODO: Add NCCL APIs support status.
