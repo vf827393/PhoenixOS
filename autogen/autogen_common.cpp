@@ -63,8 +63,8 @@ pos_retval_t POSAutogener::collect_pos_support_yamls(){
         goto exit;
     }
 
-    for (const auto& entry : std::filesystem::directory_iterator(this->support_directory)){
-        if(entry.is_regular_file() &&  entry.path().extension() == ".yaml"){
+    for (const auto& entry : std::filesystem::recursive_directory_iterator(this->support_directory)){
+        if(entry.is_regular_file() && entry.path().extension() == ".yaml"){
             POS_LOG_C("parsing support file %s...", entry.path().c_str())
 
             retval = this->__try_get_header_file_meta(entry.path(), &header_file_meta);
