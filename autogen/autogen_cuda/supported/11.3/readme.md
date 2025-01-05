@@ -1,13 +1,13 @@
 <h1>PhOS Support for CUDA 11.3</h1>
 
 <p>
-This directory contains `yaml` files which contain descriptors of CUDA 11.3 APIs for autogenerating processing logic of PhOS parser and worker functions.
+PhOS is supporting popular SDKs on nVIDIA CUDA platforms (e.g., CUDA Runtime, CUDA Driver, cuBLAS, cuBLASLt, cuBLASXt, cuDNN 8, NVML, nvRTC, and NCCL, etc.). This directory contains `yaml` files which describe descriptors of CUDA 11.3 APIs for autogenerating processing logic of PhOS parser and worker functions.
 
 <p>
-PhOS is supporting popular SDKs on nVIDIA CUDA platforms. Below we list supporting status of all data structures and APIs under CUDA 11.3.
+You can check the supported status in PhOS of each API under different categories by clicking the link below.
 
 
-<h3>CUDA Runtime APIs</h3>
+<h2>CUDA Runtime APIs</h2>
 <p style="color:grey;">
 Reference: https://docs.nvidia.com/cuda/archive/11.3.0/cuda-runtime-api/index.html
 <p>
@@ -40,7 +40,7 @@ Below lists supported status of each API under different categories.
 </ul>
 
 
-<h3>CUDA Driver APIs</h3>
+<h2>CUDA Driver APIs</h2>
 <p style="color:grey;">
 Reference: https://docs.nvidia.com/cuda/archive/11.3.0/cuda-driver-api/index.html
 <p>
@@ -74,7 +74,7 @@ Below lists supported status of each API under different categories.
 </ul>
 
 
-<h3>cuBLAS APIs</h3>
+<h2>cuBLAS APIs</h2>
 <p style="color:grey;">
 Reference: https://docs.nvidia.com/cuda/archive/11.3.0/cublas/index.html#using-the-cublas-api
 <p>
@@ -88,7 +88,7 @@ Below lists supported status of each API under different categories.
 </ul>
  
 
-<h3>cuBLASLt APIs</h3>
+<h2>cuBLASLt APIs</h2>
 <p style="color:grey;">
 Reference: https://docs.nvidia.com/cuda/archive/11.3.0/cublas/index.html#using-the-cublasLt-api
 <p>
@@ -98,7 +98,7 @@ Below lists supported status of each API under different categories.
 </ul>
 
 
-<h3>cuBLASXt APIs</h3>
+<h2>cuBLASXt APIs</h2>
 <p style="color:grey;">
 Reference: https://docs.nvidia.com/cuda/archive/11.3.0/cublas/index.html#using-the-cublasXt-api
 <p>
@@ -109,7 +109,7 @@ Below lists supported status of each API under different categories.
 </ul>
 
 
-<h3>cuDNN 8 APIs</h3>
+<h2>cuDNN 8 APIs</h2>
 <p style="color:grey;">
 Reference: https://docs.nvidia.com/deeplearning/cudnn/archives/cudnn-897/api/index.html. Note that cuDNN 8.0 is supported for CUDA 11.3.
 <p>
@@ -125,21 +125,21 @@ Below lists supported status of each API under different categories.
 </ul>
 
 
-<h3>NVML APIs</h3>
+<h2>NVML APIs</h2>
 <p >
 Reference: https://docs.nvidia.com/deploy/nvml-api/modules.html#modules
 <p>
 TODO: Add NVML APIs support status.
 
 
-<h3>nvRTC APIs</h3>
+<h2>nvRTC APIs</h2>
 <p style="color:grey;">
 Reference: https://docs.nvidia.com/cuda/archive/11.3.0/nvrtc/index.html
 <p>
 TODO: Add nvRTC APIs support status.
 
 
-<h3>NCCL APIs</h3>
+<h2>NCCL APIs</h2>
 <p style="color:grey;">
 Reference: https://docs.nvidia.com/deeplearning/nccl/archives/nccl_299/user-guide/docs/index.html. Note that NCCL 2.99 is supported for CUDA 11.3.
 <p>
