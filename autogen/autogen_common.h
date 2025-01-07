@@ -218,7 +218,8 @@ class POSAutogener {
     ~POSAutogener() = default;
 
     // path to all vendor headers to be parsed
-    std::string header_directory;
+    std::string all_vendor_header_directories_str;
+    std::vector<std::string> vendor_header_directories;
 
     // path to supported file to be parsed
     std::string support_directory;

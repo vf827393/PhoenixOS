@@ -108,35 +108,43 @@ pos_retval_t POSAutogener::collect_vendor_header_files(){
     typename std::map<std::string, pos_support_header_file_meta_t*>::iterator header_map_iter;
     typename std::map<std::string, pos_support_api_meta_t*>::iterator api_map_iter;
     pos_support_api_meta_t *support_api_meta;
+    uint64_t i;
 
-    POS_ASSERT(this->header_directory.size() > 0);
+    POS_ASSERT(this->vendor_header_directories.size() > 0);
 
-    if(unlikely(
-            !std::filesystem::exists(this->header_directory)
-        ||  !std::filesystem::is_directory(this->header_directory)
-    )){
-        POS_WARN_C(
-            "failed to do autogen, invalid vender headers path provided: path(%s)",
-            this->header_directory.c_str()
-        );
-        retval = POS_FAILED_INVALID_INPUT;
-        goto exit;
-    }
+    auto __collect_vendor_header_file = [this](std::string& header_file_path) -> pos_retval_t {
+        pos_retval_t retval = POS_SUCCESS;
+        pos_support_header_file_meta_t *supported_header_file_meta;
+        pos_vendor_header_file_meta_t *vendor_header_file_meta;
 
-    for (const auto& entry : std::filesystem::directory_iterator(this->header_directory)){
-        if(     entry.is_regular_file()
-            &&  (entry.path().extension() == ".h" || entry.path().extension() == ".hpp")
-        ){
-            POS_LOG_C("parsing vendor header file %s...", entry.path().c_str())
+        if(unlikely(
+                !std::filesystem::exists(header_file_path)
+            ||  !std::filesystem::is_directory(header_file_path)
+        )){
+            POS_WARN_C(
+                "failed to do autogen, invalid vender headers path provided: path(%s)",
+                header_file_path.c_str()
+            );
+            retval = POS_FAILED_INVALID_INPUT;
+            goto exit;
+        }
 
-            // if this header file isn't supported by PhOS, we just skip analyse it
-            if( this->_supported_header_file_meta_map.count(entry.path().filename()) == 0 ){
+        for(const auto& entry : std::filesystem::directory_iterator(header_file_path)){
+            if(     entry.is_regular_file()
+                &&  (entry.path().extension() == ".h" || entry.path().extension() == ".hpp")
+            ){
+                POS_LOG_C("parsing vendor header file %s...", entry.path().c_str());
+            }
+            
+            if(this->_supported_header_file_meta_map.count(entry.path().filename()) == 0){
                 POS_BACK_LINE;
                 POS_OLD_LOG_C("parsing vendor header file %s [skipped]", entry.path().c_str());
                 continue;
             }
-            POS_CHECK_POINTER( supported_header_file_meta 
-                = this->_supported_header_file_meta_map[entry.path().filename()] );
+
+            POS_CHECK_POINTER(
+                supported_header_file_meta = this->_supported_header_file_meta_map[entry.path().filename()]
+            );
 
             POS_CHECK_POINTER(vendor_header_file_meta = new pos_vendor_header_file_meta_t);
             vendor_header_file_meta->file_name = entry.path().filename();
@@ -153,12 +161,18 @@ pos_retval_t POSAutogener::collect_vendor_header_files(){
             ))){
                 POS_ERROR_C("failed to parse file %s", entry.path().c_str())
             }
+        }   
 
-            POS_BACK_LINE;
-            POS_LOG_C(
-                "parsing vendor header file %s [# hijacked apis: %lu]",
-                entry.path().c_str(), vendor_header_file_meta->api_map.size()
-            );
+    exit:
+        return retval;
+    };
+
+    // collect vendor header files
+    for(i=0; i<this->vendor_header_directories.size(); i++){
+        retval = __collect_vendor_header_file(this->vendor_header_directories[i]);
+        if(retval != POS_SUCCESS){
+            POS_WARN_C("failed to parse vendor header file %s", this->vendor_header_directories[i].c_str());
+            goto exit;
         }
     }
 
@@ -245,6 +259,7 @@ pos_retval_t POSAutogener::generate_pos_src(){
         header_map_iter++
     ){
         const std::string &supported_file_name = header_map_iter->first;
+
         vendor_header_file_meta = this->_vendor_header_file_meta_map[supported_file_name];
         POS_CHECK_POINTER(vendor_header_file_meta);
         supported_header_file_meta = header_map_iter->second;

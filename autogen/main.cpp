@@ -20,14 +20,20 @@ int main(int argc, char** argv) {
     int opt;
     const char *op_string = "d:s:g:";
     pos_retval_t retval = POS_SUCCESS;
+    std::string token;
+    std::stringstream ss;
 
     POSAutogener autogener;
 
     while((opt = getopt(argc, argv, op_string)) != -1){
         switch (opt){
         case 'd':
-            // path to the header files
-            autogener.header_directory = std::string(optarg);
+            // path to the vendor header files
+            autogener.all_vendor_header_directories_str = std::string(optarg);
+            ss.str(autogener.all_vendor_header_directories_str);
+            while (std::getline(ss, token, ',')) {
+                autogener.vendor_header_directories.push_back(token);
+            }
             break;
         case 's':
             // path to the support files
@@ -43,8 +49,8 @@ int main(int argc, char** argv) {
     }
 
     // check whether all necessary parameters are provided
-    if(unlikely(autogener.header_directory.size() == 0)){
-        POS_ERROR("no header_directory provided with -s");
+    if(unlikely(autogener.vendor_header_directories.size() == 0)){
+        POS_ERROR("no vendor header directories provided with -d");
     }
     if(unlikely(autogener.support_directory.size() == 0)){
         POS_ERROR("no support_directory provided with -s");
@@ -63,7 +69,7 @@ int main(int argc, char** argv) {
     if(unlikely(
         POS_SUCCESS != (retval = autogener.collect_vendor_header_files())
     )){
-        POS_WARN("failed to parse vendor headers: path(%s)", autogener.header_directory.c_str());
+        POS_WARN("failed to parse vendor headers: path(%s)", autogener.all_vendor_header_directories_str.c_str());
         goto exit;
     }
 
