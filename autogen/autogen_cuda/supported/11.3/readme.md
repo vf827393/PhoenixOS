@@ -1,7 +1,7 @@
 <h1>PhOS Support for CUDA 11.3</h1>
 
 <p>
-PhOS is supporting popular SDKs on nVIDIA CUDA platforms (e.g., CUDA Runtime, CUDA Driver, cuBLAS, cuBLASLt, cuBLASXt, cuDNN 8, NVML, nvRTC, and NCCL, etc.). This directory contains `yaml` files which describe descriptors of CUDA 11.3 APIs for autogenerating processing logic of PhOS parser and worker functions.
+PhOS is supporting popular SDKs on nVIDIA CUDA platforms (e.g., CUDA Runtime, CUDA Driver, cuBLAS, cuBLASLt, cuBLASXt, cuDNN 8, NVML, nvRTC, and NCCL, etc.). This directory contains <code>yaml</code> files which describe descriptors of CUDA 11.3 APIs for autogenerating processing logic of PhOS parser and worker functions.
 
 <p>
 You can check the supported status in PhOS of each API under different categories by clicking the link below.
