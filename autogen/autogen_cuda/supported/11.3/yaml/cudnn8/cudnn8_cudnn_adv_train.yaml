@@ -1,0 +1,131 @@
+# Copyright 2024 The PhoenixOS Authors. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# CUDA: 11.3
+# Type: cuDNN Advanced Training
+
+header_file_name: "cudnn.h"
+dependent_headers:
+  - "cudnn.h"
+  - "cuda_runtime_api.h"
+successful_retval: "CUDNN_STATUS_SUCCESS"
+apis:
+
+  - name: "cudnnAdvTrainVersionCheck"
+    index: 2400
+    supported: false
+
+  - name: "cudnnCreateCTCLossDescriptor"
+    index: 2401
+    supported: false
+
+  - name: "cudnnCTCLoss"
+    index: 2402
+    supported: false
+
+  - name: "cudnnCTCLoss_v8"
+    index: 2403
+    supported: false
+
+  - name: "cudnnDestroyCTCLossDescriptor"
+    index: 2404
+    supported: false
+
+  - name: "cudnnFindRNNBackwardDataAlgorithmEx"
+    index: 2405
+    supported: false
+
+  - name: "cudnnFindRNNBackwardWeightsAlgorithmEx"
+    index: 2406
+    supported: false
+
+  - name: "cudnnRNNBackwardData"
+    index: 2407
+    supported: false
+
+  - name: "cudnnRNNBackwardData_v8"
+    index: 2408
+    supported: false
+
+  - name: "cudnnRNNBackwardWeights"
+    index: 2409
+    supported: false
+
+  - name: "cudnnRNNBackwardWeights_v8"
+    index: 2410
+    supported: false
+
+  - name: "cudnnRNNForwardTraining"
+    index: 2411
+    supported: false
+
+  - name: "cudnnRNNForwardTrainingEx"
+    index: 2412
+    supported: false
+
+  - name: "cudnnSetCTCLossDescriptor"
+    index: 2413
+    supported: false
+
+  - name: "cudnnSetCTCLossDescriptorEx"
+    index: 2414
+    supported: false
+
+  - name: "cudnnSetCTCLossDescriptor_v8"
+    index: 2415
+    supported: false
+
+  - name: "cudnnGetCTCLossDescriptor"
+    index: 2416
+    supported: false
+
+  - name: "cudnnGetCTCLossDescriptorEx"
+    index: 2417
+    supported: false
+
+  - name: "cudnnGetCTCLossDescriptor_v8"
+    index: 2418
+    supported: false
+
+  - name: "cudnnGetCTCLossWorkspaceSize"
+    index: 2419
+    supported: false
+
+  - name: "cudnnGetCTCLossWorkspaceSize_v8"
+    index: 2420
+    supported: false
+
+  - name: "cudnnGetRNNBackwardDataAlgorithmMaxCount"
+    index: 2421
+    supported: false
+
+  - name: "cudnnGetRNNForwardTrainingAlgorithmMaxCount"
+    index: 2422
+    supported: false
+
+  - name: "cudnnMultiHeadAttnBackwardData"
+    index: 2423
+    supported: false
+
+  - name: "cudnnMultiHeadAttnBackwardWeights"
+    index: 2424
+    supported: false
+
+  - name: "cudnnRNNBackwardData"
+    index: 2425
+    supported: false
+
+  - name: "cudnnRNNBackwardWeights"
+    index: 2426
+    supported: false 

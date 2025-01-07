@@ -1,0 +1,181 @@
+# Copyright 2024 The PhoenixOS Authors. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# CUDA: 11.3
+# Type: cuBLASLt API Functions
+
+header_file_name: "cublasLt.h"
+dependent_headers:
+  - "cublasLt.h"
+successful_retval: "CUBLAS_STATUS_SUCCESS"
+apis:
+  - name: "cublasLtCreate"
+    index: 1500
+    supported: false
+
+  - name: "cublasLtDestroy"
+    index: 1501
+    supported: false
+
+  - name: "cublasLtGetCudartVersion"
+    index: 1502
+    supported: false
+
+  - name: "cublasLtGetProperty"
+    index: 1503
+    supported: false
+
+  - name: "cublasLtGetVersion"
+    index: 1504
+    supported: false
+
+  - name: "cublasLtLoggerSetCallback"
+    index: 1505
+    supported: false
+
+  - name: "cublasLtLoggerSetFile"
+    index: 1506
+    supported: false
+
+  - name: "cublasLtLoggerOpenFile"
+    index: 1507
+    supported: false
+
+  - name: "cublasLtLoggerSetLevel"
+    index: 1508
+    supported: false
+
+  - name: "cublasLtLoggerSetMask"
+    index: 1509
+    supported: false
+
+  - name: "cublasLtLoggerForceDisable"
+    index: 1510
+    supported: false
+
+  - name: "cublasLtMatmul"
+    index: 1511
+    supported: false
+
+  - name: "cublasLtMatmulAlgoCapGetAttribute"
+    index: 1512
+    supported: false
+
+  - name: "cublasLtMatmulAlgoCheck"
+    index: 1513
+    supported: false
+
+  - name: "cublasLtMatmulAlgoConfigGetAttribute"
+    index: 1514
+    supported: false
+
+  - name: "cublasLtMatmulAlgoConfigSetAttribute"
+    index: 1515
+    supported: false
+
+  - name: "cublasLtMatmulAlgoGetHeuristic"
+    index: 1516
+    supported: false
+
+  - name: "cublasLtMatmulAlgoGetIds"
+    index: 1517
+    supported: false
+
+  - name: "cublasLtMatmulAlgoInit"
+    index: 1518
+    supported: false
+
+  - name: "cublasLtMatmulDescCreate"
+    index: 1519
+    supported: false
+
+  - name: "cublasLtMatmulDescInit"
+    index: 1520
+    supported: false
+
+  - name: "cublasLtMatmulDescDestroy"
+    index: 1521
+    supported: false
+
+  - name: "cublasLtMatmulDescGetAttribute"
+    index: 1522
+    supported: false
+
+  - name: "cublasLtMatmulDescSetAttribute"
+    index: 1523
+    supported: false
+
+  - name: "cublasLtMatmulPreferenceCreate"
+    index: 1524
+    supported: false
+
+  - name: "cublasLtMatmulPreferenceInit"
+    index: 1525
+    supported: false
+
+  - name: "cublasLtMatmulPreferenceDestroy"
+    index: 1526
+    supported: false
+
+  - name: "cublasLtMatmulPreferenceGetAttribute"
+    index: 1527
+    supported: false
+
+  - name: "cublasLtMatmulPreferenceSetAttribute"
+    index: 1528
+    supported: false
+
+  - name: "cublasLtMatrixLayoutCreate"
+    index: 1529
+    supported: false
+
+  - name: "cublasLtMatrixLayoutInit"
+    index: 1530
+    supported: false
+
+  - name: "cublasLtMatrixLayoutDestroy"
+    index: 1531
+    supported: false
+
+  - name: "cublasLtMatrixLayoutGetAttribute"
+    index: 1532
+    supported: false
+
+  - name: "cublasLtMatrixLayoutSetAttribute"
+    index: 1533
+    supported: false
+
+  - name: "cublasLtMatrixTransform"
+    index: 1534
+    supported: false
+
+  - name: "cublasLtMatrixTransformDescCreate"
+    index: 1535
+    supported: false
+
+  - name: "cublasLtMatrixTransformDescInit"
+    index: 1536
+    supported: false
+
+  - name: "cublasLtMatrixTransformDescDestroy"
+    index: 1537
+    supported: false
+
+  - name: "cublasLtMatrixTransformDescGetAttribute"
+    index: 1538
+    supported: false
+
+  - name: "cublasLtMatrixTransformDescSetAttribute"
+    index: 1539
+    supported: false 

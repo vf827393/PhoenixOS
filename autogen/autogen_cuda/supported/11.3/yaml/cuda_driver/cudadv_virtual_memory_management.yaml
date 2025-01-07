@@ -1,0 +1,77 @@
+# Copyright 2024 The PhoenixOS Authors. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# CUDA: 11.3
+# Type: Virtual Memory Management
+
+header_file_name: "cuda.h"
+dependent_headers:
+  - "cuda.h"
+successful_retval: "CUDA_SUCCESS"
+apis:
+  - name: "cuMemAddressFree"
+    index: 800
+    supported: false
+
+  - name: "cuMemAddressReserve"
+    index: 801
+    supported: false
+
+  - name: "cuMemCreate"
+    index: 802
+    supported: false
+
+  - name: "cuMemExportToShareableHandle"
+    index: 803
+    supported: false
+
+  - name: "cuMemGetAccess"
+    index: 804
+    supported: false
+
+  - name: "cuMemGetAllocationGranularity"
+    index: 805
+    supported: false
+
+  - name: "cuMemGetAllocationPropertiesFromHandle"
+    index: 806
+    supported: false
+
+  - name: "cuMemImportFromShareableHandle"
+    index: 807
+    supported: false
+
+  - name: "cuMemMap"
+    index: 808
+    supported: false
+
+  - name: "cuMemMapArrayAsync"
+    index: 809
+    supported: false
+
+  - name: "cuMemRelease"
+    index: 810
+    supported: false
+
+  - name: "cuMemRetainAllocationHandle"
+    index: 811
+    supported: false
+
+  - name: "cuMemSetAccess"
+    index: 812
+    supported: false
+
+  - name: "cuMemUnmap"
+    index: 813
+    supported: false 

@@ -1,0 +1,167 @@
+# Copyright 2024 The PhoenixOS Authors. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# CUDA: 11.3
+# Type: cuBLASXt Math Functions
+
+header_file_name: "cublasXt.h"
+dependent_headers:
+  - "cublasXt.h"
+  - "cublas_api.h"
+successful_retval: "CUBLAS_STATUS_SUCCESS"
+apis:
+
+  - name: "cublasXtSgemm"
+    index: 1700
+    supported: false
+
+  - name: "cublasXtDgemm"
+    index: 1701
+    supported: false
+
+  - name: "cublasXtCgemm"
+    index: 1702
+    supported: false
+
+  - name: "cublasXtZgemm"
+    index: 1703
+    supported: false
+
+  - name: "cublasXtChemm"
+    index: 1704
+    supported: false
+
+  - name: "cublasXtZhemm"
+    index: 1705
+    supported: false
+
+  - name: "cublasXtSsymm"
+    index: 1706
+    supported: false
+
+  - name: "cublasXtDsymm"
+    index: 1707
+    supported: false
+
+  - name: "cublasXtCsymm"
+    index: 1708
+    supported: false
+
+  - name: "cublasXtZsymm"
+    index: 1709
+    supported: false
+
+  - name: "cublasXtSsyrk"
+    index: 1710
+    supported: false
+
+  - name: "cublasXtDsyrk"
+    index: 1711
+    supported: false
+
+  - name: "cublasXtCsyrk"
+    index: 1712
+    supported: false
+
+  - name: "cublasXtZsyrk"
+    index: 1713
+    supported: false
+
+  - name: "cublasXtSsyr2k"
+    index: 1714
+    supported: false
+
+  - name: "cublasXtDsyr2k"
+    index: 1715
+    supported: false
+
+  - name: "cublasXtCsyr2k"
+    index: 1716
+    supported: false
+
+  - name: "cublasXtZsyr2k"
+    index: 1717
+    supported: false
+
+  - name: "cublasXtCherk"
+    index: 1718
+    supported: false
+
+  - name: "cublasXtZherk"
+    index: 1719
+    supported: false
+
+  - name: "cublasXtCher2k"
+    index: 1720
+    supported: false
+
+  - name: "cublasXtZher2k"
+    index: 1721
+    supported: false
+
+  - name: "cublasXtCherkx"
+    index: 1722
+    supported: false
+
+  - name: "cublasXtZherkx"
+    index: 1723
+    supported: false
+
+  - name: "cublasXtStrsm"
+    index: 1724
+    supported: false
+
+  - name: "cublasXtDtrsm"
+    index: 1725
+    supported: false
+
+  - name: "cublasXtCtrsm"
+    index: 1726
+    supported: false
+
+  - name: "cublasXtZtrsm"
+    index: 1727
+    supported: false
+
+  - name: "cublasXtStrmm"
+    index: 1728
+    supported: false
+
+  - name: "cublasXtDtrmm"
+    index: 1729
+    supported: false
+
+  - name: "cublasXtCtrmm"
+    index: 1730
+    supported: false
+
+  - name: "cublasXtZtrmm"
+    index: 1731
+    supported: false
+
+  - name: "cublasXtSspmm"
+    index: 1732
+    supported: false
+
+  - name: "cublasXtDspmm"
+    index: 1733
+    supported: false
+
+  - name: "cublasXtCspmm"
+    index: 1734
+    supported: false
+
+  - name: "cublasXtZspmm"
+    index: 1735
+    supported: false 

@@ -1,0 +1,435 @@
+# Copyright 2024 The PhoenixOS Authors. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# CUDA: 11.3
+# Type: cuDNN Operations Inference
+
+header_file_name: "cudnn.h"
+dependent_headers:
+  - "cudnn.h"
+  - "cuda_runtime_api.h"
+successful_retval: "CUDNN_STATUS_SUCCESS"
+apis:
+
+  - name: "cudnnActivationForward"
+    index: 1800
+    supported: false
+
+  - name: "cudnnAddTensor"
+    index: 1801
+    supported: false
+
+  - name: "cudnnBatchNormalizationForwardInference"
+    index: 1802
+    supported: false
+
+  - name: "cudnnCopyAlgorithmDescriptor"
+    index: 1803
+    supported: false
+
+  - name: "cudnnCreate"
+    index: 1804
+    supported: false
+
+  - name: "cudnnCreateActivationDescriptor"
+    index: 1805
+    supported: false
+
+  - name: "cudnnCreateAlgorithmDescriptor"
+    index: 1806
+    supported: false
+
+  - name: "cudnnCreateAlgorithmPerformance"
+    index: 1807
+    supported: false
+
+  - name: "cudnnCreateFilterDescriptor"
+    index: 1808
+    supported: false
+
+  - name: "cudnnCreateLRNDescriptor"
+    index: 1809
+    supported: false
+
+  - name: "cudnnCreateOpTensorDescriptor"
+    index: 1810
+    supported: false
+
+  - name: "cudnnCreatePoolingDescriptor"
+    index: 1811
+    supported: false
+
+  - name: "cudnnCreateReduceTensorDescriptor"
+    index: 1812
+    supported: false
+
+  - name: "cudnnCreateSpatialTransformerDescriptor"
+    index: 1813
+    supported: false
+
+  - name: "cudnnCreateTensorDescriptor"
+    index: 1814
+    supported: false
+
+  - name: "cudnnCreateTensorTransformDescriptor"
+    index: 1815
+    supported: false
+
+  - name: "cudnnDestroy"
+    index: 1816
+    supported: false
+
+  - name: "cudnnDestroyActivationDescriptor"
+    index: 1817
+    supported: false
+
+  - name: "cudnnDestroyAlgorithmDescriptor"
+    index: 1818
+    supported: false
+
+  - name: "cudnnDestroyAlgorithmPerformance"
+    index: 1819
+    supported: false
+
+  - name: "cudnnDestroyFilterDescriptor"
+    index: 1820
+    supported: false
+
+  - name: "cudnnDestroyLRNDescriptor"
+    index: 1821
+    supported: false
+
+  - name: "cudnnDestroyOpTensorDescriptor"
+    index: 1822
+    supported: false
+
+  - name: "cudnnDestroyPoolingDescriptor"
+    index: 1823
+    supported: false
+
+  - name: "cudnnDestroyReduceTensorDescriptor"
+    index: 1824
+    supported: false
+
+  - name: "cudnnDestroySpatialTransformerDescriptor"
+    index: 1825
+    supported: false
+
+  - name: "cudnnDestroyTensorDescriptor"
+    index: 1826
+    supported: false
+
+  - name: "cudnnDestroyTensorTransformDescriptor"
+    index: 1827
+    supported: false
+
+  - name: "cudnnDivisiveNormalizationForward"
+    index: 1828
+    supported: false
+
+  - name: "cudnnDropoutForward"
+    index: 1829
+    supported: false
+
+  - name: "cudnnGetActivationDescriptor"
+    index: 1830
+    supported: false
+
+  - name: "cudnnGetAlgorithmDescriptor"
+    index: 1831
+    supported: false
+
+  - name: "cudnnGetAlgorithmPerformance"
+    index: 1832
+    supported: false
+
+  - name: "cudnnGetAlgorithmSpaceSize"
+    index: 1833
+    supported: false
+
+  - name: "cudnnGetErrorString"
+    index: 1834
+    supported: false
+
+  - name: "cudnnGetFilter4dDescriptor"
+    index: 1835
+    supported: false
+
+  - name: "cudnnGetFilterNdDescriptor"
+    index: 1836
+    supported: false
+
+  - name: "cudnnGetLRNDescriptor"
+    index: 1837
+    supported: false
+
+  - name: "cudnnGetOpTensorDescriptor"
+    index: 1838
+    supported: false
+
+  - name: "cudnnGetPooling2dDescriptor"
+    index: 1839
+    supported: false
+
+  - name: "cudnnGetPoolingNdDescriptor"
+    index: 1840
+    supported: false
+
+  - name: "cudnnGetProperty"
+    index: 1841
+    supported: false
+
+  - name: "cudnnGetReduceTensorDescriptor"
+    index: 1842
+    supported: false
+
+  - name: "cudnnGetReductionIndicesSize"
+    index: 1843
+    supported: false
+
+  - name: "cudnnGetReductionWorkspaceSize"
+    index: 1844
+    supported: false
+
+  - name: "cudnnGetStream"
+    index: 1845
+    supported: false
+
+  - name: "cudnnGetTensor4dDescriptor"
+    index: 1846
+    supported: false
+
+  - name: "cudnnGetTensorNdDescriptor"
+    index: 1847
+    supported: false
+
+  - name: "cudnnGetTensorSizeInBytes"
+    index: 1848
+    supported: false
+
+  - name: "cudnnGetTensorTransformDescriptor"
+    index: 1849
+    supported: false
+
+  - name: "cudnnGetVersion"
+    index: 1850
+    supported: false
+
+  - name: "cudnnLRNCrossChannelForward"
+    index: 1851
+    supported: false
+
+  - name: "cudnnNormalizationForwardInference"
+    index: 1852
+    supported: false
+
+  - name: "cudnnOpTensor"
+    index: 1853
+    supported: false
+
+  - name: "cudnnOpsInferVersionCheck"
+    index: 1854
+    supported: false
+
+  - name: "cudnnOpsTrainVersionCheck"
+    index: 1855
+    supported: false
+
+  - name: "cudnnPoolingForward"
+    index: 1856
+    supported: false
+
+  - name: "cudnnReduceTensor"
+    index: 1857
+    supported: false
+
+  - name: "cudnnRestoreAlgorithm"
+    index: 1858
+    supported: false
+
+  - name: "cudnnSaveAlgorithm"
+    index: 1859
+    supported: false
+
+  - name: "cudnnScaleTensor"
+    index: 1860
+    supported: false
+
+  - name: "cudnnSetActivationDescriptor"
+    index: 1861
+    supported: false
+
+  - name: "cudnnSetAlgorithmDescriptor"
+    index: 1862
+    supported: false
+
+  - name: "cudnnSetAlgorithmPerformance"
+    index: 1863
+    supported: false
+
+  - name: "cudnnSetFilter4dDescriptor"
+    index: 1864
+    supported: false
+
+  - name: "cudnnSetFilterNdDescriptor"
+    index: 1865
+    supported: false
+
+  - name: "cudnnSetLRNDescriptor"
+    index: 1866
+    supported: false
+
+  - name: "cudnnSetOpTensorDescriptor"
+    index: 1867
+    supported: false
+
+  - name: "cudnnSetPooling2dDescriptor"
+    index: 1868
+    supported: false
+
+  - name: "cudnnSetPoolingNdDescriptor"
+    index: 1869
+    supported: false
+
+  - name: "cudnnSetReduceTensorDescriptor"
+    index: 1870
+    supported: false
+
+  - name: "cudnnSetStream"
+    index: 1871
+    supported: false
+
+  - name: "cudnnSetTensor"
+    index: 1872
+    supported: false
+
+  - name: "cudnnSetTensor4dDescriptor"
+    index: 1873
+    supported: false
+
+  - name: "cudnnSetTensor4dDescriptorEx"
+    index: 1874
+    supported: false
+
+  - name: "cudnnSetTensorNdDescriptor"
+    index: 1875
+    supported: false
+
+  - name: "cudnnSetTensorNdDescriptorEx"
+    index: 1876
+    supported: false
+
+  - name: "cudnnSetTensorTransformDescriptor"
+    index: 1877
+    supported: false
+
+  - name: "cudnnSoftmaxForward"
+    index: 1878
+    supported: false
+
+  - name: "cudnnSpatialTfGridGeneratorForward"
+    index: 1879
+    supported: false
+
+  - name: "cudnnSpatialTfSamplerForward"
+    index: 1880
+    supported: false
+
+  - name: "cudnnTransformFilter"
+    index: 1881
+    supported: false
+
+  - name: "cudnnTransformTensor"
+    index: 1882
+    supported: false
+
+  - name: "cudnnTransformTensorEx"
+    index: 1883
+    supported: false
+
+  - name: "cudnnCreateDropoutDescriptor"
+    index: 1884
+    supported: false
+
+  - name: "cudnnCreateRNNDescriptor"
+    index: 1885
+    supported: false
+
+  - name: "cudnnDestroyDropoutDescriptor"
+    index: 1886
+    supported: false
+
+  - name: "cudnnDestroyRNNDescriptor"
+    index: 1887
+    supported: false
+
+  - name: "cudnnDropoutGetReserveSpaceSize"
+    index: 1888
+    supported: false
+
+  - name: "cudnnDropoutGetStatesSize"
+    index: 1889
+    supported: false
+
+  - name: "cudnnGetDropoutDescriptor"
+    index: 1890
+    supported: false
+
+  - name: "cudnnGetRNNDescriptor"
+    index: 1891
+    supported: false
+
+  - name: "cudnnGetRNNPaddingMode"
+    index: 1892
+    supported: false
+
+  - name: "cudnnGetRNNProjectionLayers"
+    index: 1893
+    supported: false
+
+  - name: "cudnnGetRNNTempSpaceSizes"
+    index: 1894
+    supported: false
+
+  - name: "cudnnGetRNNWorkspaceSize"
+    index: 1895
+    supported: false
+
+  - name: "cudnnRNNForwardInference"
+    index: 1896
+    supported: false
+
+  - name: "cudnnRNNGetClip"
+    index: 1897
+    supported: false
+
+  - name: "cudnnRNNSetClip"
+    index: 1898
+    supported: false
+
+  - name: "cudnnSetDropoutDescriptor"
+    index: 1899
+    supported: false
+
+  - name: "cudnnSetRNNDescriptor"
+    index: 1900
+    supported: false
+
+  - name: "cudnnSetRNNPaddingMode"
+    index: 1901
+    supported: false
+
+  - name: "cudnnSetRNNProjectionLayers"
+    index: 1902
+    supported: false 

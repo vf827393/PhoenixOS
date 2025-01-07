@@ -1,0 +1,79 @@
+# Copyright 2024 The PhoenixOS Authors. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# CUDA: 11.3
+# Type: Stream Ordered Memory Allocator
+# Docs: https://docs.nvidia.com/cuda/archive/11.3.0/cuda-runtime-api/group__CUDART__MEMORY__POOLS.html#group__CUDART__MEMORY__POOLS
+
+header_file_name: "cuda_runtime_api.h"
+dependent_headers:
+  - "cuda_runtime_api.h"
+  - "cuda.h"
+successful_retval: "cudaSuccess"
+apis:
+  - name: "cudaFreeAsync"
+    index: 380
+    supported: false
+
+  - name: "cudaMallocAsync"
+    index: 381
+    supported: false
+
+  - name: "cudaMallocFromPoolAsync"
+    index: 382
+    supported: false
+
+  - name: "cudaMemPoolCreate"
+    index: 383
+    supported: false
+
+  - name: "cudaMemPoolDestroy"
+    index: 384
+    supported: false
+
+  - name: "cudaMemPoolExportPointer"
+    index: 385
+    supported: false
+
+  - name: "cudaMemPoolExportToShareableHandle"
+    index: 386
+    supported: false
+
+  - name: "cudaMemPoolGetAccess"
+    index: 387
+    supported: false
+
+  - name: "cudaMemPoolGetAttribute"
+    index: 388
+    supported: false
+
+  - name: "cudaMemPoolImportFromShareableHandle"
+    index: 389
+    supported: false
+
+  - name: "cudaMemPoolImportPointer"
+    index: 390
+    supported: false
+
+  - name: "cudaMemPoolSetAccess"
+    index: 391
+    supported: false
+
+  - name: "cudaMemPoolSetAttribute"
+    index: 392
+    supported: false
+
+  - name: "cudaMemPoolTrimTo"
+    index: 393
+    supported: false

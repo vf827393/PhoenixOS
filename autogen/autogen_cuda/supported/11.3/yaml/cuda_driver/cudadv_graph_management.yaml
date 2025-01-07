@@ -1,0 +1,273 @@
+# Copyright 2024 The PhoenixOS Authors. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# CUDA: 11.3
+# Type: Graph Management
+
+header_file_name: "cuda.h"
+dependent_headers:
+  - "cuda.h"
+successful_retval: "CUDA_SUCCESS"
+apis:
+  - name: "cuGraphAddChildGraphNode"
+    index: 930
+    supported: false
+
+  - name: "cuGraphAddDependencies"
+    index: 931
+    supported: false
+
+  - name: "cuGraphAddEmptyNode"
+    index: 932
+    supported: false
+
+  - name: "cuGraphAddEventRecordNode"
+    index: 933
+    supported: false
+
+  - name: "cuGraphAddEventWaitNode"
+    index: 934
+    supported: false
+
+  - name: "cuGraphAddExternalSemaphoresSignalNode"
+    index: 935
+    supported: false
+
+  - name: "cuGraphAddExternalSemaphoresWaitNode"
+    index: 936
+    supported: false
+
+  - name: "cuGraphAddHostNode"
+    index: 937
+    supported: false
+
+  - name: "cuGraphAddKernelNode"
+    index: 938
+    supported: false
+
+  - name: "cuGraphAddMemcpyNode"
+    index: 939
+    supported: false
+
+  - name: "cuGraphAddMemsetNode"
+    index: 940
+    supported: false
+
+  - name: "cuGraphChildGraphNodeGetGraph"
+    index: 941
+    supported: false
+
+  - name: "cuGraphClone"
+    index: 942
+    supported: false
+
+  - name: "cuGraphCreate"
+    index: 943
+    supported: false
+
+  - name: "cuGraphDebugDotPrint"
+    index: 944
+    supported: false
+
+  - name: "cuGraphDestroy"
+    index: 945
+    supported: false
+
+  - name: "cuGraphDestroyNode"
+    index: 946
+    supported: false
+
+  - name: "cuGraphEventRecordNodeGetEvent"
+    index: 947
+    supported: false
+
+  - name: "cuGraphEventRecordNodeSetEvent"
+    index: 948
+    supported: false
+
+  - name: "cuGraphEventWaitNodeGetEvent"
+    index: 949
+    supported: false
+
+  - name: "cuGraphEventWaitNodeSetEvent"
+    index: 950
+    supported: false
+
+  - name: "cuGraphExecChildGraphNodeSetParams"
+    index: 951
+    supported: false
+
+  - name: "cuGraphExecDestroy"
+    index: 952
+    supported: false
+
+  - name: "cuGraphExecEventRecordNodeSetEvent"
+    index: 953
+    supported: false
+
+  - name: "cuGraphExecEventWaitNodeSetEvent"
+    index: 954
+    supported: false
+
+  - name: "cuGraphExecExternalSemaphoresSignalNodeSetParams"
+    index: 955
+    supported: false
+
+  - name: "cuGraphExecExternalSemaphoresWaitNodeSetParams"
+    index: 956
+    supported: false
+
+  - name: "cuGraphExecHostNodeSetParams"
+    index: 957
+    supported: false
+
+  - name: "cuGraphExecKernelNodeSetParams"
+    index: 958
+    supported: false
+
+  - name: "cuGraphExecMemcpyNodeSetParams"
+    index: 959
+    supported: false
+
+  - name: "cuGraphExecMemsetNodeSetParams"
+    index: 960
+    supported: false
+
+  - name: "cuGraphExecUpdate"
+    index: 961
+    supported: false
+
+  - name: "cuGraphExternalSemaphoresSignalNodeGetParams"
+    index: 962
+    supported: false
+
+  - name: "cuGraphExternalSemaphoresSignalNodeSetParams"
+    index: 963
+    supported: false
+
+  - name: "cuGraphExternalSemaphoresWaitNodeGetParams"
+    index: 964
+    supported: false
+
+  - name: "cuGraphExternalSemaphoresWaitNodeSetParams"
+    index: 965
+    supported: false
+
+  - name: "cuGraphGetEdges"
+    index: 966
+    supported: false
+
+  - name: "cuGraphGetNodes"
+    index: 967
+    supported: false
+
+  - name: "cuGraphGetRootNodes"
+    index: 968
+    supported: false
+
+  - name: "cuGraphHostNodeGetParams"
+    index: 969
+    supported: false
+
+  - name: "cuGraphHostNodeSetParams"
+    index: 970
+    supported: false
+
+  - name: "cuGraphInstantiate"
+    index: 971
+    supported: false
+
+  - name: "cuGraphKernelNodeCopyAttributes"
+    index: 972
+    supported: false
+
+  - name: "cuGraphKernelNodeGetAttribute"
+    index: 973
+    supported: false
+
+  - name: "cuGraphKernelNodeGetParams"
+    index: 974
+    supported: false
+
+  - name: "cuGraphKernelNodeSetAttribute"
+    index: 975
+    supported: false
+
+  - name: "cuGraphKernelNodeSetParams"
+    index: 976
+    supported: false
+
+  - name: "cuGraphLaunch"
+    index: 977
+    supported: false
+
+  - name: "cuGraphMemcpyNodeGetParams"
+    index: 978
+    supported: false
+
+  - name: "cuGraphMemcpyNodeSetParams"
+    index: 979
+    supported: false
+
+  - name: "cuGraphMemsetNodeGetParams"
+    index: 980
+    supported: false
+
+  - name: "cuGraphMemsetNodeSetParams"
+    index: 981
+    supported: false
+
+  - name: "cuGraphNodeFindInClone"
+    index: 982
+    supported: false
+
+  - name: "cuGraphNodeGetDependencies"
+    index: 983
+    supported: false
+
+  - name: "cuGraphNodeGetDependentNodes"
+    index: 984
+    supported: false
+
+  - name: "cuGraphNodeGetType"
+    index: 985
+    supported: false
+
+  - name: "cuGraphReleaseUserObject"
+    index: 986
+    supported: false
+
+  - name: "cuGraphRemoveDependencies"
+    index: 987
+    supported: false
+
+  - name: "cuGraphRetainUserObject"
+    index: 988
+    supported: false
+
+  - name: "cuGraphUpload"
+    index: 989
+    supported: false
+
+  - name: "cuUserObjectCreate"
+    index: 990
+    supported: false
+
+  - name: "cuUserObjectRelease"
+    index: 991
+    supported: false
+
+  - name: "cuUserObjectRetain"
+    index: 992
+    supported: false 

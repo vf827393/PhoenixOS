@@ -1,0 +1,93 @@
+# Copyright 2024 The PhoenixOS Authors. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# CUDA: 11.3
+# Type: Context Management
+
+header_file_name: "cuda.h"
+dependent_headers:
+  - "cuda.h"
+successful_retval: "CUDA_SUCCESS"
+apis:
+  - name: "cuCtxCreate"
+    index: 680
+    supported: false
+
+  - name: "cuCtxDestroy"
+    index: 681
+    supported: false
+
+  - name: "cuCtxGetApiVersion"
+    index: 682
+    supported: false
+
+  - name: "cuCtxGetCacheConfig"
+    index: 683
+    supported: false
+
+  - name: "cuCtxGetCurrent"
+    index: 684
+    supported: false
+
+  - name: "cuCtxGetDevice"
+    index: 685
+    supported: false
+
+  - name: "cuCtxGetFlags"
+    index: 686
+    supported: false
+
+  - name: "cuCtxGetLimit"
+    index: 687
+    supported: false
+
+  - name: "cuCtxGetSharedMemConfig"
+    index: 688
+    supported: false
+
+  - name: "cuCtxGetStreamPriorityRange"
+    index: 689
+    supported: false
+
+  - name: "cuCtxPopCurrent"
+    index: 690
+    supported: false
+
+  - name: "cuCtxPushCurrent"
+    index: 691
+    supported: false
+
+  - name: "cuCtxResetPersistingL2Cache"
+    index: 692
+    supported: false
+
+  - name: "cuCtxSetCacheConfig"
+    index: 693
+    supported: false
+
+  - name: "cuCtxSetCurrent"
+    index: 694
+    supported: false
+
+  - name: "cuCtxSetLimit"
+    index: 695
+    supported: false
+
+  - name: "cuCtxSetSharedMemConfig"
+    index: 696
+    supported: false
+
+  - name: "cuCtxSynchronize"
+    index: 697
+    supported: false 

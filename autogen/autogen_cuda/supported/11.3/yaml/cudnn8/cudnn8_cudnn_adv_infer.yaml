@@ -1,0 +1,235 @@
+# Copyright 2024 The PhoenixOS Authors. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# CUDA: 11.3
+# Type: cuDNN Advanced Inference
+
+header_file_name: "cudnn.h"
+dependent_headers:
+  - "cudnn.h"
+  - "cuda_runtime_api.h"
+successful_retval: "CUDNN_STATUS_SUCCESS"
+apis:
+
+  - name: "cudnnAdvInferVersionCheck"
+    index: 2300
+    supported: false
+
+  - name: "cudnnBuildRNNDynamic"
+    index: 2301
+    supported: false
+
+  - name: "cudnnCreateAttnDescriptor"
+    index: 2302
+    supported: false
+
+  - name: "cudnnCreatePersistentRNNPlan"
+    index: 2303
+    supported: false
+
+  - name: "cudnnCreateRNNDataDescriptor"
+    index: 2304
+    supported: false
+
+  - name: "cudnnCreateRNNDescriptor"
+    index: 2305
+    supported: false
+
+  - name: "cudnnCreateSeqDataDescriptor"
+    index: 2306
+    supported: false
+
+  - name: "cudnnDestroyAttnDescriptor"
+    index: 2307
+    supported: false
+
+  - name: "cudnnDestroyPersistentRNNPlan"
+    index: 2308
+    supported: false
+
+  - name: "cudnnDestroyRNNDataDescriptor"
+    index: 2309
+    supported: false
+
+  - name: "cudnnDestroyRNNDescriptor"
+    index: 2310
+    supported: false
+
+  - name: "cudnnDestroySeqDataDescriptor"
+    index: 2311
+    supported: false
+
+  - name: "cudnnFindRNNForwardInferenceAlgorithmEx"
+    index: 2312
+    supported: false
+
+  - name: "cudnnGetAttnDescriptor"
+    index: 2313
+    supported: false
+
+  - name: "cudnnGetMultiHeadAttnBuffers"
+    index: 2314
+    supported: false
+
+  - name: "cudnnGetMultiHeadAttnWeights"
+    index: 2315
+    supported: false
+
+  - name: "cudnnGetRNNBackwardWeightsAlgorithmMaxCount"
+    index: 2316
+    supported: false
+
+  - name: "cudnnGetRNNBiasMode"
+    index: 2317
+    supported: false
+
+  - name: "cudnnGetRNNDataDescriptor"
+    index: 2318
+    supported: false
+
+  - name: "cudnnGetRNNDescriptor_v6"
+    index: 2319
+    supported: false
+
+  - name: "cudnnGetRNNDescriptor_v8"
+    index: 2320
+    supported: false
+
+  - name: "cudnnGetRNNForwardInferenceAlgorithmMaxCount"
+    index: 2321
+    supported: false
+
+  - name: "cudnnGetRNNLinLayerBiasParams"
+    index: 2322
+    supported: false
+
+  - name: "cudnnGetRNNLinLayerMatrixParams"
+    index: 2323
+    supported: false
+
+  - name: "cudnnGetRNNMatrixMathType"
+    index: 2324
+    supported: false
+
+  - name: "cudnnGetRNNPaddingMode"
+    index: 2325
+    supported: false
+
+  - name: "cudnnGetRNNParamsSize"
+    index: 2326
+    supported: false
+
+  - name: "cudnnGetRNNProjectionLayers"
+    index: 2327
+    supported: false
+
+  - name: "cudnnGetRNNTempSpaceSizes"
+    index: 2328
+    supported: false
+
+  - name: "cudnnGetRNNTrainingReserveSize"
+    index: 2329
+    supported: false
+
+  - name: "cudnnGetRNNWeightParams"
+    index: 2330
+    supported: false
+
+  - name: "cudnnGetRNNWeightSpaceSize"
+    index: 2331
+    supported: false
+
+  - name: "cudnnGetRNNWorkspaceSize"
+    index: 2332
+    supported: false
+
+  - name: "cudnnGetSeqDataDescriptor"
+    index: 2333
+    supported: false
+
+  - name: "cudnnMultiHeadAttnForward"
+    index: 2334
+    supported: false
+
+  - name: "cudnnRNNForward"
+    index: 2335
+    supported: false
+
+  - name: "cudnnRNNForwardInference"
+    index: 2336
+    supported: false
+
+  - name: "cudnnRNNForwardInferenceEx"
+    index: 2337
+    supported: false
+
+  - name: "cudnnRNNGetClip"
+    index: 2338
+    supported: false
+
+  - name: "cudnnRNNGetClip_v8"
+    index: 2339
+    supported: false
+
+  - name: "cudnnRNNSetClip"
+    index: 2340
+    supported: false
+
+  - name: "cudnnRNNSetClip_v8"
+    index: 2341
+    supported: false
+
+  - name: "cudnnSetAttnDescriptor"
+    index: 2342
+    supported: false
+
+  - name: "cudnnSetPersistentRNNPlan"
+    index: 2343
+    supported: false
+
+  - name: "cudnnSetRNNAlgorithmDescriptor"
+    index: 2344
+    supported: false
+
+  - name: "cudnnSetRNNBiasMode"
+    index: 2345
+    supported: false
+
+  - name: "cudnnSetRNNDataDescriptor"
+    index: 2346
+    supported: false
+
+  - name: "cudnnSetRNNDescriptor_v6"
+    index: 2347
+    supported: false
+
+  - name: "cudnnSetRNNDescriptor_v8"
+    index: 2348
+    supported: false
+
+  - name: "cudnnSetRNNMatrixMathType"
+    index: 2349
+    supported: false
+
+  - name: "cudnnSetRNNPaddingMode"
+    index: 2350
+    supported: false
+
+  - name: "cudnnSetRNNProjectionLayers"
+    index: 2351
+    supported: false
+
+  - name: "cudnnSetSeqDataDescriptor"
+    index: 2352
+    supported: false 

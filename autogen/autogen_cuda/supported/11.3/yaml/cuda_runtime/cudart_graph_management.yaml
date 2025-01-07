@@ -1,0 +1,310 @@
+# Copyright 2024 The PhoenixOS Authors. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# CUDA: 11.3
+# Type: Graph Management
+
+header_file_name: "cuda_runtime_api.h"
+dependent_headers:
+  - "cuda_runtime_api.h"
+  - "cuda.h"
+successful_retval: "cudaSuccess"
+apis:
+  - name: "cudaGraphAddChildGraphNode"
+    index: 520
+    supported: false
+
+  - name: "cudaGraphAddDependencies"
+    index: 521
+    supported: false
+
+  - name: "cudaGraphAddEmptyNode"
+    index: 522
+    supported: false
+
+  - name: "cudaGraphAddEventRecordNode"
+    index: 523
+    supported: false
+
+  - name: "cudaGraphAddEventWaitNode"
+    index: 524
+    supported: false
+
+  - name: "cudaGraphAddExternalSemaphoresSignalNode"
+    index: 525
+    supported: false
+
+  - name: "cudaGraphAddExternalSemaphoresWaitNode"
+    index: 526
+    supported: false
+
+  - name: "cudaGraphAddHostNode"
+    index: 527
+    supported: false
+
+  - name: "cudaGraphAddKernelNode"
+    index: 528
+    supported: false
+
+  - name: "cudaGraphAddMemcpyNode"
+    index: 529
+    supported: false
+
+  - name: "cudaGraphAddMemcpyNode1D"
+    index: 530
+    supported: false
+
+  - name: "cudaGraphAddMemcpyNodeFromSymbol"
+    index: 531
+    supported: false
+
+  - name: "cudaGraphAddMemcpyNodeToSymbol"
+    index: 532
+    supported: false
+
+  - name: "cudaGraphAddMemsetNode"
+    index: 533
+    supported: false
+
+  - name: "cudaGraphChildGraphNodeGetGraph"
+    index: 534
+    supported: false
+
+  - name: "cudaGraphClone"
+    index: 535
+    supported: false
+
+  - name: "cudaGraphCreate"
+    index: 536
+    supported: false
+
+  - name: "cudaGraphDebugDotPrint"
+    index: 537
+    supported: false
+
+  - name: "cudaGraphDestroy"
+    index: 538
+    supported: false
+
+  - name: "cudaGraphDestroyNode"
+    index: 539
+    supported: false
+
+  - name: "cudaGraphEventRecordNodeGetEvent"
+    index: 540
+    supported: false
+
+  - name: "cudaGraphEventRecordNodeSetEvent"
+    index: 541
+    supported: false
+
+  - name: "cudaGraphEventWaitNodeGetEvent"
+    index: 542
+    supported: false
+
+  - name: "cudaGraphEventWaitNodeSetEvent"
+    index: 543
+    supported: false
+
+  - name: "cudaGraphExecChildGraphNodeSetParams"
+    index: 544
+    supported: false
+
+  - name: "cudaGraphExecDestroy"
+    index: 545
+    supported: false
+
+  - name: "cudaGraphExecEventRecordNodeSetEvent"
+    index: 546
+    supported: false
+
+  - name: "cudaGraphExecEventWaitNodeSetEvent"
+    index: 547
+    supported: false
+
+  - name: "cudaGraphExecExternalSemaphoresSignalNodeSetParams"
+    index: 548
+    supported: false
+
+  - name: "cudaGraphExecExternalSemaphoresWaitNodeSetParams"
+    index: 549
+    supported: false
+
+  - name: "cudaGraphExecHostNodeSetParams"
+    index: 550
+    supported: false
+
+  - name: "cudaGraphExecKernelNodeSetParams"
+    index: 551
+    supported: false
+
+  - name: "cudaGraphExecMemcpyNodeSetParams"
+    index: 552
+    supported: false
+
+  - name: "cudaGraphExecMemcpyNodeSetParams1D"
+    index: 553
+    supported: false
+
+  - name: "cudaGraphExecMemcpyNodeSetParamsFromSymbol"
+    index: 554
+    supported: false
+
+  - name: "cudaGraphExecMemcpyNodeSetParamsToSymbol"
+    index: 555
+    supported: false
+
+  - name: "cudaGraphExecMemsetNodeSetParams"
+    index: 556
+    supported: false
+
+  - name: "cudaGraphExecUpdate"
+    index: 557
+    supported: false
+
+  - name: "cudaGraphExternalSemaphoresSignalNodeGetParams"
+    index: 558
+    supported: false
+
+  - name: "cudaGraphExternalSemaphoresSignalNodeSetParams"
+    index: 559
+    supported: false
+
+  - name: "cudaGraphExternalSemaphoresWaitNodeGetParams"
+    index: 560
+    supported: false
+
+  - name: "cudaGraphExternalSemaphoresWaitNodeSetParams"
+    index: 561
+    supported: false
+
+  - name: "cudaGraphGetEdges"
+    index: 562
+    supported: false
+
+  - name: "cudaGraphGetNodes"
+    index: 563
+    supported: false
+
+  - name: "cudaGraphGetRootNodes"
+    index: 564
+    supported: false
+
+  - name: "cudaGraphHostNodeGetParams"
+    index: 565
+    supported: false
+
+  - name: "cudaGraphHostNodeSetParams"
+    index: 566
+    supported: false
+
+  - name: "cudaGraphInstantiate"
+    index: 567
+    supported: false
+
+  - name: "cudaGraphKernelNodeCopyAttributes"
+    index: 568
+    supported: false
+
+  - name: "cudaGraphKernelNodeGetAttribute"
+    index: 569
+    supported: false
+
+  - name: "cudaGraphKernelNodeGetParams"
+    index: 570
+    supported: false
+
+  - name: "cudaGraphKernelNodeSetAttribute"
+    index: 571
+    supported: false
+
+  - name: "cudaGraphKernelNodeSetParams"
+    index: 572
+    supported: false
+
+  - name: "cudaGraphLaunch"
+    index: 573
+    supported: false
+
+  - name: "cudaGraphMemcpyNodeGetParams"
+    index: 574
+    supported: false
+
+  - name: "cudaGraphMemcpyNodeSetParams"
+    index: 575
+    supported: false
+
+  - name: "cudaGraphMemcpyNodeSetParams1D"
+    index: 576
+    supported: false
+
+  - name: "cudaGraphMemcpyNodeSetParamsFromSymbol"
+    index: 577
+    supported: false
+
+  - name: "cudaGraphMemcpyNodeSetParamsToSymbol"
+    index: 578
+    supported: false
+
+  - name: "cudaGraphMemsetNodeGetParams"
+    index: 579
+    supported: false
+
+  - name: "cudaGraphMemsetNodeSetParams"
+    index: 580
+    supported: false
+
+  - name: "cudaGraphNodeFindInClone"
+    index: 581
+    supported: false
+
+  - name: "cudaGraphNodeGetDependencies"
+    index: 582
+    supported: false
+
+  - name: "cudaGraphNodeGetDependentNodes"
+    index: 583
+    supported: false
+
+  - name: "cudaGraphNodeGetType"
+    index: 584
+    supported: false
+
+  - name: "cudaGraphReleaseUserObject"
+    index: 585
+    supported: false
+
+  - name: "cudaGraphRemoveDependencies"
+    index: 586
+    supported: false
+
+  - name: "cudaGraphRetainUserObject"
+    index: 587
+    supported: false
+
+  - name: "cudaGraphUpload"
+    index: 588
+    supported: false
+
+  - name: "cudaUserObjectCreate"
+    index: 589
+    supported: false
+
+  - name: "cudaUserObjectRelease"
+    index: 590
+    supported: false
+
+  - name: "cudaUserObjectRetain"
+    index: 591
+    supported: false 

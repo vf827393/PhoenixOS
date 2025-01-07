@@ -139,6 +139,10 @@ pos_retval_t POSAutogener::__collect_pos_support_yaml(
         for(i=0; i<config["apis"].size(); i++){
             api = config["apis"][i];
 
+            if(api["supported"].as<bool>() == false){
+                continue;
+            }
+
             POS_CHECK_POINTER(api_meta = new pos_support_api_meta_t);
 
             // name of the API

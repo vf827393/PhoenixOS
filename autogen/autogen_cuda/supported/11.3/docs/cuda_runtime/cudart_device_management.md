@@ -380,9 +380,11 @@ Sets flags to be used for device executions.
 </td>
 </tr>
 <tr>
+<td>130</td>
 <td>✗</td>
 <td>✗</td>
 </tr>
+
 <tr>
 <td colspan=3>
 <code>cudaError_t cudaSetValidDevices ( int* device_arr, int  len )</code><br>
@@ -390,7 +392,7 @@ Set a list of devices that can be used for CUDA.
 </td>
 </tr>
 <tr>
-<td>130</td>
+<td>131</td>
 <td>✗</td>
 <td>✗</td>
 </tr>

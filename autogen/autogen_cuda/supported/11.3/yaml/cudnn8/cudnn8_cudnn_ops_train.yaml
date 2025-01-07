@@ -1,0 +1,107 @@
+# Copyright 2024 The PhoenixOS Authors. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# CUDA: 11.3
+# Type: cuDNN Operations Training
+
+header_file_name: "cudnn.h"
+dependent_headers:
+  - "cudnn.h"
+  - "cuda_runtime_api.h"
+successful_retval: "CUDNN_STATUS_SUCCESS"
+apis:
+
+  - name: "cudnnActivationBackward"
+    index: 2000
+    supported: false
+
+  - name: "cudnnBatchNormalizationBackward"
+    index: 2001
+    supported: false
+
+  - name: "cudnnBatchNormalizationBackwardEx"
+    index: 2002
+    supported: false
+
+  - name: "cudnnBatchNormalizationForwardTraining"
+    index: 2003
+    supported: false
+
+  - name: "cudnnBatchNormalizationForwardTrainingEx"
+    index: 2004
+    supported: false
+
+  - name: "cudnnDivisiveNormalizationBackward"
+    index: 2005
+    supported: false
+
+  - name: "cudnnDropoutBackward"
+    index: 2006
+    supported: false
+
+  - name: "cudnnGetBatchNormalizationBackwardExWorkspaceSize"
+    index: 2007
+    supported: false
+
+  - name: "cudnnGetBatchNormalizationForwardTrainingExWorkspaceSize"
+    index: 2008
+    supported: false
+
+  - name: "cudnnGetBatchNormalizationTrainingExReserveSpaceSize"
+    index: 2009
+    supported: false
+
+  - name: "cudnnGetNormalizationBackwardWorkspaceSize"
+    index: 2010
+    supported: false
+
+  - name: "cudnnGetNormalizationForwardTrainingWorkspaceSize"
+    index: 2011
+    supported: false
+
+  - name: "cudnnGetNormalizationTrainingReserveSpaceSize"
+    index: 2012
+    supported: false
+
+  - name: "cudnnLRNCrossChannelBackward"
+    index: 2013
+    supported: false
+
+  - name: "cudnnNormalizationBackward"
+    index: 2014
+    supported: false
+
+  - name: "cudnnNormalizationForwardTraining"
+    index: 2015
+    supported: false
+
+  - name: "cudnnOpsTrainVersionCheck"
+    index: 2016
+    supported: false
+
+  - name: "cudnnPoolingBackward"
+    index: 2017
+    supported: false
+
+  - name: "cudnnSoftmaxBackward"
+    index: 2018
+    supported: false
+
+  - name: "cudnnSpatialTfGridGeneratorBackward"
+    index: 2019
+    supported: false
+
+  - name: "cudnnSpatialTfSamplerBackward"
+    index: 2020
+    supported: false 

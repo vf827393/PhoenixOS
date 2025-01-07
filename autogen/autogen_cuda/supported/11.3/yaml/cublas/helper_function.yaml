@@ -1,0 +1,117 @@
+# Copyright 2024 The PhoenixOS Authors. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# CUDA: 11.3
+# Type: cuBLAS Helper Functions
+
+header_file_name: "cublas_v2.h"
+dependent_headers:
+  - "cublas_v2.h"
+successful_retval: "CUBLAS_STATUS_SUCCESS"
+apis:
+  - name: "cublasCreate"
+    index: 1100
+    supported: false
+
+  - name: "cublasDestroy"
+    index: 1101
+    supported: false
+
+  - name: "cublasGetVersion"
+    index: 1102
+    supported: false
+
+  - name: "cublasGetProperty"
+    index: 1103
+    supported: false
+
+  - name: "cublasSetStream"
+    index: 1104
+    supported: false
+
+  - name: "cublasSetWorkspace"
+    index: 1105
+    supported: false
+
+  - name: "cublasGetStream"
+    index: 1106
+    supported: false
+
+  - name: "cublasGetPointerMode"
+    index: 1107
+    supported: false
+
+  - name: "cublasSetPointerMode"
+    index: 1108
+    supported: false
+
+  - name: "cublasSetVector"
+    index: 1109
+    supported: false
+
+  - name: "cublasGetVector"
+    index: 1110
+    supported: false
+
+  - name: "cublasSetMatrix"
+    index: 1111
+    supported: false
+
+  - name: "cublasGetMatrix"
+    index: 1112
+    supported: false
+
+  - name: "cublasSetVectorAsync"
+    index: 1113
+    supported: false
+
+  - name: "cublasGetVectorAsync"
+    index: 1114
+    supported: false
+
+  - name: "cublasSetMatrixAsync"
+    index: 1115
+    supported: false
+
+  - name: "cublasGetMatrixAsync"
+    index: 1116
+    supported: false
+
+  - name: "cublasSetAtomicsMode"
+    index: 1117
+    supported: false
+
+  - name: "cublasGetAtomicsMode"
+    index: 1118
+    supported: false
+
+  - name: "cublasSetMathMode"
+    index: 1119
+    supported: false
+
+  - name: "cublasGetMathMode"
+    index: 1120
+    supported: false
+
+  - name: "cublasLoggerConfigure"
+    index: 1121
+    supported: false
+
+  - name: "cublasGetLoggerCallback"
+    index: 1122
+    supported: false
+
+  - name: "cublasSetLoggerCallback"
+    index: 1123
+    supported: false 

@@ -1,0 +1,233 @@
+# Copyright 2024 The PhoenixOS Authors. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# CUDA: 11.3
+# Type: cuBLAS BLAS-like Extension Functions
+
+header_file_name: "cublas_v2.h"
+dependent_headers:
+  - "cublas_v2.h"
+successful_retval: "CUBLAS_STATUS_SUCCESS"
+apis:
+  - name: "cublasSgeam"
+    index: 1400
+    supported: false
+
+  - name: "cublasDgeam"
+    index: 1401
+    supported: false
+
+  - name: "cublasCgeam"
+    index: 1402
+    supported: false
+
+  - name: "cublasZgeam"
+    index: 1403
+    supported: false
+
+  - name: "cublasSdgmm"
+    index: 1404
+    supported: false
+
+  - name: "cublasDdgmm"
+    index: 1405
+    supported: false
+
+  - name: "cublasCdgmm"
+    index: 1406
+    supported: false
+
+  - name: "cublasZdgmm"
+    index: 1407
+    supported: false
+
+  - name: "cublasSgetrfBatched"
+    index: 1408
+    supported: false
+
+  - name: "cublasDgetrfBatched"
+    index: 1409
+    supported: false
+
+  - name: "cublasCgetrfBatched"
+    index: 1410
+    supported: false
+
+  - name: "cublasZgetrfBatched"
+    index: 1411
+    supported: false
+
+  - name: "cublasSgetrsBatched"
+    index: 1412
+    supported: false
+
+  - name: "cublasDgetrsBatched"
+    index: 1413
+    supported: false
+
+  - name: "cublasCgetrsBatched"
+    index: 1414
+    supported: false
+
+  - name: "cublasZgetrsBatched"
+    index: 1415
+    supported: false
+
+  - name: "cublasSgetriBatched"
+    index: 1416
+    supported: false
+
+  - name: "cublasDgetriBatched"
+    index: 1417
+    supported: false
+
+  - name: "cublasCgetriBatched"
+    index: 1418
+    supported: false
+
+  - name: "cublasZgetriBatched"
+    index: 1419
+    supported: false
+
+  - name: "cublasSmatinvBatched"
+    index: 1420
+    supported: false
+
+  - name: "cublasDmatinvBatched"
+    index: 1421
+    supported: false
+
+  - name: "cublasCmatinvBatched"
+    index: 1422
+    supported: false
+
+  - name: "cublasZmatinvBatched"
+    index: 1423
+    supported: false
+
+  - name: "cublasSgeqrfBatched"
+    index: 1424
+    supported: false
+
+  - name: "cublasDgeqrfBatched"
+    index: 1425
+    supported: false
+
+  - name: "cublasCgeqrfBatched"
+    index: 1426
+    supported: false
+
+  - name: "cublasZgeqrfBatched"
+    index: 1427
+    supported: false
+
+  - name: "cublasSgelsBatched"
+    index: 1428
+    supported: false
+
+  - name: "cublasDgelsBatched"
+    index: 1429
+    supported: false
+
+  - name: "cublasCgelsBatched"
+    index: 1430
+    supported: false
+
+  - name: "cublasZgelsBatched"
+    index: 1431
+    supported: false
+
+  - name: "cublasStpttr"
+    index: 1432
+    supported: false
+
+  - name: "cublasDtpttr"
+    index: 1433
+    supported: false
+
+  - name: "cublasCtpttr"
+    index: 1434
+    supported: false
+
+  - name: "cublasZtpttr"
+    index: 1435
+    supported: false
+
+  - name: "cublasStrttp"
+    index: 1436
+    supported: false
+
+  - name: "cublasDtrttp"
+    index: 1437
+    supported: false
+
+  - name: "cublasCtrttp"
+    index: 1438
+    supported: false
+
+  - name: "cublasZtrttp"
+    index: 1439
+    supported: false
+
+  - name: "cublasSgemmEx"
+    index: 1440
+    supported: false
+
+  - name: "cublasGemmEx"
+    index: 1441
+    supported: false
+
+  - name: "cublasGemmBatchedEx"
+    index: 1442
+    supported: false
+
+  - name: "cublasGemmStridedBatchedEx"
+    index: 1443
+    supported: false
+
+  - name: "cublasCsyrkEx"
+    index: 1444
+    supported: false
+
+  - name: "cublasCsyrk3mEx"
+    index: 1445
+    supported: false
+
+  - name: "cublasCherkEx"
+    index: 1446
+    supported: false
+
+  - name: "cublasCherk3mEx"
+    index: 1447
+    supported: false
+
+  - name: "cublasNrm2Ex"
+    index: 1448
+    supported: false
+
+  - name: "cublasAxpyEx"
+    index: 1449
+    supported: false
+
+  - name: "cublasDotEx"
+    index: 1450
+    supported: false
+
+  - name: "cublasRotEx"
+    index: 1451
+    supported: false
+
+  - name: "cublasScalEx"
+    index: 1452
+    supported: false 

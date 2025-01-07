@@ -13,8 +13,7 @@
 # limitations under the License.
 
 # CUDA: 11.3
-# Type: Stream Management
-# Docs: https://docs.nvidia.com/cuda/archive/11.3.0/cuda-runtime-api/group__CUDART__STREAM.html
+# Type: Occupancy
 
 header_file_name: "cuda_runtime_api.h"
 dependent_headers:
@@ -22,30 +21,18 @@ dependent_headers:
   - "cuda.h"
 successful_retval: "cudaSuccess"
 apis:
-  # ​cudaError_t cudaStreamSynchronize ( cudaStream_t stream )
-  - name: "cudaStreamSynchronize"
-    parent_name: "cudaStreamSynchronize"
-    parser_type: "default"
-    worker_type: "default"
-    is_sync: true
-    # parser
-    type: "set_resource"
-    create_edges:
-    delete_edges:
-    in_edges:
-    out_edges:
-      - param_index: 1
-        handle_type: "cuda_stream"
-        handle_source: "from_param"
-    inout_edges:
-    # worker
-    involve_membus: false
-    need_stream_sync: false
-    constant_params:
+  - name: "cudaOccupancyAvailableDynamicSMemPerBlock"
+    index: 350
+    supported: false
 
-  # cudaError_t cudaStreamIsCapturing ( cudaStream_t stream, cudaStreamCaptureStatus* pCaptureStatus )
-  - name: "cudaStreamIsCapturing"
-    parent_name: "cudaStreamIsCapturing"
+  - name: "cudaOccupancyMaxActiveBlocksPerMultiprocessor"
+    index: 351
+    supported: false
+
+  - name: "cudaOccupancyMaxActiveBlocksPerMultiprocessorWithFlags"
+    index: 352
+    supported: true
+    parent_name: "cudaOccupancyMaxActiveBlocksPerMultiprocessorWithFlags"
     parser_type: "default"
     worker_type: "default"
     is_sync: true
@@ -54,8 +41,8 @@ apis:
     create_edges:
     delete_edges:
     in_edges:
-      - param_index: 1
-        handle_type: "cuda_stream"
+      - param_index: 2
+        handle_type: "cuda_function"
         handle_source: "from_param"
     out_edges:
     inout_edges:

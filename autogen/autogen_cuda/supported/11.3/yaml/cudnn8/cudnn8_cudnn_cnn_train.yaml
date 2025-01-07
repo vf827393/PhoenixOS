@@ -1,0 +1,103 @@
+# Copyright 2024 The PhoenixOS Authors. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# CUDA: 11.3
+# Type: cuDNN CNN Training
+
+header_file_name: "cudnn.h"
+dependent_headers:
+  - "cudnn.h"
+  - "cuda_runtime_api.h"
+successful_retval: "CUDNN_STATUS_SUCCESS"
+apis:
+
+  - name: "cudnnCnnTrainVersionCheck"
+    index: 2200
+    supported: false
+
+  - name: "cudnnConvolutionBackwardBias"
+    index: 2201
+    supported: false
+
+  - name: "cudnnConvolutionBackwardFilter"
+    index: 2202
+    supported: false
+
+  - name: "cudnnCreateFusedOpsConstParamPack"
+    index: 2203
+    supported: false
+
+  - name: "cudnnCreateFusedOpsPlan"
+    index: 2204
+    supported: false
+
+  - name: "cudnnCreateFusedOpsVariantParamPack"
+    index: 2205
+    supported: false
+
+  - name: "cudnnDestroyFusedOpsConstParamPack"
+    index: 2206
+    supported: false
+
+  - name: "cudnnDestroyFusedOpsPlan"
+    index: 2207
+    supported: false
+
+  - name: "cudnnDestroyFusedOpsVariantParamPack"
+    index: 2208
+    supported: false
+
+  - name: "cudnnFindConvolutionBackwardFilterAlgorithm"
+    index: 2209
+    supported: false
+
+  - name: "cudnnFindConvolutionBackwardFilterAlgorithmEx"
+    index: 2210
+    supported: false
+
+  - name: "cudnnFusedOpsExecute"
+    index: 2211
+    supported: false
+
+  - name: "cudnnGetConvolutionBackwardFilterAlgorithmMaxCount"
+    index: 2212
+    supported: false
+
+  - name: "cudnnGetConvolutionBackwardFilterAlgorithm_v7"
+    index: 2213
+    supported: false
+
+  - name: "cudnnGetConvolutionBackwardFilterWorkspaceSize"
+    index: 2214
+    supported: false
+
+  - name: "cudnnGetFusedOpsConstParamPackAttribute"
+    index: 2215
+    supported: false
+
+  - name: "cudnnGetFusedOpsVariantParamPackAttribute"
+    index: 2216
+    supported: false
+
+  - name: "cudnnMakeFusedOpsPlan"
+    index: 2217
+    supported: false
+
+  - name: "cudnnSetFusedOpsConstParamPackAttribute"
+    index: 2218
+    supported: false
+
+  - name: "cudnnSetFusedOpsVariantParamPackAttribute"
+    index: 2219
+    supported: false 

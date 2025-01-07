@@ -178,4 +178,3 @@ Unmap the backing memory of a given address range.
 <td>✗</td>
 </tr>
 </table>
-</p>

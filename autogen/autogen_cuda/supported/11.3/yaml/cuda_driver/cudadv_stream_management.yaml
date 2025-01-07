@@ -1,0 +1,105 @@
+# Copyright 2024 The PhoenixOS Authors. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# CUDA: 11.3
+# Type: Stream Management
+
+header_file_name: "cuda.h"
+dependent_headers:
+  - "cuda.h"
+successful_retval: "CUDA_SUCCESS"
+apis:
+  - name: "cuStreamAddCallback"
+    index: 850
+    supported: false
+
+  - name: "cuStreamAttachMemAsync"
+    index: 851
+    supported: false
+
+  - name: "cuStreamBeginCapture"
+    index: 852
+    supported: false
+
+  - name: "cuStreamCopyAttributes"
+    index: 853
+    supported: false
+
+  - name: "cuStreamCreate"
+    index: 854
+    supported: false
+
+  - name: "cuStreamCreateWithPriority"
+    index: 855
+    supported: false
+
+  - name: "cuStreamDestroy"
+    index: 856
+    supported: false
+
+  - name: "cuStreamEndCapture"
+    index: 857
+    supported: false
+
+  - name: "cuStreamGetAttribute"
+    index: 858
+    supported: false
+
+  - name: "cuStreamGetCaptureInfo"
+    index: 859
+    supported: false
+
+  - name: "cuStreamGetCaptureInfo_v2"
+    index: 860
+    supported: false
+
+  - name: "cuStreamGetCtx"
+    index: 861
+    supported: false
+
+  - name: "cuStreamGetFlags"
+    index: 862
+    supported: false
+
+  - name: "cuStreamGetPriority"
+    index: 863
+    supported: false
+
+  - name: "cuStreamIsCapturing"
+    index: 864
+    supported: false
+
+  - name: "cuStreamQuery"
+    index: 865
+    supported: false
+
+  - name: "cuStreamSetAttribute"
+    index: 866
+    supported: false
+
+  - name: "cuStreamSynchronize"
+    index: 867
+    supported: false
+
+  - name: "cuStreamUpdateCaptureDependencies"
+    index: 868
+    supported: false
+
+  - name: "cuStreamWaitEvent"
+    index: 869
+    supported: false
+
+  - name: "cuThreadExchangeStreamCaptureMode"
+    index: 870
+    supported: false

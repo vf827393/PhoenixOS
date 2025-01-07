@@ -1,0 +1,77 @@
+# Copyright 2024 The PhoenixOS Authors. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# CUDA: 11.3
+# Type: Stream Ordered Memory Allocator
+
+header_file_name: "cuda.h"
+dependent_headers:
+  - "cuda.h"
+successful_retval: "CUDA_SUCCESS"
+apis:
+  - name: "cuMemAllocAsync"
+    index: 820
+    supported: false
+
+  - name: "cuMemAllocFromPoolAsync"
+    index: 821
+    supported: false
+
+  - name: "cuMemFreeAsync"
+    index: 822
+    supported: false
+
+  - name: "cuMemPoolCreate"
+    index: 823
+    supported: false
+
+  - name: "cuMemPoolDestroy"
+    index: 824
+    supported: false
+
+  - name: "cuMemPoolExportPointer"
+    index: 825
+    supported: false
+
+  - name: "cuMemPoolExportToShareableHandle"
+    index: 826
+    supported: false
+
+  - name: "cuMemPoolGetAccess"
+    index: 827
+    supported: false
+
+  - name: "cuMemPoolGetAttribute"
+    index: 828
+    supported: false
+
+  - name: "cuMemPoolImportFromShareableHandle"
+    index: 829
+    supported: false
+
+  - name: "cuMemPoolImportPointer"
+    index: 830
+    supported: false
+
+  - name: "cuMemPoolSetAccess"
+    index: 831
+    supported: false
+
+  - name: "cuMemPoolSetAttribute"
+    index: 832
+    supported: false
+
+  - name: "cuMemPoolTrimTo"
+    index: 833
+    supported: false 

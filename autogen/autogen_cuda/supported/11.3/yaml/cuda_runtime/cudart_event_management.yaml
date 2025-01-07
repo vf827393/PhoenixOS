@@ -14,7 +14,6 @@
 
 # CUDA: 11.3
 # Type: Event Management
-# Docs: https://docs.nvidia.com/cuda/archive/11.3.0/cuda-runtime-api/group__CUDART__EVENT.html
 
 header_file_name: "cuda_runtime_api.h"
 dependent_headers:
@@ -22,8 +21,10 @@ dependent_headers:
   - "cuda.h"
 successful_retval: "cudaSuccess"
 apis:
-  # ​cudaError_t cudaEventCreateWithFlags ( cudaEvent_t* event, unsigned int  flags )
-  - name: "cudaEventCreateWithFlags"
+  # cudaError_t cudaEventCreate ( cudaEvent_t* event )
+  - name: "cudaEventCreate"
+    index: 200
+    supported: true
     parent_name: "cudaEventCreateWithFlags"
     parser_type: "default"
     worker_type: "default"
@@ -45,8 +46,35 @@ apis:
     need_stream_sync: false
     constant_params:
 
-  # ​cudaError_t cudaEventDestroy ( cudaEvent_t event )
+  # cudaError_t cudaEventCreateWithFlags ( cudaEvent_t* event, unsigned int flags )
+  - name: "cudaEventCreateWithFlags"
+    index: 201
+    supported: true
+    parent_name: "cudaEventCreateWithFlags"
+    parser_type: "default"
+    worker_type: "default"
+    is_sync: true
+    # parser
+    type: "create_resource"
+    create_edges:
+      - param_index: 1
+        handle_type: "cuda_event"
+        handle_source: "to_param"
+        state_size_param_index: 0
+        expected_addr_param_index: 0
+    delete_edges:
+    in_edges:
+    out_edges:
+    inout_edges:
+    # worker
+    involve_membus: false
+    need_stream_sync: false
+    constant_params:
+
+  # cudaError_t cudaEventDestroy ( cudaEvent_t event )
   - name: "cudaEventDestroy"
+    index: 202
+    supported: true
     parent_name: "cudaEventDestroy"
     parser_type: "default"
     worker_type: "default"
@@ -66,8 +94,20 @@ apis:
     need_stream_sync: false
     constant_params:
 
+  # cudaError_t cudaEventElapsedTime ( float* ms, cudaEvent_t start, cudaEvent_t end )
+  - name: "cudaEventElapsedTime"
+    index: 203
+    supported: false
+
+  # cudaError_t cudaEventQuery ( cudaEvent_t event )
+  - name: "cudaEventQuery"
+    index: 204
+    supported: false
+
   # cudaError_t cudaEventRecord ( cudaEvent_t event, cudaStream_t stream = 0 )
   - name: "cudaEventRecord"
+    index: 205
+    supported: true
     parent_name: "cudaEventRecord"
     parser_type: "default"
     worker_type: "default"
@@ -90,17 +130,23 @@ apis:
     need_stream_sync: false
     constant_params:
 
-  # cudaError_t cudaEventQuery ( cudaEvent_t event )
-  - name: "cudaEventQuery"
-    parent_name: "cudaEventQuery"
+  # cudaError_t cudaEventRecordWithFlags ( cudaEvent_t event, cudaStream_t stream = 0, unsigned int flags = 0 )
+  - name: "cudaEventRecordWithFlags"
+    index: 206
+    supported: true
+    parent_name: "cudaEventRecord"
     parser_type: "default"
     worker_type: "default"
     is_sync: true
     # parser
-    type: "get_resource"
+    type: "set_resource"
     create_edges:
     delete_edges:
     in_edges:
+      - param_index: 2
+        handle_type: "cuda_stream"
+        handle_source: "from_param"
+    out_edges:
       - param_index: 1
         handle_type: "cuda_event"
         handle_source: "from_param"
@@ -109,3 +155,8 @@ apis:
     involve_membus: false
     need_stream_sync: false
     constant_params:
+
+  # cudaError_t cudaEventSynchronize ( cudaEvent_t event )
+  - name: "cudaEventSynchronize"
+    index: 207
+    supported: false

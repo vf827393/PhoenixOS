@@ -1,0 +1,147 @@
+# Copyright 2024 The PhoenixOS Authors. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# CUDA: 11.3
+# Type: cuDNN CNN Inference
+
+header_file_name: "cudnn.h"
+dependent_headers:
+  - "cudnn.h"
+  - "cuda_runtime_api.h"
+successful_retval: "CUDNN_STATUS_SUCCESS"
+apis:
+
+  - name: "cudnnCnnInferVersionCheck"
+    index: 2100
+    supported: false
+
+  - name: "cudnnConvolutionBackwardData"
+    index: 2101
+    supported: false
+
+  - name: "cudnnConvolutionBiasActivationForward"
+    index: 2102
+    supported: false
+
+  - name: "cudnnConvolutionForward"
+    index: 2103
+    supported: false
+
+  - name: "cudnnCreateConvolutionDescriptor"
+    index: 2104
+    supported: false
+
+  - name: "cudnnDestroyConvolutionDescriptor"
+    index: 2105
+    supported: false
+
+  - name: "cudnnFindConvolutionBackwardDataAlgorithm"
+    index: 2106
+    supported: false
+
+  - name: "cudnnFindConvolutionBackwardDataAlgorithmEx"
+    index: 2107
+    supported: false
+
+  - name: "cudnnFindConvolutionForwardAlgorithm"
+    index: 2108
+    supported: false
+
+  - name: "cudnnFindConvolutionForwardAlgorithmEx"
+    index: 2109
+    supported: false
+
+  - name: "cudnnGetConvolution2dDescriptor"
+    index: 2110
+    supported: false
+
+  - name: "cudnnGetConvolution2dForwardOutputDim"
+    index: 2111
+    supported: false
+
+  - name: "cudnnGetConvolutionBackwardDataAlgorithmMaxCount"
+    index: 2112
+    supported: false
+
+  - name: "cudnnGetConvolutionBackwardDataAlgorithm_v7"
+    index: 2113
+    supported: false
+
+  - name: "cudnnGetConvolutionBackwardDataWorkspaceSize"
+    index: 2114
+    supported: false
+
+  - name: "cudnnGetConvolutionForwardAlgorithmMaxCount"
+    index: 2115
+    supported: false
+
+  - name: "cudnnGetConvolutionForwardAlgorithm_v7"
+    index: 2116
+    supported: false
+
+  - name: "cudnnGetConvolutionForwardWorkspaceSize"
+    index: 2117
+    supported: false
+
+  - name: "cudnnGetConvolutionGroupCount"
+    index: 2118
+    supported: false
+
+  - name: "cudnnGetConvolutionMathType"
+    index: 2119
+    supported: false
+
+  - name: "cudnnGetConvolutionNdDescriptor"
+    index: 2120
+    supported: false
+
+  - name: "cudnnGetConvolutionNdForwardOutputDim"
+    index: 2121
+    supported: false
+
+  - name: "cudnnGetConvolutionReorderType"
+    index: 2122
+    supported: false
+
+  - name: "cudnnGetFoldedConvBackwardDataDescriptors"
+    index: 2123
+    supported: false
+
+  - name: "cudnnIm2Col"
+    index: 2124
+    supported: false
+
+  - name: "cudnnReorderFilterAndBias"
+    index: 2125
+    supported: false
+
+  - name: "cudnnSetConvolution2dDescriptor"
+    index: 2126
+    supported: false
+
+  - name: "cudnnSetConvolutionGroupCount"
+    index: 2127
+    supported: false
+
+  - name: "cudnnSetConvolutionMathType"
+    index: 2128
+    supported: false
+
+  - name: "cudnnSetConvolutionNdDescriptor"
+    index: 2129
+    supported: false
+
+  - name: "cudnnSetConvolutionReorderType"
+    index: 2130
+    supported: false 

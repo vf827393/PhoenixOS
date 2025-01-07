@@ -1,0 +1,273 @@
+# Copyright 2024 The PhoenixOS Authors. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# CUDA: 11.3
+# Type: Device Management
+
+header_file_name: "cuda_runtime_api.h"
+dependent_headers:
+  - "cuda_runtime_api.h"
+  - "cuda.h"
+successful_retval: "cudaSuccess"
+apis:
+  # cudaError_t cudaChooseDevice ( int* device, const cudaDeviceProp* prop )
+  - name: "cudaChooseDevice"
+    index: 100
+    supported: false
+
+  # cudaError_t cudaDeviceFlushGPUDirectRDMAWrites ( cudaFlushGPUDirectRDMAWritesTarget target, cudaFlushGPUDirectRDMAWritesScope scope )
+  - name: "cudaDeviceFlushGPUDirectRDMAWrites"
+    index: 101
+    supported: false
+
+  # cudaError_t cudaDeviceGetAttribute ( int* value, cudaDeviceAttr attr, int device )
+  - name: "cudaDeviceGetAttribute"
+    index: 102
+    supported: true
+    parent_name: "cudaDeviceGetAttribute"
+    parser_type: "default"
+    worker_type: "default"
+    is_sync: true
+    # parser
+    type: "get_resource"
+    create_edges:
+    delete_edges:
+    in_edges:
+      - param_index: 3
+        handle_type: "cuda_device"
+        handle_source: "from_param"
+    out_edges:
+    inout_edges:
+    # worker
+    involve_membus: false
+    need_stream_sync: false
+    constant_params:
+
+  # cudaError_t cudaDeviceGetByPCIBusId ( int* device, const char* pciBusId )
+  - name: "cudaDeviceGetByPCIBusId"
+    index: 103
+    supported: false
+
+  # cudaError_t cudaDeviceGetCacheConfig ( cudaFuncCache ** pCacheConfig )
+  - name: "cudaDeviceGetCacheConfig"
+    index: 104
+    supported: false
+
+  # cudaError_t cudaDeviceGetDefaultMemPool ( cudaMemPool_t* memPool, int device )
+  - name: "cudaDeviceGetDefaultMemPool"
+    index: 105
+    supported: false
+
+  # cudaError_t cudaDeviceGetLimit ( size_t* pValue, cudaLimit limit )
+  - name: "cudaDeviceGetLimit"
+    index: 106
+    supported: false
+
+  # cudaError_t cudaDeviceGetMemPool ( cudaMemPool_t* memPool, int device )
+  - name: "cudaDeviceGetMemPool"
+    index: 107
+    supported: false
+
+  # cudaError_t cudaDeviceGetNvSciSyncAttributes ( void* nvSciSyncAttrList, int device, int flags )
+  - name: "cudaDeviceGetNvSciSyncAttributes"
+    index: 108
+    supported: false
+
+  # cudaError_t cudaDeviceGetP2PAttribute ( int* value, cudaDeviceP2PAttr attr, int srcDevice, int dstDevice )
+  - name: "cudaDeviceGetP2PAttribute"
+    index: 109
+    supported: false
+
+  # cudaError_t cudaDeviceGetPCIBusId ( char* pciBusId, int len, int device )
+  - name: "cudaDeviceGetPCIBusId"
+    index: 110
+    supported: false
+
+  # cudaError_t cudaDeviceGetSharedMemConfig ( cudaSharedMemConfig ** pConfig )
+  - name: "cudaDeviceGetSharedMemConfig"
+    index: 111
+    supported: false
+
+  # cudaError_t cudaDeviceGetStreamPriorityRange ( int* leastPriority, int* greatestPriority )
+  - name: "cudaDeviceGetStreamPriorityRange"
+    index: 112
+    supported: false
+
+  # cudaError_t cudaDeviceGetTexture1DLinearMaxWidth ( size_t* maxWidthInElements, const cudaChannelFormatDesc* fmtDesc, int device )
+  - name: "cudaDeviceGetTexture1DLinearMaxWidth"
+    index: 113
+    supported: false
+
+  # cudaError_t cudaDeviceReset ( void )
+  - name: "cudaDeviceReset"
+    index: 114
+    supported: false
+
+  # cudaError_t cudaDeviceSetCacheConfig ( cudaFuncCache cacheConfig )
+  - name: "cudaDeviceSetCacheConfig"
+    index: 115
+    supported: false
+
+  # cudaError_t cudaDeviceSetLimit ( cudaLimit limit, size_t value )
+  - name: "cudaDeviceSetLimit"
+    index: 116
+    supported: false
+
+  # cudaError_t cudaDeviceSetMemPool ( int device, cudaMemPool_t memPool )
+  - name: "cudaDeviceSetMemPool"
+    index: 117
+    supported: false
+
+  # cudaError_t cudaDeviceSetSharedMemConfig ( cudaSharedMemConfig config )
+  - name: "cudaDeviceSetSharedMemConfig"
+    index: 118
+    supported: false
+
+  # cudaError_t cudaDeviceSynchronize ( void )
+  - name: "cudaDeviceSynchronize"
+    index: 119
+    supported: false
+
+  # cudaError_t cudaGetDevice ( int* device )
+  - name: "cudaGetDevice"
+    index: 120
+    supported: true
+    parent_name: "cudaGetDevice"
+    parser_type: "customized"
+    worker_type: "skipped"
+    is_sync: true
+    # parser
+    type: "get_resource"
+    create_edges:
+    delete_edges:
+    in_edges:
+    out_edges:
+    inout_edges:
+    # worker
+    involve_membus: false
+    need_stream_sync: false
+    constant_params:
+
+  # cudaError_t cudaGetDeviceCount ( int* count )
+  - name: "cudaGetDeviceCount"
+    index: 121
+    supported: true
+    parent_name: "cudaGetDeviceCount"
+    parser_type: "customized"
+    worker_type: "skipped"
+    is_sync: true
+    # parser
+    type: "get_resource"
+    create_edges:
+    delete_edges:
+    in_edges:
+    out_edges:
+    inout_edges:
+    # worker
+    involve_membus: false
+    need_stream_sync: false
+    constant_params:
+
+  # cudaError_t cudaGetDeviceFlags ( unsigned int* flags )
+  - name: "cudaGetDeviceFlags"
+    index: 122
+    supported: false
+
+  # cudaError_t cudaGetDeviceProperties ( cudaDeviceProp* prop, int device )
+  - name: "cudaGetDeviceProperties"
+    index: 123
+    supported: true
+    parent_name: "cudaGetDeviceProperties"
+    parser_type: "default"
+    worker_type: "default"
+    is_sync: true
+    # parser
+    type: "get_resource"
+    create_edges:
+    delete_edges:
+    in_edges:
+      - param_index: 2
+        handle_type: "cuda_device"
+        handle_source: "from_param"
+    out_edges:
+    inout_edges:
+    # worker
+    involve_membus: false
+    need_stream_sync: false
+    constant_params:
+
+  # cudaError_t cudaIpcCloseMemHandle ( void* devPtr )
+  - name: "cudaIpcCloseMemHandle"
+    index: 124
+    supported: false
+
+  # cudaError_t cudaIpcGetEventHandle ( cudaIpcEventHandle_t* handle, cudaEvent_t event )
+  - name: "cudaIpcGetEventHandle"
+    index: 125
+    supported: false
+
+  # cudaError_t cudaIpcGetMemHandle ( cudaIpcMemHandle_t* handle, void* devPtr )
+  - name: "cudaIpcGetMemHandle"
+    index: 126
+    supported: false
+
+  # cudaError_t cudaIpcOpenEventHandle ( cudaEvent_t* event, cudaIpcEventHandle_t handle )
+  - name: "cudaIpcOpenEventHandle"
+    index: 127
+    supported: false
+
+  # cudaError_t cudaIpcOpenMemHandle ( void** devPtr, cudaIpcMemHandle_t handle, unsigned int flags )
+  - name: "cudaIpcOpenMemHandle"
+    index: 128
+    supported: false
+
+  # cudaError_t cudaSetDevice ( int device )
+  - name: "cudaSetDevice"
+    index: 129
+    supported: true
+    parent_name: "cudaSetDevice"
+    parser_type: "default"
+    worker_type: "default"
+    is_sync: false
+    # parser
+    type: "set_resource"
+    create_edges:
+    delete_edges:
+    in_edges:
+    out_edges:
+      - param_index: 1
+        handle_type: "cuda_device"
+        handle_source: "from_param"
+        side_effects:
+          - "set_as_last_used"
+      - param_index: 1
+        handle_type: "cuda_context"
+        handle_source: "from_param"
+        side_effects:
+          - "set_as_last_used"
+    inout_edges:
+    # worker
+    involve_membus: false
+    need_stream_sync: false
+    constant_params:
+
+  # cudaError_t cudaSetDeviceFlags ( unsigned int flags )
+  - name: "cudaSetDeviceFlags"
+    index: 130
+    supported: false
+
+  # cudaError_t cudaSetValidDevices ( int* device_arr, int len )
+  - name: "cudaSetValidDevices"
+    index: 131
+    supported: false

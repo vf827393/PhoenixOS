@@ -1,0 +1,289 @@
+# Copyright 2024 The PhoenixOS Authors. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# CUDA: 11.3
+# Type: Memory Management
+
+header_file_name: "cuda.h"
+dependent_headers:
+  - "cuda.h"
+successful_retval: "CUDA_SUCCESS"
+apis:
+  - name: "cuArray3DCreate"
+    index: 720
+    supported: false
+
+  - name: "cuArray3DGetDescriptor"
+    index: 721
+    supported: false
+
+  - name: "cuArrayCreate"
+    index: 722
+    supported: false
+
+  - name: "cuArrayDestroy"
+    index: 723
+    supported: false
+
+  - name: "cuArrayGetDescriptor"
+    index: 724
+    supported: false
+
+  - name: "cuArrayGetPlane"
+    index: 725
+    supported: false
+
+  - name: "cuArrayGetSparseProperties"
+    index: 726
+    supported: false
+
+  - name: "cuDeviceGetByPCIBusId"
+    index: 727
+    supported: false
+
+  - name: "cuDeviceGetPCIBusId"
+    index: 728
+    supported: false
+
+  - name: "cuIpcCloseMemHandle"
+    index: 729
+    supported: false
+
+  - name: "cuIpcGetEventHandle"
+    index: 730
+    supported: false
+
+  - name: "cuIpcGetMemHandle"
+    index: 731
+    supported: false
+
+  - name: "cuIpcOpenEventHandle"
+    index: 732
+    supported: false
+
+  - name: "cuIpcOpenMemHandle"
+    index: 733
+    supported: false
+
+  - name: "cuMemAlloc"
+    index: 734
+    supported: false
+
+  - name: "cuMemAllocHost"
+    index: 735
+    supported: false
+
+  - name: "cuMemAllocManaged"
+    index: 736
+    supported: false
+
+  - name: "cuMemAllocPitch"
+    index: 737
+    supported: false
+
+  - name: "cuMemFree"
+    index: 738
+    supported: false
+
+  - name: "cuMemFreeHost"
+    index: 739
+    supported: false
+
+  - name: "cuMemGetAddressRange"
+    index: 740
+    supported: false
+
+  - name: "cuMemGetInfo"
+    index: 741
+    supported: false
+
+  - name: "cuMemHostAlloc"
+    index: 742
+    supported: false
+
+  - name: "cuMemHostGetDevicePointer"
+    index: 743
+    supported: false
+
+  - name: "cuMemHostGetFlags"
+    index: 744
+    supported: false
+
+  - name: "cuMemHostRegister"
+    index: 745
+    supported: false
+
+  - name: "cuMemHostUnregister"
+    index: 746
+    supported: false
+
+  - name: "cuMemcpy"
+    index: 747
+    supported: false
+
+  - name: "cuMemcpy2D"
+    index: 748
+    supported: false
+
+  - name: "cuMemcpy2DAsync"
+    index: 749
+    supported: false
+
+  - name: "cuMemcpy2DUnaligned"
+    index: 750
+    supported: false
+
+  - name: "cuMemcpy3D"
+    index: 751
+    supported: false
+
+  - name: "cuMemcpy3DAsync"
+    index: 752
+    supported: false
+
+  - name: "cuMemcpy3DPeer"
+    index: 753
+    supported: false
+
+  - name: "cuMemcpy3DPeerAsync"
+    index: 754
+    supported: false
+
+  - name: "cuMemcpyAsync"
+    index: 755
+    supported: false
+
+  - name: "cuMemcpyAtoA"
+    index: 756
+    supported: false
+
+  - name: "cuMemcpyAtoD"
+    index: 757
+    supported: false
+
+  - name: "cuMemcpyAtoH"
+    index: 758
+    supported: false
+
+  - name: "cuMemcpyAtoHAsync"
+    index: 759
+    supported: false
+
+  - name: "cuMemcpyDtoA"
+    index: 760
+    supported: false
+
+  - name: "cuMemcpyDtoD"
+    index: 761
+    supported: false
+
+  - name: "cuMemcpyDtoDAsync"
+    index: 762
+    supported: false
+
+  - name: "cuMemcpyDtoH"
+    index: 763
+    supported: false
+
+  - name: "cuMemcpyDtoHAsync"
+    index: 764
+    supported: false
+
+  - name: "cuMemcpyHtoA"
+    index: 765
+    supported: false
+
+  - name: "cuMemcpyHtoAAsync"
+    index: 766
+    supported: false
+
+  - name: "cuMemcpyHtoD"
+    index: 767
+    supported: false
+
+  - name: "cuMemcpyHtoDAsync"
+    index: 768
+    supported: false
+
+  - name: "cuMemcpyPeer"
+    index: 769
+    supported: false
+
+  - name: "cuMemcpyPeerAsync"
+    index: 770
+    supported: false
+
+  - name: "cuMemsetD16"
+    index: 771
+    supported: false
+
+  - name: "cuMemsetD16Async"
+    index: 772
+    supported: false
+
+  - name: "cuMemsetD2D16"
+    index: 773
+    supported: false
+
+  - name: "cuMemsetD2D16Async"
+    index: 774
+    supported: false
+
+  - name: "cuMemsetD2D32"
+    index: 775
+    supported: false
+
+  - name: "cuMemsetD2D32Async"
+    index: 776
+    supported: false
+
+  - name: "cuMemsetD2D8"
+    index: 777
+    supported: false
+
+  - name: "cuMemsetD2D8Async"
+    index: 778
+    supported: false
+
+  - name: "cuMemsetD32"
+    index: 779
+    supported: false
+
+  - name: "cuMemsetD32Async"
+    index: 780
+    supported: false
+
+  - name: "cuMemsetD8"
+    index: 781
+    supported: false
+
+  - name: "cuMemsetD8Async"
+    index: 782
+    supported: false
+
+  - name: "cuMipmappedArrayCreate"
+    index: 783
+    supported: false
+
+  - name: "cuMipmappedArrayDestroy"
+    index: 784
+    supported: false
+
+  - name: "cuMipmappedArrayGetLevel"
+    index: 785
+    supported: false
+
+  - name: "cuMipmappedArrayGetSparseProperties"
+    index: 786
+    supported: false 

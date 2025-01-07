@@ -1,0 +1,49 @@
+# Copyright 2024 The PhoenixOS Authors. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# CUDA: 11.3
+# Type: Graphics Interoperability
+
+header_file_name: "cuda.h"
+dependent_headers:
+  - "cuda.h"
+successful_retval: "CUDA_SUCCESS"
+apis:
+  - name: "cuGraphicsMapResources"
+    index: 1040
+    supported: false
+
+  - name: "cuGraphicsResourceGetMappedMipmappedArray"
+    index: 1041
+    supported: false
+
+  - name: "cuGraphicsResourceGetMappedPointer"
+    index: 1042
+    supported: false
+
+  - name: "cuGraphicsResourceSetMapFlags"
+    index: 1043
+    supported: false
+
+  - name: "cuGraphicsSubResourceGetMappedArray"
+    index: 1044
+    supported: false
+
+  - name: "cuGraphicsUnmapResources"
+    index: 1045
+    supported: false
+
+  - name: "cuGraphicsUnregisterResource"
+    index: 1046
+    supported: false 

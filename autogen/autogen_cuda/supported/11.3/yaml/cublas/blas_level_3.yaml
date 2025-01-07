@@ -1,0 +1,233 @@
+# Copyright 2024 The PhoenixOS Authors. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# CUDA: 11.3
+# Type: cuBLAS Level-3 Functions
+
+header_file_name: "cublas_v2.h"
+dependent_headers:
+  - "cublas_v2.h"
+successful_retval: "CUBLAS_STATUS_SUCCESS"
+apis:
+  - name: "cublasSgemm"
+    index: 1300
+    supported: false
+
+  - name: "cublasDgemm"
+    index: 1301
+    supported: false
+
+  - name: "cublasCgemm"
+    index: 1302
+    supported: false
+
+  - name: "cublasZgemm"
+    index: 1303
+    supported: false
+
+  - name: "cublasHgemm"
+    index: 1304
+    supported: false
+
+  - name: "cublasSgemm3m"
+    index: 1305
+    supported: false
+
+  - name: "cublasDgemm3m"
+    index: 1306
+    supported: false
+
+  - name: "cublasCgemm3m"
+    index: 1307
+    supported: false
+
+  - name: "cublasZgemm3m"
+    index: 1308
+    supported: false
+
+  - name: "cublasSgemmBatched"
+    index: 1309
+    supported: false
+
+  - name: "cublasDgemmBatched"
+    index: 1310
+    supported: false
+
+  - name: "cublasCgemmBatched"
+    index: 1311
+    supported: false
+
+  - name: "cublasZgemmBatched"
+    index: 1312
+    supported: false
+
+  - name: "cublasSgemmStridedBatched"
+    index: 1313
+    supported: false
+
+  - name: "cublasDgemmStridedBatched"
+    index: 1314
+    supported: false
+
+  - name: "cublasCgemmStridedBatched"
+    index: 1315
+    supported: false
+
+  - name: "cublasZgemmStridedBatched"
+    index: 1316
+    supported: false
+
+  - name: "cublasSsymm"
+    index: 1317
+    supported: false
+
+  - name: "cublasDsymm"
+    index: 1318
+    supported: false
+
+  - name: "cublasCsymm"
+    index: 1319
+    supported: false
+
+  - name: "cublasZsymm"
+    index: 1320
+    supported: false
+
+  - name: "cublasSsyrk"
+    index: 1321
+    supported: false
+
+  - name: "cublasDsyrk"
+    index: 1322
+    supported: false
+
+  - name: "cublasCsyrk"
+    index: 1323
+    supported: false
+
+  - name: "cublasZsyrk"
+    index: 1324
+    supported: false
+
+  - name: "cublasSsyr2k"
+    index: 1325
+    supported: false
+
+  - name: "cublasDsyr2k"
+    index: 1326
+    supported: false
+
+  - name: "cublasCsyr2k"
+    index: 1327
+    supported: false
+
+  - name: "cublasZsyr2k"
+    index: 1328
+    supported: false
+
+  - name: "cublasSsyrkx"
+    index: 1329
+    supported: false
+
+  - name: "cublasDsyrkx"
+    index: 1330
+    supported: false
+
+  - name: "cublasCsyrkx"
+    index: 1331
+    supported: false
+
+  - name: "cublasZsyrkx"
+    index: 1332
+    supported: false
+
+  - name: "cublasStrmm"
+    index: 1333
+    supported: false
+
+  - name: "cublasDtrmm"
+    index: 1334
+    supported: false
+
+  - name: "cublasCtrmm"
+    index: 1335
+    supported: false
+
+  - name: "cublasZtrmm"
+    index: 1336
+    supported: false
+
+  - name: "cublasStrsm"
+    index: 1337
+    supported: false
+
+  - name: "cublasDtrsm"
+    index: 1338
+    supported: false
+
+  - name: "cublasCtrsm"
+    index: 1339
+    supported: false
+
+  - name: "cublasZtrsm"
+    index: 1340
+    supported: false
+
+  - name: "cublasStrsmBatched"
+    index: 1341
+    supported: false
+
+  - name: "cublasDtrsmBatched"
+    index: 1342
+    supported: false
+
+  - name: "cublasCtrsmBatched"
+    index: 1343
+    supported: false
+
+  - name: "cublasZtrsmBatched"
+    index: 1344
+    supported: false
+
+  - name: "cublasChemm"
+    index: 1345
+    supported: false
+
+  - name: "cublasZhemm"
+    index: 1346
+    supported: false
+
+  - name: "cublasCherk"
+    index: 1347
+    supported: false
+
+  - name: "cublasZherk"
+    index: 1348
+    supported: false
+
+  - name: "cublasCher2k"
+    index: 1349
+    supported: false
+
+  - name: "cublasZher2k"
+    index: 1350
+    supported: false
+
+  - name: "cublasCherkx"
+    index: 1351
+    supported: false
+
+  - name: "cublasZherkx"
+    index: 1352
+    supported: false 
