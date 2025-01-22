@@ -1,4 +1,4 @@
-# Copyright 2024 The PhoenixOS Authors. All rights reserved.
+# Copyright 2025 The PhoenixOS Authors. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,9 +20,30 @@ dependent_headers:
   - "cuda.h"
 successful_retval: "CUDA_SUCCESS"
 apis:
+  # CUresult cuDevicePrimaryCtxGetState ( CUdevice dev, unsigned int* flags, int* active )
   - name: "cuDevicePrimaryCtxGetState"
     index: 670
     supported: false
+    parent_name: "cuDevicePrimaryCtxGetState"
+    parser_type: "default"
+    worker_type: "default"
+    is_sync: true
+    # parser
+    type: "get_resource"
+    create_edges:
+    delete_edges:
+    in_edges:
+      - param_index: 1
+        handle_type: "cuda_device"
+        handle_source: "from_param"
+        state_size_param_index: 0
+        expected_addr_param_index: 0
+    out_edges:
+    inout_edges:
+    # worker
+    involve_membus: false
+    need_stream_sync: false
+    constant_params:
 
   - name: "cuDevicePrimaryCtxRelease"
     index: 671

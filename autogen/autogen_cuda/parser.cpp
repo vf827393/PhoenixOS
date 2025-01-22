@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 The PhoenixOS Authors. All rights reserved.
+ * Copyright 2025 The PhoenixOS Authors. All rights reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -476,10 +476,10 @@ pos_retval_t POSAutogener::__insert_code_parser_for_target(
     POS_CHECK_POINTER(parser_function);
 
     // add POS CUDA headers
-    parser_file->add_include("#include \"pos/cuda_impl/handle.h\"");
-    parser_file->add_include("#include \"pos/cuda_impl/parser.h\"");
-    parser_file->add_include("#include \"pos/cuda_impl/client.h\"");
-    parser_file->add_include("#include \"pos/cuda_impl/api_context.h\"");
+    parser_file->add_preprocess("#include \"pos/cuda_impl/handle.h\"");
+    parser_file->add_preprocess("#include \"pos/cuda_impl/parser.h\"");
+    parser_file->add_preprocess("#include \"pos/cuda_impl/client.h\"");
+    parser_file->add_preprocess("#include \"pos/cuda_impl/api_context.h\"");
 
     // step 1: declare variables in the parser
     parser_function->declare_var("pos_retval_t retval = POS_SUCCESS;");
@@ -551,10 +551,7 @@ pos_retval_t POSAutogener::__insert_code_parser_for_target(
 
     // step 7: exit processing
  insert_retval_code:
-    parser_function->append_content(
-        "// parser exit\n"
-        "exit:"
-    );
+    parser_function->append_content("exit:", -3);
     if(
         support_api_meta->api_type == kPOS_API_Type_Create_Resource
         || support_api_meta->worker_type == std::string("skipped")

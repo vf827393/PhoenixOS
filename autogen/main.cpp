@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 The PhoenixOS Authors. All rights reserved.
+ * Copyright 2025 The PhoenixOS Authors. All rights reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,10 @@
 
 #include "autogen_common.h"
 
+
 int main(int argc, char** argv) {
     int opt;
-    const char *op_string = "d:s:g:";
+    const char *op_string = "d:s:g:t:";
     pos_retval_t retval = POS_SUCCESS;
     std::string token;
     std::stringstream ss;
@@ -27,6 +28,10 @@ int main(int argc, char** argv) {
 
     while((opt = getopt(argc, argv, op_string)) != -1){
         switch (opt){
+        case 't':
+            // generated target (e.g., CUDA, ROCm, etc.)
+            autogener.target = std::string(optarg);
+            break;
         case 'd':
             // path to the vendor header files
             autogener.all_vendor_header_directories_str = std::string(optarg);

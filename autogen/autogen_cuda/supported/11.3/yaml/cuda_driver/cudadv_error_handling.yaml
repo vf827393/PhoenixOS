@@ -1,4 +1,4 @@
-# Copyright 2024 The PhoenixOS Authors. All rights reserved.
+# Copyright 2025 The PhoenixOS Authors. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,6 +24,22 @@ apis:
     index: 620
     supported: false
 
+  # CUresult cuGetErrorString ( CUresult error, const char** pStr )
   - name: "cuGetErrorString"
     index: 621
-    supported: false 
+    supported: true
+    parent_name: "cuGetErrorString"
+    parser_type: "default"
+    worker_type: "default"
+    is_sync: true
+    # parser
+    type: "get_resource"
+    create_edges:
+    delete_edges:
+    in_edges:
+    out_edges:
+    inout_edges:
+    # worker
+    involve_membus: false
+    need_stream_sync: false
+    constant_params:

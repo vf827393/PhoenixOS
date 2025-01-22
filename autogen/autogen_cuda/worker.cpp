@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 The PhoenixOS Authors. All rights reserved.
+ * Copyright 2025 The PhoenixOS Authors. All rights reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -182,7 +182,7 @@ pos_retval_t POSAutogener::__insert_code_worker_for_target(
     }
 
     // add POS CUDA headers
-    worker_file->add_include("#include \"pos/cuda_impl/worker.h\"");
+    worker_file->add_preprocess("#include \"pos/cuda_impl/worker.h\"");
 
     // step 1: declare variables in the worker
     worker_function->declare_var("pos_retval_t retval = POS_SUCCESS;");
@@ -340,10 +340,8 @@ pos_retval_t POSAutogener::__insert_code_worker_for_target(
 
  insert_retval_code:
     // step 10: exit pointer
-    worker_function->append_content(
-        "exit:\n"
-        "return retval;"
-    );
+    worker_function->append_content("exit:", -3);
+    worker_function->append_content("return retval;");
 
  exit:
     return retval;

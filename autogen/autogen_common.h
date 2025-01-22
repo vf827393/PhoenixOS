@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 The PhoenixOS Authors. All rights reserved.
+ * Copyright 2025 The PhoenixOS Authors. All rights reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -103,6 +103,9 @@ typedef struct pos_support_edge_meta {
  */
 typedef struct pos_support_api_meta {
     // ========== common fields ==========
+    // index of the API
+    uint64_t index;
+
     // name of the API
     std::string name;
 
@@ -158,6 +161,10 @@ typedef struct pos_support_api_meta {
 typedef struct pos_support_header_file_meta {
     std::string file_name;
     std::map<std::string, pos_support_api_meta_t*> api_map;
+
+    // we need to use some clang compile options,
+    // otherwise some function declartion might be loss due to MACRO
+    std::vector<std::string> clang_compile_options;
 
     // retval value under current processed vendor header file
     std::string successful_retval;
@@ -225,6 +232,7 @@ class POSAutogener {
     std::string support_directory;
 
     // path to generate the source code
+    std::string target;
     std::string gen_directory;
     std::string parser_directory;
     std::string worker_directory;
@@ -325,6 +333,21 @@ class POSAutogener {
         pos_support_header_file_meta_t* support_header_file_meta,
         pos_vendor_api_meta_t* vendor_api_meta,
         pos_support_api_meta_t* support_api_meta
+    );
+
+
+    /*!
+     *  \brief  generate the auxiliary files, including:
+     *          [1] api_index.h:                index macro headers
+     *          [2] api_context.h:              api description header file
+     *          [3] api_context.cpp:            api description source file
+     *  \param  vendor_header_file_meta_list    list of all metadata of vender headers
+     *  \param  support_api_meta_list   l       ist of all metadata of supported APIs
+     *  \return POS_SUCCESS for successfully generated
+     */
+    pos_retval_t __generate_auxiliary_files(
+        std::vector<pos_vendor_header_file_meta*>& vendor_header_file_meta_list,
+        std::vector<pos_support_api_meta_t*>& support_api_meta_list
     );
 
 

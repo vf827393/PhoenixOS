@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 The PhoenixOS Authors. All rights reserved.
+ * Copyright 2025 The PhoenixOS Authors. All rights reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,12 +63,8 @@ enum pos_api_type_t : uint8_t {
      *  \example    cudaMemcpy (H2D), cudaLaunchKernel
      */
     kPOS_API_Type_Set_Resource,
-
-    /*!
-     *  \brief      checkpoint XPU resource state
-     */
-    kPOS_API_Type_Checkpoint
 };
+
 
 /*!
  *  \brief  metadata of XPU API

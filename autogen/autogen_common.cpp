@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 The PhoenixOS Authors. All rights reserved.
+ * Copyright 2025 The PhoenixOS Authors. All rights reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+#include <iostream>
+#include <algorithm>
+#include <string>
 
 #include "autogen_common.h"
 
@@ -103,12 +107,12 @@ exit:
 
 pos_retval_t POSAutogener::collect_vendor_header_files(){
     pos_retval_t retval = POS_SUCCESS;
+    uint64_t i;
     pos_vendor_header_file_meta_t *vendor_header_file_meta;
     pos_support_header_file_meta_t *supported_header_file_meta;
     typename std::map<std::string, pos_support_header_file_meta_t*>::iterator header_map_iter;
     typename std::map<std::string, pos_support_api_meta_t*>::iterator api_map_iter;
     pos_support_api_meta_t *support_api_meta;
-    uint64_t i;
 
     POS_ASSERT(this->vendor_header_directories.size() > 0);
 
@@ -116,6 +120,7 @@ pos_retval_t POSAutogener::collect_vendor_header_files(){
         pos_retval_t retval = POS_SUCCESS;
         pos_support_header_file_meta_t *supported_header_file_meta;
         pos_vendor_header_file_meta_t *vendor_header_file_meta;
+        std::string relative_path;
 
         if(unlikely(
                 !std::filesystem::exists(header_file_path)
@@ -129,25 +134,29 @@ pos_retval_t POSAutogener::collect_vendor_header_files(){
             goto exit;
         }
 
-        for(const auto& entry : std::filesystem::directory_iterator(header_file_path)){
-            if(     entry.is_regular_file()
-                &&  (entry.path().extension() == ".h" || entry.path().extension() == ".hpp")
-            ){
+        for(const auto& entry : std::filesystem::recursive_directory_iterator(header_file_path)){
+            if(entry.is_regular_file() && (entry.path().extension() == ".h" || entry.path().extension() == ".hpp")){
                 POS_LOG_C("parsing vendor header file %s...", entry.path().c_str());
+            } else {
+                continue;
             }
-            
-            if(this->_supported_header_file_meta_map.count(entry.path().filename()) == 0){
+
+            // calculate the diff of paths, e.g.,
+            // header_file_path == /usr/local/cuda-11.3/include
+            // entry.path() == /usr/local/cuda-11.3/include/crt/host_runtime.h
+            // the diff should be crt/host_runtime.h
+            relative_path = std::filesystem::path(entry.path()).lexically_relative(header_file_path);
+            printf("%s\n", relative_path.c_str());
+
+            if(this->_supported_header_file_meta_map.count(relative_path) == 0){
                 POS_BACK_LINE;
                 POS_OLD_LOG_C("parsing vendor header file %s [skipped]", entry.path().c_str());
                 continue;
             }
-
-            POS_CHECK_POINTER(
-                supported_header_file_meta = this->_supported_header_file_meta_map[entry.path().filename()]
-            );
+            POS_CHECK_POINTER(supported_header_file_meta = this->_supported_header_file_meta_map[relative_path]);
 
             POS_CHECK_POINTER(vendor_header_file_meta = new pos_vendor_header_file_meta_t);
-            vendor_header_file_meta->file_name = entry.path().filename();
+            vendor_header_file_meta->file_name = relative_path;
             this->_vendor_header_file_meta_map.insert(
                 { vendor_header_file_meta->file_name, vendor_header_file_meta }
             );
@@ -161,7 +170,7 @@ pos_retval_t POSAutogener::collect_vendor_header_files(){
             ))){
                 POS_ERROR_C("failed to parse file %s", entry.path().c_str())
             }
-        }   
+        }
 
     exit:
         return retval;
@@ -226,8 +235,12 @@ pos_retval_t POSAutogener::generate_pos_src(){
     pos_support_header_file_meta_t *supported_header_file_meta = nullptr;
     pos_vendor_api_meta_t *vendor_api_meta = nullptr;
     pos_support_api_meta_t *support_api_meta = nullptr;
+
     typename std::map<std::string, pos_support_header_file_meta_t*>::iterator header_map_iter;
     typename std::map<std::string, pos_support_api_meta_t*>::iterator api_map_iter;
+
+    std::vector<pos_vendor_header_file_meta_t*> vendor_header_file_meta_list;
+    std::vector<pos_support_api_meta_t*> support_api_meta_list;
 
     // recreate generate folders
     this->parser_directory = this->gen_directory + std::string("/parser");
@@ -265,6 +278,8 @@ pos_retval_t POSAutogener::generate_pos_src(){
         supported_header_file_meta = header_map_iter->second;
         POS_CHECK_POINTER(supported_header_file_meta);
 
+        vendor_header_file_meta_list.push_back(vendor_header_file_meta);
+
         for(api_map_iter = supported_header_file_meta->api_map.begin();
             api_map_iter != supported_header_file_meta->api_map.end();
             api_map_iter++
@@ -272,6 +287,8 @@ pos_retval_t POSAutogener::generate_pos_src(){
             const std::string &api_name = api_map_iter->first;
             support_api_meta = api_map_iter->second;
             POS_CHECK_POINTER(support_api_meta);
+
+            support_api_meta_list.push_back(support_api_meta);
 
             vendor_api_meta = vendor_header_file_meta->api_map[support_api_meta->parent_name];
             POS_CHECK_POINTER(vendor_api_meta);
@@ -303,9 +320,17 @@ pos_retval_t POSAutogener::generate_pos_src(){
         }
     }
 
+    // generate index macro file
+    if(unlikely(POS_SUCCESS != (
+        retval = this->__generate_auxiliary_files(vendor_header_file_meta_list, support_api_meta_list)
+    ))){
+        POS_ERROR_C("generating index macro file failed");
+    }
+
 exit:
     return retval;
 }
+
 
 pos_retval_t POSAutogener::__generate_api_parser(
     pos_vendor_api_meta_t* vendor_api_meta,
@@ -337,17 +362,17 @@ pos_retval_t POSAutogener::__generate_api_parser(
     POS_CHECK_POINTER(parser_file);
     
     // add basic headers to the parser file
-    parser_file->add_include("#include <iostream>");
-    parser_file->add_include("#include \"pos/include/common.h\"");
+    parser_file->add_preprocess("#include <iostream>");
+    parser_file->add_preprocess("#include \"pos/include/common.h\"");
     for(i=0; i<support_api_meta->dependent_headers.size(); i++){
-        parser_file->add_include(std::format("#include <{}>", support_api_meta->dependent_headers[i]));
+        parser_file->add_preprocess(std::format("#include <{}>", support_api_meta->dependent_headers[i]));
     }
 
     // create ps_function namespace
     ps_function_namespace = new POSCodeGen_CppBlock(
         /* field name */ "namespace ps_functions",
         /* need_braces */ true,
-        /* need_foot_comment */ true
+        /* foot_comment */ "namespace ps_functions"
     );
     POS_CHECK_POINTER(ps_function_namespace);
     parser_file->add_block(ps_function_namespace);
@@ -357,7 +382,8 @@ pos_retval_t POSAutogener::__generate_api_parser(
         /* field name */ std::string("namespace ") + api_snake_name,
         /* new_block */ &api_namespace,
         /* need_braces */ true,
-        /* need_foot_comment */ true,
+        /* foot_comment */ std::string("namespace ") + api_snake_name,
+        /* need_ended_semicolon */ false,
         /* level_offset */ 0
     );
     if(unlikely(retval != POS_SUCCESS)){
@@ -374,7 +400,8 @@ pos_retval_t POSAutogener::__generate_api_parser(
         /* field name */ std::string("POS_RT_FUNC_PARSER()"),
         /* new_block */ &parser_function,
         /* need_braces */ true,
-        /* need_foot_comment */ false,
+        /* foot_comment */ "",
+        /* need_ended_semicolon */ false,
         /* level_offset */ 1
     );
     if(unlikely(retval != POS_SUCCESS)){
@@ -439,18 +466,18 @@ pos_retval_t POSAutogener::__generate_api_worker(
     POS_CHECK_POINTER(worker_file);
     
     // add basic headers to the worker file
-    worker_file->add_include("#include <iostream>");
-    worker_file->add_include("#include \"pos/include/common.h\"");
-    worker_file->add_include("#include \"pos/include/client.h\"");
+    worker_file->add_preprocess("#include <iostream>");
+    worker_file->add_preprocess("#include \"pos/include/common.h\"");
+    worker_file->add_preprocess("#include \"pos/include/client.h\"");
     for(i=0; i<support_api_meta->dependent_headers.size(); i++){
-        worker_file->add_include(std::format("#include <{}>", support_api_meta->dependent_headers[i]));
+        worker_file->add_preprocess(std::format("#include <{}>", support_api_meta->dependent_headers[i]));
     }
 
     // create wk_function namespace
     wk_function_namespace = new POSCodeGen_CppBlock(
         /* field name */ "namespace wk_functions",
         /* need_braces */ true,
-        /* need_foot_comment */ true
+        /* foot_comment */ "namespace wk_functions"
     );
     POS_CHECK_POINTER(wk_function_namespace);
     worker_file->add_block(wk_function_namespace);
@@ -460,7 +487,8 @@ pos_retval_t POSAutogener::__generate_api_worker(
         /* field name */ std::string("namespace ") + api_snake_name,
         /* new_block */ &api_namespace,
         /* need_braces */ true,
-        /* need_foot_comment */ true,
+        /* foot_comment */ std::string("namespace ") + api_snake_name,
+        /* need_ended_semicolon */ false,
         /* level_offset */ 0
     );
     if(unlikely(retval != POS_SUCCESS)){
@@ -472,12 +500,13 @@ pos_retval_t POSAutogener::__generate_api_worker(
     }
     POS_CHECK_POINTER(api_namespace);
 
-    // create function POS_RT_FUNC_PARSER
+    // create function POS_WK_FUNC_LAUNCH
     retval = api_namespace->allocate_block(
         /* field name */ std::string("POS_WK_FUNC_LAUNCH()"),
         /* new_block */ &worker_function,
         /* need_braces */ true,
-        /* need_foot_comment */ false,
+        /* foot_comment */ "",
+        /* need_ended_semicolon */ false,
         /* level_offset */ 1
     );
     if(unlikely(retval != POS_SUCCESS)){
@@ -506,6 +535,534 @@ pos_retval_t POSAutogener::__generate_api_worker(
     }
 
     worker_file->archive();
+
+exit:
+    return retval;
+}
+
+
+pos_retval_t POSAutogener::__generate_auxiliary_files(
+    std::vector<pos_vendor_header_file_meta*>& vendor_header_file_meta_list,
+    std::vector<pos_support_api_meta_t*>& support_api_meta_list
+){
+    pos_retval_t retval = POS_SUCCESS;
+
+    // reorder the APIs by their indices
+    std::sort(
+        support_api_meta_list.begin(),
+        support_api_meta_list.end(),
+        [](pos_support_api_meta_t* A, pos_support_api_meta_t* B) -> bool {
+            return A->index < B->index;
+        }
+    );
+
+    // generate api_index.h
+    auto __generate_api_index_h = [&](){
+        uint64_t i;
+        POSCodeGen_CppSourceFile *api_index_h;
+        pos_support_api_meta_t *api_meta;
+
+        api_index_h = new POSCodeGen_CppSourceFile(
+            this->gen_directory 
+            + std::string("/")
+            + std::string("api_index.h")
+        );
+        POS_CHECK_POINTER(api_index_h);
+        
+        api_index_h->add_preprocess("#pragma once");
+        for(i=0; i<support_api_meta_list.size(); i++){
+            POS_CHECK_POINTER(api_meta = support_api_meta_list[i]);
+            api_index_h->add_preprocess(std::format(
+                "#define PosApiIndex_{} {}",
+                api_meta->name, api_meta->index
+            ));
+        }
+
+        api_index_h->archive();
+    };
+
+    // generate api_context.h
+    auto __generate_api_context_h = [&](){
+        uint64_t i;
+        pos_support_api_meta_t *api_meta;
+        std::string target_uppercase;
+        
+        POSCodeGen_CppSourceFile *api_context_h;
+
+        POSCodeGen_CppBlock *class_POSApiManager_TARGET;
+        POSCodeGen_CppBlock *class_POSApiManager_TARGET_function_init;
+        POSCodeGen_CppBlock *func_declare_pos_is_hijacked;
+
+
+        auto ____get_pos_api_type_string = [](pos_api_type_t api_type) -> std::string {
+            switch (api_type)
+            {
+            case kPOS_API_Type_Create_Resource:
+                return "kPOS_API_Type_Create_Resource";
+
+            case kPOS_API_Type_Delete_Resource:
+                return "kPOS_API_Type_Delete_Resource";
+
+            case kPOS_API_Type_Get_Resource:
+                return "kPOS_API_Type_Get_Resource";
+
+            case kPOS_API_Type_Set_Resource:
+                return "kPOS_API_Type_Set_Resource";
+            
+            default:
+                POS_ERROR("this is a bug");
+            }
+        };
+
+
+        api_context_h = new POSCodeGen_CppSourceFile(
+            this->gen_directory
+            + std::string("/")
+            + std::string("api_context.h")
+        );
+        POS_CHECK_POINTER(api_context_h);
+
+        // include headers
+        api_context_h->add_preprocess("#pragma once");
+        api_context_h->add_preprocess("#include <iostream>");
+        api_context_h->add_preprocess("#include <vector>");
+        for(i=0; i<vendor_header_file_meta_list.size(); i++){
+            api_context_h->add_preprocess(std::format(
+                "#include <{}>",
+                vendor_header_file_meta_list[i]->file_name
+            ));
+        }
+        api_context_h->add_preprocess("#include \"pos/include/common.h\"");
+        api_context_h->add_preprocess("#include \"pos/include/api_context.h\"");
+        api_context_h->add_preprocess(std::format(
+            "#include \"pos/{}_impl/api_index.h\"", this->target
+        ));
+
+        // declare POSApiManager_TARGET class
+        target_uppercase = this->target;
+        std::transform(target_uppercase.begin(), target_uppercase.end(), target_uppercase.begin(), ::toupper);
+        class_POSApiManager_TARGET = new POSCodeGen_CppBlock(
+            /* field name */ std::format(
+                "/*\n"
+                " *  \\brief    API manager of target {}\n"
+                " */\n"
+                "class POSApiManager_{} : public POSApiManager",
+                target_uppercase,
+                target_uppercase
+            ),
+            /* need_braces */ true,
+            /* foot_comment */ std::format("class POSApiManager_{}", target_uppercase),
+            /* need_ended_semicolon */ true,
+            /* level */ 0
+        );
+        POS_CHECK_POINTER(class_POSApiManager_TARGET);
+        api_context_h->add_block(class_POSApiManager_TARGET);
+
+        // define constructor and deconstructor for POSApiManager_TARGET
+        class_POSApiManager_TARGET->append_content("public:", -3);
+        class_POSApiManager_TARGET->append_content("POSApiManager_CUDA(){}");
+        class_POSApiManager_TARGET->append_content("~POSApiManager_CUDA() = default;");
+
+        // define POSApiManager_TARGET::init()
+        retval = class_POSApiManager_TARGET->allocate_block(
+            /* field name */ std::string("void init() override"),
+            /* new_block */ &class_POSApiManager_TARGET_function_init,
+            /* need_braces */ true
+        );
+        if(unlikely(retval != POS_SUCCESS)){
+            POS_WARN_C(
+                "failed to allocate cpp block for POSApiManager_TARGET::init() while generating api_context.h"
+            );
+            goto __exit;
+        }
+        POS_CHECK_POINTER(class_POSApiManager_TARGET_function_init);
+
+        class_POSApiManager_TARGET_function_init->append_content("this->api_metas.insert({");
+        for(i=0; i<support_api_meta_list.size(); i++){
+            POS_CHECK_POINTER(api_meta = support_api_meta_list[i]);
+            class_POSApiManager_TARGET_function_init->append_content(
+                /* content */ std::format(
+                    "{{\n"
+                    "    /* api_id */ PosApiIndex_{},\n"
+                    "    {{\n"
+                    "        /* is_sync */  {},\n"
+                    "        /* api_type */ {},\n"
+                    "        /* api_name */ \"{}\",\n"
+                    "    }}\n"
+                    "}}{}"
+                    ,
+                    api_meta->name,
+                    api_meta->is_sync ? "true" : "false",
+                    ____get_pos_api_type_string(api_meta->api_type),
+                    api_meta->name,
+                    i < support_api_meta_list.size()-1 ? "," : ""
+                ),
+                /* char_offset */ 4
+            );
+        }
+        class_POSApiManager_TARGET_function_init->append_content("});");
+
+        // declare pos_is_hijacked function
+        func_declare_pos_is_hijacked = new POSCodeGen_CppBlock(
+            /* field name */
+                "/*\n"
+                " *  \\brief    check whether specified API is hijacked by PhOS\n"
+                " *  \\param    api_id    index of the API to be checked\n"
+                " *  \\return   true if supported, false if unsupported\n"
+                " */\n"
+                "bool pos_is_hijacked(uint64_t api_id);"
+            ,
+            /* need_braces */ false,
+            /* foot_comment */ "",
+            /* need_ended_semicolon */ false,
+            /* level */ 0
+        );
+        POS_CHECK_POINTER(func_declare_pos_is_hijacked);
+        api_context_h->add_block(func_declare_pos_is_hijacked);
+
+        api_context_h->archive();
+    
+    __exit:
+    };
+
+
+    // generate api_context.cpp
+    auto __generate_api_context_cpp = [&](){
+        uint64_t i;
+        pos_support_api_meta_t *api_meta;
+        POSCodeGen_CppSourceFile *api_context_cpp;
+        POSCodeGen_CppBlock *vector_pos_hijacked_cuda_apis;
+        POSCodeGen_CppBlock *function_pos_is_hijacked;
+
+        api_context_cpp = new POSCodeGen_CppSourceFile(
+            this->gen_directory
+            + std::string("/")
+            + std::string("api_context.cpp")
+        );
+        POS_CHECK_POINTER(api_context_cpp);
+
+        // include headers
+        api_context_cpp->add_preprocess("#include <iostream>");
+        api_context_cpp->add_preprocess("#include <vector>");
+        api_context_cpp->add_preprocess("#include <stdint.h>");
+        api_context_cpp->add_preprocess("#include \"pos/include/common.h\"");
+        api_context_cpp->add_preprocess("#include \"pos/include/api_context.h\"");
+        api_context_cpp->add_preprocess(std::format(
+            "#include \"pos/{}_impl/api_index.h\"", this->target
+        ));
+
+        // declare vector of indices of supported APIs
+        vector_pos_hijacked_cuda_apis = new POSCodeGen_CppBlock(
+            /* field name */ "",
+            /* need_braces */ false,
+            /* foot_comment */ "",
+            /* need_ended_semicolon */ true,
+            /* level */ 0
+        );
+        POS_CHECK_POINTER(vector_pos_hijacked_cuda_apis);
+        api_context_cpp->add_block(vector_pos_hijacked_cuda_apis);
+
+        // insert vector
+        vector_pos_hijacked_cuda_apis->append_content(
+            "std::vector<uint64_t> pos_hijacked_cuda_apis({",
+            -4
+        );
+        for(i=0; i<support_api_meta_list.size(); i++){
+            POS_CHECK_POINTER(api_meta = support_api_meta_list[i]);
+            vector_pos_hijacked_cuda_apis->append_content(
+                std::format(
+                    "PosApiIndex_{}{}",
+                    api_meta->name,
+                    i == support_api_meta_list.size()-1 ? "" : ","
+                )
+            );
+        }
+        vector_pos_hijacked_cuda_apis->append_content(
+            "});", -4
+        );
+
+        // define pos_is_hijacked function
+        function_pos_is_hijacked = new POSCodeGen_CppBlock(
+            /* field name */ "bool pos_is_hijacked(uint64_t api_id)",
+            /* need_braces */ true,
+            /* foot_comment */ "",
+            /* need_ended_semicolon */ false,
+            /* level */ 0
+        );
+        POS_CHECK_POINTER(function_pos_is_hijacked);
+        api_context_cpp->add_block(function_pos_is_hijacked);
+
+        function_pos_is_hijacked->append_content(
+            "uint64_t i=0;\n"
+            "for(i=0; i<pos_hijacked_cuda_apis.size(); i++){\n"
+            "    if(unlikely(pos_hijacked_cuda_apis[i] == api_id)){\n"
+            "        return true;\n"
+            "    }\n"
+            "}\n"
+            "return false;"
+        );
+
+        api_context_cpp->archive();
+    };
+
+
+    // generate parser_functions.h
+    auto __generate_parser_functions_h = [&](){
+        pos_retval_t retval;
+        uint64_t i;
+        std::string target_uppercase, api_snake_name;
+        pos_support_api_meta_t *api_meta;
+        POSCodeGen_CppSourceFile *parser_functions_h;
+        POSCodeGen_CppBlock *namespace_ps_functions;
+        
+        parser_functions_h = new POSCodeGen_CppSourceFile(
+            this->gen_directory 
+            + std::string("/")
+            + std::string("parser_functions.h")
+        );
+        POS_CHECK_POINTER(parser_functions_h);
+
+        // include headers
+        parser_functions_h->add_preprocess("#pragma once");
+        parser_functions_h->add_preprocess("#include \"pos/include/common.h\"");
+        parser_functions_h->add_preprocess("#include \"pos/include/parser.h\"");
+        parser_functions_h->add_preprocess("#include \"pos/include/api_context.h\"");
+        parser_functions_h->add_preprocess(std::format(
+            "#include \"pos/{}_impl/api_index.h\"", this->target
+        ));
+
+        // declare namespace ps_functions
+        namespace_ps_functions = new POSCodeGen_CppBlock(
+            /* field name */ "namespace ps_functions",
+            /* need_braces */ true,
+            /* foot_comment */ "namespace ps_functions",
+            /* need_ended_semicolon */ false,
+            /* level */ 0
+        );
+        POS_CHECK_POINTER(namespace_ps_functions);
+        parser_functions_h->add_block(namespace_ps_functions);
+
+        // declare parser functions inside namespace
+        for(i=0; i<support_api_meta_list.size(); i++){
+            POS_CHECK_POINTER(api_meta = support_api_meta_list[i]);
+            namespace_ps_functions->append_content(
+                std::format(
+                    "POS_PS_DECLARE_FUNCTIONS(PosApiIndex_{});",
+                    api_meta->name
+                )
+            );
+        }
+
+        parser_functions_h->archive();
+    
+    __exit:
+    };
+
+    // generate parser_functions.cpp
+    auto __generate_parser_functions_cpp = [&](){
+        pos_retval_t retval;
+        uint64_t i;
+        std::string target_uppercase, api_snake_name;
+        pos_support_api_meta_t *api_meta;
+        POSCodeGen_CppSourceFile *parser_functions_cpp;
+        POSCodeGen_CppBlock *namespace_ps_functions;
+        POSCodeGen_CppBlock *class_POSParser_TARGET_function_init_ps_functions;
+        
+        parser_functions_cpp = new POSCodeGen_CppSourceFile(
+            this->gen_directory 
+            + std::string("/")
+            + std::string("parser_functions.cpp")
+        );
+        POS_CHECK_POINTER(parser_functions_cpp);
+
+        // include headers
+        parser_functions_cpp->add_preprocess("#pragma once");
+        parser_functions_cpp->add_preprocess("#include \"pos/include/common.h\"");
+        parser_functions_cpp->add_preprocess("#include \"pos/include/parser.h\"");
+        parser_functions_cpp->add_preprocess("#include \"pos/include/api_context.h\"");
+        parser_functions_cpp->add_preprocess(std::format(
+            "#include \"pos/{}_impl/api_index.h\"", this->target
+        ));
+        parser_functions_cpp->add_preprocess(std::format(
+            "#include \"pos/{}_impl/parser_functions.h\"", this->target
+        ));
+
+        // declare function POSParser_TARGET::init_ps_functions
+        target_uppercase = this->target;
+        std::transform(target_uppercase.begin(), target_uppercase.end(), target_uppercase.begin(), ::toupper);
+        class_POSParser_TARGET_function_init_ps_functions = new POSCodeGen_CppBlock(
+            /* field name */ std::format(
+                "pos_retval_t POSParser_{}::init_ps_functions()",
+                target_uppercase
+            ),
+            /* need_braces */ true,
+            /* foot_comment */ std::format(
+                "pos_retval_t POSParser_{}::init_ps_functions",
+                target_uppercase
+            ),
+            /* need_ended_semicolon */ false,
+            /* level */ 0
+        );
+        POS_CHECK_POINTER(class_POSParser_TARGET_function_init_ps_functions);
+        parser_functions_cpp->add_block(class_POSParser_TARGET_function_init_ps_functions);
+
+        class_POSParser_TARGET_function_init_ps_functions->append_content("this->_parser_functions.insert({");
+        for(i=0; i<support_api_meta_list.size(); i++){
+            POS_CHECK_POINTER(api_meta = support_api_meta_list[i]);
+
+            api_snake_name = posautogen_utils_camel2snake(api_meta->name);
+
+            class_POSParser_TARGET_function_init_ps_functions->append_content(
+                std::format(
+                    "{{   PosApiIndex_{}, ps_functions::{}::parse }}{}",
+                    api_meta->name,
+                    api_snake_name,
+                    i == support_api_meta_list.size()-1 ? "" : ","
+                ),
+                4
+            );
+        }
+        class_POSParser_TARGET_function_init_ps_functions->append_content("});");
+        class_POSParser_TARGET_function_init_ps_functions->append_content("return POS_SUCCESS;");
+
+        parser_functions_cpp->archive();
+    
+    __exit:
+    };
+
+
+    // generate worker_functions.h
+    auto __generate_worker_functions_h = [&](){
+        pos_retval_t retval;
+        uint64_t i;
+        std::string target_uppercase, api_snake_name;
+        pos_support_api_meta_t *api_meta;
+        POSCodeGen_CppSourceFile *worker_functions_h;
+        POSCodeGen_CppBlock *namespace_wk_functions;
+        
+        worker_functions_h = new POSCodeGen_CppSourceFile(
+            this->gen_directory 
+            + std::string("/")
+            + std::string("worker_functions.h")
+        );
+        POS_CHECK_POINTER(worker_functions_h);
+
+        // include headers
+        worker_functions_h->add_preprocess("#pragma once");
+        worker_functions_h->add_preprocess("#include \"pos/include/common.h\"");
+        worker_functions_h->add_preprocess("#include \"pos/include/worker.h\"");
+        worker_functions_h->add_preprocess("#include \"pos/include/api_context.h\"");
+        worker_functions_h->add_preprocess(std::format(
+            "#include \"pos/{}_impl/api_index.h\"", this->target
+        ));
+
+        // declare namespace ps_functions
+        namespace_wk_functions = new POSCodeGen_CppBlock(
+            /* field name */ "namespace wk_functions",
+            /* need_braces */ true,
+            /* foot_comment */ "namespace wk_functions",
+            /* need_ended_semicolon */ false,
+            /* level */ 0
+        );
+        POS_CHECK_POINTER(namespace_wk_functions);
+        worker_functions_h->add_block(namespace_wk_functions);
+
+        // declare parser functions inside namespace
+        for(i=0; i<support_api_meta_list.size(); i++){
+            POS_CHECK_POINTER(api_meta = support_api_meta_list[i]);
+            namespace_wk_functions->append_content(
+                std::format(
+                    "POS_WK_DECLARE_FUNCTIONS(PosApiIndex_{});",
+                    api_meta->name
+                )
+            );
+        }
+
+        worker_functions_h->archive();
+    
+    __exit:
+    };
+
+
+    // generate parser_functions.cpp
+    auto __generate_worker_functions_cpp = [&](){
+        pos_retval_t retval;
+        uint64_t i;
+        std::string target_uppercase, api_snake_name;
+        pos_support_api_meta_t *api_meta;
+        POSCodeGen_CppSourceFile *worker_functions_cpp;
+        POSCodeGen_CppBlock *namespace_wk_functions;
+        POSCodeGen_CppBlock *class_POSWorker_TARGET_function_init_wk_functions;
+        
+        worker_functions_cpp = new POSCodeGen_CppSourceFile(
+            this->gen_directory 
+            + std::string("/")
+            + std::string("worker_functions.cpp")
+        );
+        POS_CHECK_POINTER(worker_functions_cpp);
+
+        // include headers
+        worker_functions_cpp->add_preprocess("#pragma once");
+        worker_functions_cpp->add_preprocess("#include \"pos/include/common.h\"");
+        worker_functions_cpp->add_preprocess("#include \"pos/include/worker.h\"");
+        worker_functions_cpp->add_preprocess("#include \"pos/include/api_context.h\"");
+        worker_functions_cpp->add_preprocess(std::format(
+            "#include \"pos/{}_impl/api_index.h\"", this->target
+        ));
+        worker_functions_cpp->add_preprocess(std::format(
+            "#include \"pos/{}_impl/worker_functions.h\"", this->target
+        ));
+
+        // declare function POSParser_TARGET::init_wk_functions
+        target_uppercase = this->target;
+        std::transform(target_uppercase.begin(), target_uppercase.end(), target_uppercase.begin(), ::toupper);
+        class_POSWorker_TARGET_function_init_wk_functions = new POSCodeGen_CppBlock(
+            /* field name */ std::format(
+                "pos_retval_t POSWorker_{}::init_wk_functions()",
+                target_uppercase
+            ),
+            /* need_braces */ true,
+            /* foot_comment */ std::format(
+                "pos_retval_t POSWorker_{}::init_wk_functions",
+                target_uppercase
+            ),
+            /* need_ended_semicolon */ false,
+            /* level */ 0
+        );
+        POS_CHECK_POINTER(class_POSWorker_TARGET_function_init_wk_functions);
+        worker_functions_cpp->add_block(class_POSWorker_TARGET_function_init_wk_functions);
+
+        class_POSWorker_TARGET_function_init_wk_functions->append_content("this->_launch_functions.insert({");
+        for(i=0; i<support_api_meta_list.size(); i++){
+            POS_CHECK_POINTER(api_meta = support_api_meta_list[i]);
+
+            api_snake_name = posautogen_utils_camel2snake(api_meta->name);
+
+            class_POSWorker_TARGET_function_init_wk_functions->append_content(
+                std::format(
+                    "{{   PosApiIndex_{}, wk_functions::{}::launch }}{}",
+                    api_meta->name,
+                    api_snake_name,
+                    i == support_api_meta_list.size()-1 ? "" : ","
+                ),
+                4
+            );
+        }
+        class_POSWorker_TARGET_function_init_wk_functions->append_content("});");
+        class_POSWorker_TARGET_function_init_wk_functions->append_content("return POS_SUCCESS;");
+
+        worker_functions_cpp->archive();
+    
+    __exit:
+    };
+
+    __generate_api_index_h();
+    __generate_api_context_h();
+    __generate_api_context_cpp();
+    __generate_parser_functions_h();
+    __generate_parser_functions_cpp();
+    __generate_worker_functions_h();
+    __generate_worker_functions_cpp();
 
 exit:
     return retval;

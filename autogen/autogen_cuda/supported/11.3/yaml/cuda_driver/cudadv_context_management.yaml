@@ -1,4 +1,4 @@
-# Copyright 2024 The PhoenixOS Authors. All rights reserved.
+# Copyright 2025 The PhoenixOS Authors. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,9 +20,33 @@ dependent_headers:
   - "cuda.h"
 successful_retval: "CUDA_SUCCESS"
 apis:
+  # CUresult cuCtxCreate ( CUcontext* pctx, unsigned int  flags, CUdevice dev )
   - name: "cuCtxCreate"
     index: 680
     supported: false
+    parent_name: "cuCtxCreate"
+    parser_type: "default"
+    worker_type: "default"
+    is_sync: true
+    # parser
+    type: "create_resource"
+    create_edges:
+      - param_index: 1
+        handle_type: "cuda_context"
+        handle_source: "to_param"
+        state_size_param_index: 0
+        expected_addr_param_index: 0
+    delete_edges:
+    in_edges:
+      - param_index: 3
+        handle_type: "cu_device"
+        handle_source: "from_param"
+    out_edges:
+    inout_edges:
+    # worker
+    involve_membus: false
+    need_stream_sync: false
+    constant_params:
 
   - name: "cuCtxDestroy"
     index: 681
@@ -36,9 +60,28 @@ apis:
     index: 683
     supported: false
 
+  # CUresult cuCtxGetCurrent ( CUcontext* pctx )
   - name: "cuCtxGetCurrent"
     index: 684
-    supported: false
+    supported: true
+    parent_name: "cuCtxGetCurrent"
+    parser_type: "default"
+    worker_type: "skipped"
+    is_sync: true
+    # parser
+    type: "get_resource"
+    create_edges:
+    delete_edges:
+    in_edges:
+      - param_index: 1
+        handle_type: "cuda_context"
+        handle_source: "from_last_used"
+    out_edges:
+    inout_edges:
+    # worker
+    involve_membus: false
+    need_stream_sync: false
+    constant_params:
 
   - name: "cuCtxGetDevice"
     index: 685

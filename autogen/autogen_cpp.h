@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 The PhoenixOS Authors. All rights reserved.
+ * Copyright 2025 The PhoenixOS Authors. All rights reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,12 +21,14 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <queue>
 #include <cstring>
 
 #include "utils.h"
 
 #include "pos/include/common.h"
 #include "pos/include/log.h"
+
 
 /*!
  *  \brief  contains a C++ block's content
@@ -35,19 +37,24 @@ class POSCodeGen_CppBlock {
  public:
     /*!
      *  \brief  constructor
-     *  \param  block_name          name of this block
-     *  \param  need_braces         whether it needs braces to wrap this block
-     *  \param  need_foot_comment   whether the block need footnote comment
-     *  \param  level               level of this block
+     *  \param  block_name              name of this block
+     *  \param  need_braces             whether it needs braces to wrap this block
+     *  \param  foot_comment            foot comment of this block
+     *  \param  need_ended_semicolon    whether it needs a ended semicolon (;)
+     *  \param  level                   level of this block
      */
-    POSCodeGen_CppBlock(std::string block_name, bool need_braces=true, bool need_foot_comment=false, uint8_t level=0) 
-        : _block_name(block_name), _need_braces(need_braces), _need_foot_comment(need_foot_comment), _level(level), archived("")
-    {
-        if(unlikely(this->_need_braces == false and this->_block_name.size() > 0)){
-            POS_WARN_C("uncorrect cpp block configuration: declare named block without braces, refine as brace needed");
-            this->_need_braces = true;
-        }
-    }
+    POSCodeGen_CppBlock(
+        std::string block_name,
+        bool need_braces=true,
+        std::string foot_comment="",
+        bool need_ended_semicolon=false,
+        uint8_t level=0
+    )   :   _block_name(block_name),
+            _need_braces(need_braces),
+            _foot_comment(foot_comment),
+            _need_ended_semicolon(need_ended_semicolon),
+            _level(level),
+            archived(""){}
     ~POSCodeGen_CppBlock() = default;
 
     // archived this block after (after all blocks are inserted)
@@ -67,25 +74,37 @@ class POSCodeGen_CppBlock {
 
     /*!
      *  \brief  allocate new inner block of this block
-     *  \param  block_name          name of the new block
-     *  \param  new_block           pointer to the newly created block
-     *  \param  need_braces         whether it needs braces to wrap this block
-     *  \param  need_foot_comment   whether the new block need footnote comment
-     *  \param  level_offset        offset of the new block based on current block's level
+     *  \param  block_name              name of the new block
+     *  \param  new_block               pointer to the newly created block
+     *  \param  need_braces             whether it needs braces to wrap this block
+     *  \param  foot_comment            foot comment of this block
+     *  \param  need_ended_semicolon    whether it needs a ended semicolon (;)
+     *  \param  level_offset            offset of the new block based on current block's level
      *  \return POS_SUCCESS for succesfully generation
      */
     pos_retval_t allocate_block(
-        std::string block_name, POSCodeGen_CppBlock** new_block, bool need_braces=true, bool need_foot_comment=false, int level_offset=1
+        std::string block_name,
+        POSCodeGen_CppBlock** new_block,
+        bool need_braces=true,
+        std::string foot_comment="",
+        bool need_ended_semicolon=false,
+        int level_offset=1
     );
-    
+
     /*!
      *  \brief  append content to this block
      *  \note   only leaf node can have content
-     *  \param  content the content to be appended
+     *  \param  content         the content to be appended
+     *  \param  char_offset     the offset (in char) of the content, based on the block's offset
      */
-    void append_content(std::string content);
+    void append_content(std::string content, int64_t char_offset=0);
 
  private:
+    // insertion idx queue
+    // this queue control the order of inserted content and block
+    // value = 0: content, value = 1: block
+    std::queue<uint8_t> _insertion_position_q;
+
     // all variables declarations in this block
     std::vector<std::string> _vars;
 
@@ -103,8 +122,12 @@ class POSCodeGen_CppBlock {
     bool _need_braces;
 
     // mark whether this block need footnote comment
-    bool _need_foot_comment;
+    std::string _foot_comment;
 
+    // mark whether it needs a ended semicolon (;)
+    bool _need_ended_semicolon;
+
+    // level of this block
     uint8_t _level;
 };
 
@@ -137,7 +160,7 @@ class POSCodeGen_CppSourceFile {
      *  \brief  declare new include in this block
      *  \param  var the newly add include
      */
-    void add_include(std::string include);
+    void add_preprocess(std::string include);
 
     /*!
      *  \brief  add a new block to this block
@@ -155,7 +178,7 @@ class POSCodeGen_CppSourceFile {
     std::ofstream _file_stream;
 
     // all include headers of this source file
-    std::vector<std::string> _includes;
+    std::vector<std::string> _preprocess;
 
     // all blocks of this source file
     std::vector<POSCodeGen_CppBlock*> _blocks;

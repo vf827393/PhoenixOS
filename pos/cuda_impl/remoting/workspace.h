@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 The PhoenixOS Authors. All rights reserved.
+ * Copyright 2025 The PhoenixOS Authors. All rights reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,27 +24,14 @@
 #include "pos/cuda_impl/workspace.h"
 
 
+extern "C" {
+
+
 /*!
  *  \brief  create new workspace for CUDA platform
  *  \return pointer to the created CUDA workspace
  */
-static POSWorkspace_CUDA* pos_create_workspace_cuda(){
-    pos_retval_t retval = POS_SUCCESS;
-    POSWorkspace_CUDA *pos_cuda_ws = nullptr;
-
-    POS_CHECK_POINTER(pos_cuda_ws = new POSWorkspace_CUDA());
-    if(unlikely(POS_SUCCESS != (retval = pos_cuda_ws->init()))){
-        POS_WARN("failed to initialize PhOS CUDA Workspace: retval(%u)", retval);
-        goto exit;
-    }
-
-exit:
-    if(unlikely(retval != POS_SUCCESS)){
-        if(pos_cuda_ws != nullptr){ delete pos_cuda_ws; }
-        pos_cuda_ws = nullptr;
-    }
-    return pos_cuda_ws;
-}
+POSWorkspace_CUDA* pos_create_workspace_cuda();
 
 
 /*!
@@ -53,19 +40,26 @@ exit:
  *  \return 0 for successfully destory
  *          1 for failed
  */
-static int pos_destory_workspace_cuda(POSWorkspace_CUDA* pos_cuda_ws){
-    int retval = 0;
-    pos_retval_t pos_retval = POS_SUCCESS;
+int pos_destory_workspace_cuda(POSWorkspace_CUDA* pos_cuda_ws);
 
-    POS_CHECK_POINTER(pos_cuda_ws);
 
-    if(unlikely(POS_SUCCESS != (pos_retval = pos_cuda_ws->deinit()))){
-        POS_WARN("failed to deinitialize PhOS CUDA Workspace: retval(%u)", pos_retval);
-        retval = 1;
-        goto exit;
-    }
-    delete pos_cuda_ws;
+/*!
+ *  \brief  execution the callback function of API with specified api_id
+ *  \param  pos_cuda_ws pointer to the CUDA workspace
+ *  \param  api_id      id of the API to be executed
+ *  \param  uuid        uuid of the client
+ *  \param  param_desps parameter descriptions, specifiaclly in pairs:
+ *                      { pointer to the param, param length }
+ *  \param  param_num   number of parameters
+ *  \return 0 for successfully destory; else for failed
+ */
+int pos_process(
+    POSWorkspace_CUDA *pos_cuda_ws,
+    uint64_t api_id,
+    uint64_t uuid,
+    uint64_t *param_desps,
+    int param_num
+);
 
-exit:
-    return retval;
-}
+
+} // extern "C"

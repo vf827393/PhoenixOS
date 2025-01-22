@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 The PhoenixOS Authors. All rights reserved.
+ * Copyright 2025 The PhoenixOS Authors. All rights reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,7 +59,7 @@ class POSApiManager_CUDA : public POSApiManager {
                     /* api_name */      "cudaMalloc"
                 }
             },
-            { 
+            {
                 /* api_id */ CUDA_FREE, 
                 { 
                     /* is_sync */       true, 

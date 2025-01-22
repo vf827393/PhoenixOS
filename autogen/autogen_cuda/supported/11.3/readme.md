@@ -13,6 +13,7 @@ Reference: https://docs.nvidia.com/cuda/archive/11.3.0/cuda-runtime-api/index.ht
 <p>
 Below lists supported status of each API under different categories.
 <ul>
+    <li>Hidden <a href="docs/cuda_runtime/cudart_hidden.md">[doc]</a> <a href="yaml/cuda_runtime/cudart_hidden.yaml">[yaml]</a></li>
     <li>Device Management <a href="docs/cuda_runtime/cudart_device_management.md">[doc]</a> <a href="yaml/cuda_runtime/cudart_device_management.yaml">[yaml]</a></li>
     <li>Error Handling <a href="docs/cuda_runtime/cudart_error_handling.md">[doc]</a> <a href="yaml/cuda_runtime/cudart_error_handling.yaml">[yaml]</a></li>
     <li>Stream Management <a href="docs/cuda_runtime/cudart_stream_management.md">[doc]</a> <a href="yaml/cuda_runtime/cudart_stream_management.yaml">[yaml]</a></li>

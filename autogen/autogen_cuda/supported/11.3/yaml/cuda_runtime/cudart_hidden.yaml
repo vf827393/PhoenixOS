@@ -1,0 +1,96 @@
+# Copyright 2025 The PhoenixOS Authors. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# CUDA: 11.3
+# Type: Hidden Functions
+
+header_file_name: "crt/host_runtime.h"
+clang_compile_options:
+  - "-D__CUDA_INTERNAL_COMPILATION__"
+  - "-D__GNUC__"
+dependent_headers:
+  - "crt/host_runtime.h"
+successful_retval: "cudaSuccess"
+apis:
+  - name: "__cudaRegisterVar"
+    index: 80
+    supported: true
+    parent_name: "__cudaRegisterVar"
+    parser_type: "customized"
+    worker_type: "customized"
+    is_sync: true
+    # parser
+    type: "create_resource"
+    create_edges:
+    delete_edges:
+    in_edges:
+    out_edges:
+    inout_edges:
+    # worker
+    involve_membus: false
+    need_stream_sync: false
+    constant_params:
+
+  - name: "__cudaRegisterFunction"
+    index: 81
+    supported: true
+    parent_name: "__cudaRegisterFunction"
+    parser_type: "customized"
+    worker_type: "customized"
+    is_sync: true
+    # parser
+    type: "create_resource"
+    create_edges:
+    delete_edges:
+    in_edges:
+    out_edges:
+    inout_edges:
+    # worker
+    involve_membus: false
+    need_stream_sync: false
+    constant_params:
+
+  - name: "__cudaRegisterFatBinary"
+    index: 82
+    supported: true
+    parent_name: "__cudaRegisterFatBinary"
+    parser_type: "customized"
+    worker_type: "customized"
+    is_sync: true
+    # parser
+    type: "create_resource"
+    create_edges:
+    delete_edges:
+    in_edges:
+    out_edges:
+    inout_edges:
+    # worker
+    involve_membus: false
+    need_stream_sync: false
+    constant_params:
+
+  - name: "__cudaUnregisterFatBinary"
+    index: 83
+    supported: false
+    # parser
+    type: "delete_resource"
+    create_edges:
+    delete_edges:
+    in_edges:
+    out_edges:
+    inout_edges:
+    # worker
+    involve_membus: false
+    need_stream_sync: false
+    constant_params:

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 The PhoenixOS Authors. All rights reserved.
+ * Copyright 2025 The PhoenixOS Authors. All rights reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -128,8 +128,13 @@ pos_retval_t POSAutogener::__collect_pos_support_yaml(
         if(need_init_header_file_meta){
             header_file_meta->file_name = config["header_file_name"].as<std::string>();
             header_file_meta->successful_retval = config["successful_retval"].as<std::string>();
+            if(config["clang_compile_options"]){
+                for(i=0; i<config["clang_compile_options"].size(); i++){
+                    header_file_meta->clang_compile_options.push_back(config["clang_compile_options"][i].as<std::string>());
+                }
+            }
         }
-        
+
         if(config["dependent_headers"]){
             for(i=0; i<config["dependent_headers"].size(); i++){
                 dependent_headers.push_back(config["dependent_headers"][i].as<std::string>());
@@ -144,6 +149,9 @@ pos_retval_t POSAutogener::__collect_pos_support_yaml(
             }
 
             POS_CHECK_POINTER(api_meta = new pos_support_api_meta_t);
+
+            // index of the API
+            api_meta->index = api["index"].as<uint64_t>();
 
             // name of the API
             api_meta->name = api["name"].as<std::string>();
@@ -246,9 +254,11 @@ pos_retval_t POSAutogener::__collect_vendor_header_file(
     pos_support_header_file_meta_t* support_header_file_meta
 ){
     pos_retval_t retval = POS_SUCCESS;
+    uint64_t i;
     CXIndex index;
     CXTranslationUnit unit;
     CXCursor cursor;
+    char **clang_args = nullptr;
     
     struct __clang_param_wrapper {
         pos_vendor_header_file_meta_t* vendor_header_file_meta;
@@ -264,9 +274,22 @@ pos_retval_t POSAutogener::__collect_vendor_header_file(
     };
 
     index = clang_createIndex(0, 0);
-    unit = clang_parseTranslationUnit(
-        index, file_path.c_str(), nullptr, 0, nullptr, 0, CXTranslationUnit_None
-    );
+
+    if(support_header_file_meta->clang_compile_options.size() == 0){
+        unit = clang_parseTranslationUnit(
+            index, file_path.c_str(), nullptr, 0, nullptr, 0, CXTranslationUnit_None
+        );
+    } else {
+        const char* char_array[support_header_file_meta->clang_compile_options.size()];
+        for(i=0; i<support_header_file_meta->clang_compile_options.size(); i++) {
+            char_array[i] = support_header_file_meta->clang_compile_options[i].c_str();
+        }
+        unit = clang_parseTranslationUnit(
+            index, file_path.c_str(),
+            char_array, support_header_file_meta->clang_compile_options.size(),
+            nullptr, 0, CXTranslationUnit_None
+        );
+    }
 
     if(unlikely(unit == nullptr)){
         POS_WARN_C("failed to create CXTranslationUnit for file: path(%s)", file_path.c_str());
@@ -291,7 +314,11 @@ pos_retval_t POSAutogener::__collect_vendor_header_file(
             pos_vendor_api_meta_t *api_meta = nullptr;
             pos_vendor_param_meta_t *param_meta = nullptr;
 
-            if (clang_getCursorKind(cursor) == CXCursor_FunctionDecl) {
+            func_name_cppstr = std::string(clang_getCString(clang_getCursorSpelling(cursor)));  
+            printf("!!! func_name: %s\n", func_name_cppstr.c_str());
+            printf("!!! kind: %d\n", clang_getCursorKind(cursor));
+
+            if (clang_getCursorKind(cursor) == CXCursor_FunctionDecl || clang_getCursorKind(cursor) == CXCursor_LinkageSpec) {
                 param = reinterpret_cast<__clang_param_wrapper*>(client_data);
                 POS_CHECK_POINTER(param);
                 vendor_header_file_meta = reinterpret_cast<pos_vendor_header_file_meta_t*>(param->vendor_header_file_meta);

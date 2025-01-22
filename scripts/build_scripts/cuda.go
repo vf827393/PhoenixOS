@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 The PhoenixOS Authors. All rights reserved.
+ * Copyright 2025 The PhoenixOS Authors. All rights reserved.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ func CRIB_PhOS_CUDA_Autogen(cmdOpt CmdOptions, buildConf BuildConfigs, logger *l
 		#!/bin/bash
 		set -e
 		cd %s/%s/build
-		LD_LIBRARY_PATH=../../lib/ ./pos_autogen -s ../autogen_cuda/supported/%s/yaml -d /usr/local/cuda-%s/include,/usr/include -g ../generated >>{{.LOG_PATH__}} 2>&1
+		LD_LIBRARY_PATH=../../lib/ ./pos_autogen -t cuda -s ../autogen_cuda/supported/%s/yaml -d /usr/local/cuda-%s/include,/usr/include -g ../generated >>{{.LOG_PATH__}} 2>&1
 		`,
 		cmdOpt.RootDir, kPhOSAutoGenPath,
 		buildConf.RuntimeTargetVersion,

@@ -1,4 +1,4 @@
-# Copyright 2024 The PhoenixOS Authors. All rights reserved.
+# Copyright 2025 The PhoenixOS Authors. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,13 +20,45 @@ dependent_headers:
   - "cuda.h"
 successful_retval: "CUDA_SUCCESS"
 apis:
+  # CUresult cuModuleLoad ( CUmodule* module, const char* fname )
   - name: "cuModuleLoad"
     index: 700
-    supported: false
+    supported: true
+    parent_name: "cuModuleLoad"
+    parser_type: "customized"
+    worker_type: "customized"
+    is_sync: true
+    # parser
+    type: "create_resource"
+    create_edges:
+    delete_edges:
+    in_edges:
+    out_edges:
+    inout_edges:
+    # worker
+    involve_membus: false
+    need_stream_sync: false
+    constant_params:
 
+  # CUresult cuModuleLoadData ( CUmodule* module, const void* image )
   - name: "cuModuleLoadData"
     index: 701
-    supported: false
+    supported: true
+    parent_name: "cuModuleLoadData"
+    parser_type: "customized"
+    worker_type: "customized"
+    is_sync: true
+    # parser
+    type: "create_resource"
+    create_edges:
+    delete_edges:
+    in_edges:
+    out_edges:
+    inout_edges:
+    # worker
+    involve_membus: false
+    need_stream_sync: false
+    constant_params:
 
   - name: "cuModuleLoadDataEx"
     index: 702
@@ -42,11 +74,42 @@ apis:
 
   - name: "cuModuleGetFunction"
     index: 705
-    supported: false
+    supported: true
+    parent_name: "cuModuleGetFunction"
+    parser_type: "customized"
+    worker_type: "customized"
+    is_sync: true
+    # parser
+    type: "create_resource"
+    create_edges:
+    delete_edges:
+    in_edges:
+    out_edges:
+    inout_edges:
+    # worker
+    involve_membus: false
+    need_stream_sync: false
+    constant_params:
 
+  # CUresult cuModuleGetGlobal ( CUdeviceptr* dptr, size_t* bytes, CUmodule hmod, const char* name )
   - name: "cuModuleGetGlobal"
     index: 706
-    supported: false
+    supported: true
+    parent_name: "cuModuleLoadData"
+    parser_type: "customized"
+    worker_type: "customized"
+    is_sync: true
+    # parser
+    type: "create_resource"
+    create_edges:
+    delete_edges:
+    in_edges:
+    out_edges:
+    inout_edges:
+    # worker
+    involve_membus: false
+    need_stream_sync: false
+    constant_params:
 
   - name: "cuModuleGetTexRef"
     index: 707
@@ -74,4 +137,4 @@ apis:
 
   - name: "cuLinkDestroy"
     index: 713
-    supported: false 
+    supported: false
