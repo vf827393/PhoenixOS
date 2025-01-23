@@ -50,7 +50,8 @@ exit:
 pos_retval_t POSAutogener::__collect_pos_support_yaml(
     const std::string& file_path,
     pos_support_header_file_meta_t *header_file_meta,
-    bool need_init_header_file_meta
+    bool need_init_header_file_meta,
+    std::string library_name
 ){
     pos_retval_t retval = POS_SUCCESS;
     uint64_t i, k;
@@ -150,6 +151,9 @@ pos_retval_t POSAutogener::__collect_pos_support_yaml(
 
             POS_CHECK_POINTER(api_meta = new pos_support_api_meta_t);
 
+            // name of the library that this API locates at
+            api_meta->library_name = library_name;
+
             // index of the API
             api_meta->index = api["index"].as<uint64_t>();
 
@@ -158,6 +162,11 @@ pos_retval_t POSAutogener::__collect_pos_support_yaml(
 
             // parent name of the API
             api_meta->parent_name = api["parent_name"].as<std::string>();
+
+            // prototype of the API
+            if(api["prototype"]){
+                api_meta->prototype = api["prototype"].as<std::string>();
+            }
 
             // whether the API is synchronous
             api_meta->is_sync = api["is_sync"].as<bool>();
@@ -314,11 +323,7 @@ pos_retval_t POSAutogener::__collect_vendor_header_file(
             pos_vendor_api_meta_t *api_meta = nullptr;
             pos_vendor_param_meta_t *param_meta = nullptr;
 
-            func_name_cppstr = std::string(clang_getCString(clang_getCursorSpelling(cursor)));  
-            printf("!!! func_name: %s\n", func_name_cppstr.c_str());
-            printf("!!! kind: %d\n", clang_getCursorKind(cursor));
-
-            if (clang_getCursorKind(cursor) == CXCursor_FunctionDecl || clang_getCursorKind(cursor) == CXCursor_LinkageSpec) {
+            if (clang_getCursorKind(cursor) == CXCursor_FunctionDecl) {
                 param = reinterpret_cast<__clang_param_wrapper*>(client_data);
                 POS_CHECK_POINTER(param);
                 vendor_header_file_meta = reinterpret_cast<pos_vendor_header_file_meta_t*>(param->vendor_header_file_meta);

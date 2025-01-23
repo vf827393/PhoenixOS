@@ -52,6 +52,7 @@ pos_edge_side_effect_typeid_t get_side_effect_by_name(std::string& side_effect){
 pos_retval_t POSAutogener::collect_pos_support_yamls(){
     pos_retval_t retval = POS_SUCCESS;
     pos_support_header_file_meta_t *header_file_meta;
+    std::string library_name;
 
     POS_ASSERT(this->support_directory.size() > 0);
 
@@ -71,6 +72,8 @@ pos_retval_t POSAutogener::collect_pos_support_yamls(){
         if(entry.is_regular_file() && entry.path().extension() == ".yaml"){
             POS_LOG_C("parsing support file %s...", entry.path().c_str())
 
+            library_name = entry.path().parent_path().filename().string();
+
             retval = this->__try_get_header_file_meta(entry.path(), &header_file_meta);
             if(retval == POS_SUCCESS){
                 POS_CHECK_POINTER(header_file_meta);
@@ -79,12 +82,13 @@ pos_retval_t POSAutogener::collect_pos_support_yamls(){
             } else {
                 POS_ERROR_C("failed to parse file %s", entry.path().c_str())
             }
-
+            
             if(unlikely(POS_SUCCESS != (
                 retval = this->__collect_pos_support_yaml(
                     entry.path(),
                     header_file_meta,
-                    retval == POS_FAILED_NOT_EXIST ? true : false
+                    retval == POS_FAILED_NOT_EXIST ? true : false,
+                    library_name
                 )
             ))){
                 POS_ERROR_C("failed to parse file %s", entry.path().c_str())
@@ -176,6 +180,97 @@ pos_retval_t POSAutogener::collect_vendor_header_files(){
         return retval;
     };
 
+
+    auto __parse_api_prototype = [this](
+        std::string& prototype,
+        pos_vendor_header_file_meta_t *vendor_header_file_meta
+    ) -> pos_retval_t {
+        pos_retval_t retval = POS_SUCCESS;
+        CXIndex index;
+        CXErrorCode cx_retval;
+        CXTranslationUnit unit;
+        CXCursor cursor;
+        CXUnsavedFile unsaved_file;
+
+        POS_CHECK_POINTER(vendor_header_file_meta);
+
+        unsaved_file.Filename = "temp.cpp";
+        unsaved_file.Contents = prototype.c_str();
+        unsaved_file.Length = static_cast<unsigned long>(prototype.length());
+
+        index = clang_createIndex(0, 0);
+
+        cx_retval = clang_parseTranslationUnit2(
+            /* CIdx */ index,
+            /* source_filename */ "temp.cpp",
+            /* command_line_args */ nullptr,
+            /* nb_command_line_args */ 0,
+            /* unsaved_files */ &unsaved_file,
+            /* nb_unsaved_file */ 1,
+            /* options */ CXTranslationUnit_None,
+            /* out_TU */ &unit
+        );
+        if(unlikely(cx_retval != CXError_Success)){
+            POS_WARN_DETAIL(
+                "failed to parse the function prototype: prototype(%s)",
+                prototype.c_str()
+            );
+            retval = POS_FAILED;
+            goto __exit;
+        }
+        if(unlikely(unit == nullptr)){
+            POS_ERROR_DETAIL("failed to create clang translation unit");
+        }
+
+        cursor = clang_getTranslationUnitCursor(unit);
+        clang_visitChildren(
+            /* parent */ cursor,
+            /* visitor */
+            [](CXCursor cursor, CXCursor parent, CXClientData client_data) -> CXChildVisitResult {
+                int i, num_args;
+                std::string func_name_cppstr;
+                CXString func_name;
+                CXCursor arg_cursor;
+                pos_vendor_header_file_meta_t *vendor_header_file_meta = nullptr;
+                pos_vendor_api_meta_t *api_meta = nullptr;
+                pos_vendor_param_meta_t *param_meta = nullptr;
+
+                if (clang_getCursorKind(cursor) == CXCursor_FunctionDecl) {
+                    vendor_header_file_meta = reinterpret_cast<pos_vendor_header_file_meta_t*>(client_data);
+                    POS_CHECK_POINTER(vendor_header_file_meta);
+
+                    func_name_cppstr = std::string(clang_getCString(clang_getCursorSpelling(cursor)));
+
+                    POS_CHECK_POINTER(api_meta = new pos_vendor_api_meta_t);
+                    vendor_header_file_meta->api_map.insert({ func_name_cppstr, api_meta });
+                    api_meta->name = std::string(clang_getCString(clang_getCursorSpelling(cursor)));
+                    api_meta->return_type = std::string(clang_getCString(clang_getTypeSpelling(clang_getCursorResultType(cursor))));
+                    // returnType = clang_getTypeSpelling(clang_getCursorResultType(cursor));
+
+                    num_args = clang_Cursor_getNumArguments(cursor);
+                    for(i=0; i<num_args; i++){
+                        POS_CHECK_POINTER(param_meta = new pos_vendor_param_meta_t);
+                        api_meta->params.push_back(param_meta);
+                        arg_cursor = clang_Cursor_getArgument(cursor, i);
+                        param_meta->name = std::string(clang_getCString(clang_getCursorSpelling(arg_cursor)));
+                        param_meta->type = std::string(clang_getCString(clang_getTypeSpelling(clang_getCursorType(arg_cursor))));
+                        param_meta->is_pointer = clang_getCursorType(arg_cursor).kind == CXType_Pointer;
+                    }
+                }
+
+            cursor_traverse_exit:
+                return CXChildVisit_Recurse;
+            },
+            /* client_data */ vendor_header_file_meta
+        );
+
+        clang_disposeTranslationUnit(unit);
+
+    __exit:
+        return retval;
+    };
+
+
     // collect vendor header files
     for(i=0; i<this->vendor_header_directories.size(); i++){
         retval = __collect_vendor_header_file(this->vendor_header_directories[i]);
@@ -192,6 +287,7 @@ pos_retval_t POSAutogener::collect_vendor_header_files(){
     ){
         // [1] whether all header files that registered as supported were founded
         const std::string &supported_file_name = header_map_iter->first;
+
         if(unlikely(this->_vendor_header_file_meta_map.count(supported_file_name) == 0)){
             POS_WARN_C(
                 "PhOS registered to support header file %s, but no vendor header file was found",
@@ -215,12 +311,27 @@ pos_retval_t POSAutogener::collect_vendor_header_files(){
             if(unlikely(
                 vendor_header_file_meta->api_map.count(support_api_meta->parent_name) == 0
             )){
-                POS_WARN_C(
-                    "PhOS registered to support API %s in file %s, but no vendor API was found",
-                    support_api_meta->parent_name.c_str(), supported_file_name.c_str()
-                );
-                retval = POS_FAILED_NOT_EXIST;
-                goto exit;
+                if(support_api_meta->prototype.size() == 0){
+                    POS_WARN_C(
+                        "PhOS registered to support API %s in file %s, but neither vendor API or prototype in yaml was found",
+                        support_api_meta->parent_name.c_str(), supported_file_name.c_str()
+                    );
+                    retval = POS_FAILED_NOT_EXIST;
+                    goto exit;
+                } else {
+                    POS_ASSERT(support_api_meta->parser_type == "customized" and support_api_meta->worker_type == "customized");
+
+                    // we append the clang parsing of the API here
+                    retval = __parse_api_prototype(support_api_meta->prototype, vendor_header_file_meta);
+                    if(unlikely(retval != POS_SUCCESS)){
+                        POS_WARN_C(
+                            "PhOS registered to support API %s via given prototype \"%s\", yet failed to parse the prototype",
+                            support_api_meta->parent_name.c_str(),
+                            support_api_meta->prototype.c_str()
+                        );
+                        goto exit;
+                    }
+                }
             }
         }
     }
@@ -341,6 +452,7 @@ pos_retval_t POSAutogener::__generate_api_parser(
     POSCodeGen_CppSourceFile *parser_file;
     POSCodeGen_CppBlock *ps_function_namespace, *api_namespace, *parser_function;
     std::string api_snake_name;
+    std::string parser_file_directory;
 
     POS_CHECK_POINTER(vendor_api_meta);
     POS_CHECK_POINTER(support_api_meta);
@@ -352,9 +464,23 @@ pos_retval_t POSAutogener::__generate_api_parser(
 
     api_snake_name = posautogen_utils_camel2snake(support_api_meta->name);
 
+    parser_file_directory = this->parser_directory + std::string("/") + support_api_meta->library_name;
+    if(!std::filesystem::exists(parser_file_directory)){
+        try {
+            std::filesystem::create_directory(parser_file_directory);
+        } catch (const std::exception& e) {
+            POS_WARN_C(
+                "failed to create new library directory for the generated codes: parser_file_directory(%s)",
+                parser_file_directory.c_str()
+            );
+            retval = POS_FAILED;
+            goto exit;
+        }
+    }
+
     // create parser file
     parser_file = new POSCodeGen_CppSourceFile(
-        this->parser_directory 
+        parser_file_directory
         + std::string("/")
         + support_api_meta->name
         + std::string(".cpp")
@@ -445,6 +571,7 @@ pos_retval_t POSAutogener::__generate_api_worker(
     std::string api_snake_name;
     POSCodeGen_CppSourceFile *worker_file;
     POSCodeGen_CppBlock *wk_function_namespace, *api_namespace, *worker_function;
+    std::string worker_file_directory;
 
     POS_CHECK_POINTER(vendor_api_meta);
     POS_CHECK_POINTER(support_api_meta);
@@ -456,9 +583,23 @@ pos_retval_t POSAutogener::__generate_api_worker(
 
     api_snake_name = posautogen_utils_camel2snake(support_api_meta->name);
 
+    worker_file_directory = this->worker_directory + std::string("/") + support_api_meta->library_name;
+    if(!std::filesystem::exists(worker_file_directory)){
+        try {
+            std::filesystem::create_directory(worker_file_directory);
+        } catch (const std::exception& e) {
+            POS_WARN_C(
+                "failed to create new library directory for the generated codes: worker_file_directory(%s)",
+                worker_file_directory.c_str()
+            );
+            retval = POS_FAILED;
+            goto exit;
+        }
+    }
+
     // create worker file
     worker_file = new POSCodeGen_CppSourceFile(
-        this->worker_directory 
+        worker_file_directory
         + std::string("/")
         + support_api_meta->name
         + std::string(".cpp")

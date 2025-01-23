@@ -17,54 +17,35 @@
 
 header_file_name: "crt/host_runtime.h"
 clang_compile_options:
-  - "-D__CUDA_INTERNAL_COMPILATION__"
-  - "-D__GNUC__"
 dependent_headers:
-  - "crt/host_runtime.h"
+  - "cuda_runtime.h"
 successful_retval: "cudaSuccess"
 apis:
-  - name: "__cudaRegisterVar"
+  - name: "__cudaRegisterFatBinary"
     index: 80
     supported: true
-    parent_name: "__cudaRegisterVar"
-    parser_type: "customized"
-    worker_type: "customized"
-    is_sync: true
-    # parser
-    type: "create_resource"
-    create_edges:
-    delete_edges:
-    in_edges:
-    out_edges:
-    inout_edges:
-    # worker
-    involve_membus: false
-    need_stream_sync: false
-    constant_params:
-
-  - name: "__cudaRegisterFunction"
-    index: 81
-    supported: true
-    parent_name: "__cudaRegisterFunction"
-    parser_type: "customized"
-    worker_type: "customized"
-    is_sync: true
-    # parser
-    type: "create_resource"
-    create_edges:
-    delete_edges:
-    in_edges:
-    out_edges:
-    inout_edges:
-    # worker
-    involve_membus: false
-    need_stream_sync: false
-    constant_params:
-
-  - name: "__cudaRegisterFatBinary"
-    index: 82
-    supported: true
     parent_name: "__cudaRegisterFatBinary"
+    prototype: "void** __cudaRegisterFatBinary(void *fatCubin);"
+    parser_type: "customized"
+    worker_type: "customized"
+    is_sync: true
+    # parser
+    type: "create_resource"
+    create_edges:
+    delete_edges:
+    in_edges:
+    out_edges:
+    inout_edges:
+    # worker
+    involve_membus: false
+    need_stream_sync: false
+    constant_params:
+
+  - name: "__cudaRegisterFatBinaryEnd"
+    index: 81
+    supported: false
+    parent_name: "__cudaRegisterFatBinaryEnd"
+    prototype: "void __cudaRegisterFatBinaryEnd(void **fatCubinHandle);"
     parser_type: "customized"
     worker_type: "customized"
     is_sync: true
@@ -81,10 +62,123 @@ apis:
     constant_params:
 
   - name: "__cudaUnregisterFatBinary"
-    index: 83
+    index: 82
     supported: false
+    parent_name: "__cudaUnregisterFatBinary"
+    prototype: "void __cudaUnregisterFatBinary(void **fatCubinHandle);"
     # parser
     type: "delete_resource"
+    create_edges:
+    delete_edges:
+    in_edges:
+    out_edges:
+    inout_edges:
+    # worker
+    involve_membus: false
+    need_stream_sync: false
+    constant_params:
+
+  - name: "__cudaRegisterVar"
+    index: 83
+    supported: true
+    parent_name: "__cudaRegisterVar"
+    prototype: "void __cudaRegisterVar(void **fatCubinHandle, char *hostVar, char *deviceAddress, const char *deviceName, int ext, size_t size, int constant, int global);"
+    parser_type: "customized"
+    worker_type: "customized"
+    is_sync: true
+    # parser
+    type: "create_resource"
+    create_edges:
+    delete_edges:
+    in_edges:
+    out_edges:
+    inout_edges:
+    # worker
+    involve_membus: false
+    need_stream_sync: false
+    constant_params:
+
+  - name: "__cudaRegisterManagedVar"
+    index: 84
+    supported: false
+    parent_name: "__cudaRegisterManagedVar"
+    prototype: "void __cudaRegisterManagedVar(void **fatCubinHandle, void **hostVarPtrAddress, char *deviceAddress, const char *deviceName, int ext, size_t size, int constant, int global);"
+    parser_type: "customized"
+    worker_type: "customized"
+    is_sync: true
+    # parser
+    type: "create_resource"
+    create_edges:
+    delete_edges:
+    in_edges:
+    out_edges:
+    inout_edges:
+    # worker
+    involve_membus: false
+    need_stream_sync: false
+    constant_params:
+
+  - name: "__cudaInitModule"
+    index: 85
+    supported: false
+    parent_name: "__cudaInitModule"
+    prototype: "void __cudaInitModule(void **fatCubinHandle);"
+    # parser
+    type: "set_resource"
+    create_edges:
+    delete_edges:
+    in_edges:
+    out_edges:
+    inout_edges:
+    # worker
+    involve_membus: false
+    need_stream_sync: false
+    constant_params:
+
+  - name: "__cudaRegisterTexture"
+    index: 86
+    supported: false
+    parent_name: "__cudaRegisterTexture"
+    prototype: "void __cudaRegisterTexture(void **fatCubinHandle, const struct textureReference *hostVar, const void **deviceAddress, const char *deviceName, int dim, int norm, int ext);"
+    # parser
+    type: "create_resource"
+    create_edges:
+    delete_edges:
+    in_edges:
+    out_edges:
+    inout_edges:
+    # worker
+    involve_membus: false
+    need_stream_sync: false
+    constant_params:
+
+  - name: "__cudaRegisterSurface"
+    index: 87
+    supported: false
+    parent_name: "__cudaRegisterSurface"
+    prototype: "void __cudaRegisterSurface(**fatCubinHandle, const struct surfaceReference *hostVar, const void **deviceAddress, const char *deviceName, int dim, int ext);"
+    # parser
+    type: "create_resource"
+    create_edges:
+    delete_edges:
+    in_edges:
+    out_edges:
+    inout_edges:
+    # worker
+    involve_membus: false
+    need_stream_sync: false
+    constant_params:
+
+  - name: "__cudaRegisterFunction"
+    index: 88
+    supported: true
+    parent_name: "__cudaRegisterFunction"
+    prototype: "void __cudaRegisterFunction(void **fatCubinHandle, const char *hostFun, char *deviceFun, const char *deviceName, int thread_limit, uint3 *tid, uint3 *bid, dim3 *bDim, dim3 *gDim, int *wSize);"
+    parser_type: "customized"
+    worker_type: "customized"
+    is_sync: true
+    # parser
+    type: "create_resource"
     create_edges:
     delete_edges:
     in_edges:

@@ -101,8 +101,7 @@ fprintf(stdout, "\n");                                      \
 #define POS_ERROR(...)          \
 {                               \
 _POS_ERROR(__VA_ARGS__)         \
-fflush(0);                      \
-throw "SHUTDOWN BY POS ERROR";  \
+fflush(stdout);                 \
 exit(1);                        \
 }
 
@@ -113,8 +112,7 @@ exit(1);                        \
 #define POS_ERROR_C(...)        \
 {                               \
 _POS_ERROR_C(__VA_ARGS__)       \
-fflush(0);                      \
-throw "SHUTDOWN BY POS ERROR";  \
+fflush(stdout);                 \
 exit(1);                        \
 }
 
@@ -124,9 +122,8 @@ exit(1);                        \
 #define POS_ERROR_DETAIL(...)   \
 {                               \
 _POS_ERROR(__VA_ARGS__)         \
-_POS_PRINT_POSITION(stderr)     \
-fflush(0);                      \
-throw "SHUTDOWN BY POS ERROR";  \
+_POS_PRINT_POSITION(stdout)     \
+fflush(stdout);                 \
 exit(1);                        \
 }
 
@@ -137,8 +134,8 @@ exit(1);                        \
 #define POS_ERROR_C_DETAIL(...) \
 {                               \
 _POS_ERROR_C(__VA_ARGS__)       \
-_POS_PRINT_POSITION(stderr)     \
-fflush(0);                      \
+_POS_PRINT_POSITION(stdout)     \
+fflush(stdout);                 \
 throw "SHUTDOWN BY POS ERROR";  \
 exit(1);                        \
 }
@@ -153,8 +150,8 @@ exit(1);                        \
 
 #if POS_PRINT_WARN
 /*!
-    * \brief   print warn message
-    */
+ * \brief   print warn message
+ */
 #define POS_WARN(...)                                           \
 {                                                               \
 if constexpr(POS_PRINT_WITH_COLOR)                              \
@@ -163,12 +160,13 @@ else                                                            \
     fprintf(stdout, "|-POS Warn-| ");                           \
 fprintf(stdout, __VA_ARGS__);                                   \
 fprintf(stdout, "\n");                                          \
+fflush(stdout);                                                 \
 }
 
 /*!
-    * \brief   print warn message with class info
-    * \note    this macro should only be expanded within c++ class
-    */
+ * \brief   print warn message with class info
+ * \note    this macro should only be expanded within c++ class
+ */
 #define POS_WARN_C(...)                                     \
 {                                                           \
 if constexpr(POS_PRINT_WITH_COLOR)                          \
@@ -183,15 +181,17 @@ else                                                        \
     );                                                      \
 fprintf(stdout, __VA_ARGS__);                               \
 fprintf(stdout, "\n");                                      \
+fflush(stdout);                                             \
 }
 
 /*!
-    * \brief   print warn message with class info and specific code position
-    */
+ * \brief   print warn message with class info and specific code position
+ */
 #define POS_WARN_DETAIL(...)    \
 {                               \
 POS_WARN(__VA_ARGS__)           \
-_POS_PRINT_POSITION(stderr)     \
+_POS_PRINT_POSITION(stdout)     \
+fflush(stdout);                 \
 }
 
 /*!
@@ -224,6 +224,7 @@ else                                                        \
     fprintf(stdout, "|-POS Log-| ");                        \
 fprintf(stdout, __VA_ARGS__);                               \
 fprintf(stdout, "\n");                                      \
+fflush(stdout);                                             \
 }
 
 /*!
@@ -244,6 +245,7 @@ else                                                        \
     );                                                      \
 fprintf(stdout, __VA_ARGS__);                               \
 fprintf(stdout, "\n");                                      \
+fflush(stdout);                                             \
 }
 
 /*!
@@ -253,6 +255,7 @@ fprintf(stdout, "\n");                                      \
 {                               \
 POS_LOG(__VA_ARGS__)            \
 _POS_PRINT_POSITION(stdout)     \
+fflush(stdout);                 \
 }
 
 /*!
@@ -263,6 +266,7 @@ _POS_PRINT_POSITION(stdout)     \
 {                               \
 POS_LOG_C(__VA_ARGS__)          \
 _POS_PRINT_POSITION(stdout)     \
+fflush(stdout);                 \
 }
 
 /*!
@@ -279,6 +283,7 @@ if constexpr(POS_PRINT_WITH_COLOR) {                        \
 fprintf(stdout, __VA_ARGS__);                               \
 fprintf(stdout, "\n");                                      \
 fprintf(stdout, "\033[0m")                                  \
+fflush(stdout);                                             \
 }
 
 /*!
@@ -302,6 +307,7 @@ if constexpr(POS_PRINT_WITH_COLOR){                         \
 fprintf(stdout, __VA_ARGS__);                               \
 fprintf(stdout, "\n");                                      \
 fprintf(stdout, "\033[0m");                                 \
+fflush(stdout);                                             \
 }
 
 /*!
@@ -312,6 +318,7 @@ fprintf(stdout, "\033[0m");                                 \
 {                               \
 POS_OLD_LOG(__VA_ARGS__)        \
 _POS_PRINT_POSITION(stdout)     \
+fflush(stdout);                 \
 }
 
 /*!
@@ -322,6 +329,7 @@ _POS_PRINT_POSITION(stdout)     \
 {                                   \
 POS_OLD_LOG_C(__VA_ARGS__)          \
 _POS_PRINT_POSITION(stdout)         \
+fflush(stdout);                     \
 }
 
 #else
@@ -349,6 +357,7 @@ else                                                            \
     fprintf(stdout, "|-POS Debug-| ");                          \
 fprintf(stdout, __VA_ARGS__);                                   \
 fprintf(stdout, "\n");                                          \
+fflush(stdout);                                                 \
 }
 
 /*!
@@ -369,6 +378,7 @@ else                                                        \
     );                                                      \
 fprintf(stdout, __VA_ARGS__);                               \
 fprintf(stdout, "\n");                                      \
+fflush(stdout);                                             \
 }
 
 /*!
@@ -378,6 +388,7 @@ fprintf(stdout, "\n");                                      \
 {                               \
 POS_DEBUG(__VA_ARGS__)          \
 _POS_PRINT_POSITION(stdout)     \
+fflush(stdout);                 \
 }
 
 /*!
@@ -388,6 +399,7 @@ _POS_PRINT_POSITION(stdout)     \
 {                               \
 POS_DEBUG_C(__VA_ARGS__)        \
 _POS_PRINT_POSITION(stdout)     \
+fflush(stdout);                 \
 }
 #else
 #define POS_DEBUG(...)

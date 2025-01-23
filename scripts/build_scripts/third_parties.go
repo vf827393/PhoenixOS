@@ -27,6 +27,7 @@ const (
 	KUuidPath 		= "third_party/util-linux"
 	KCriuPath 		= "third_party/criu"
 	KGoogleTestPath = "third_party/googletest"
+	KLLVMPath		= "third_party/llvm-project"
 	KLibClangPath   = "third_party/libclang-static-build"
 	KLibYamlCppPath = "third_party/yaml-cpp"
 	kProtobufPath   = "third_party/protobuf"
@@ -310,27 +311,27 @@ func CRIB_LibClang(cmdOpt CmdOptions, buildConf BuildConfigs, logger *log.Logger
 		cd %s/%s
 		
 		rm -rf build
-		mkdir build && cd build
-		cmake .. -DCMAKE_INSTALL_PREFIX=.. 										>>{{.LOG_PATH__}} 2>&1
-		make install -j 														>>{{.LOG_PATH__}} 2>&1
-		cp ../lib/libclang.so {{.LOCAL_LIB_PATH__}}/libclang.so 				>>{{.LOG_PATH__}} 2>&1
-		cp ../lib/libclang.so.13 {{.LOCAL_LIB_PATH__}}/libclang.so.13 			>>{{.LOG_PATH__}} 2>&1
-		cp ../lib/libclang.so.VERSION {{.LOCAL_LIB_PATH__}}/libclang.so.VERSION >>{{.LOG_PATH__}} 2>&1
-		cp -r ../include/clang-c {{.LOCAL_INC_PATH__}}/clang-c 					>>{{.LOG_PATH__}} 2>&1
+		
+		mkdir build																					
+		cd build										
+		cmake -DLLVM_ENABLE_PROJECTS=clang -DCMAKE_BUILD_TYPE=Release -G "Unix Makefiles" ../llvm	>>{{.LOG_PATH__}} 2>&1
+		make -j																						>>{{.LOG_PATH__}} 2>&1
+		
+		cp ./lib/libclang.so {{.LOCAL_LIB_PATH__}}/libclang.so 							>>{{.LOG_PATH__}} 2>&1
+		cp ./lib/libclang.so.20.0git {{.LOCAL_LIB_PATH__}}/libclang.so.20.0git 			>>{{.LOG_PATH__}} 2>&1
+		cp ./lib/libclang.so.20.0.0git {{.LOCAL_LIB_PATH__}}/libclang.so.20.0.0git 		>>{{.LOG_PATH__}} 2>&1
+		cp -r ../clang/include/clang-c {{.LOCAL_INC_PATH__}}/clang-c 					>>{{.LOG_PATH__}} 2>&1
 		`,
-		cmdOpt.RootDir, KLibClangPath,
+		cmdOpt.RootDir, KLLVMPath,
 	)
 
 	install_script := fmt.Sprintf(`
 		#!/bin/bash
 		set -e
 		cd %s/%s
-		cp ./lib/libclang.so {{.SYSTEM_LIB_PATH__}}/libclang.so 				>>{{.LOG_PATH__}} 2>&1
-		cp ./lib/libclang.so.13 {{.SYSTEM_LIB_PATH__}}/libclang.so.13 			>>{{.LOG_PATH__}} 2>&1
-		cp ./lib/libclang.so.VERSION {{.SYSTEM_LIB_PATH__}}/libclang.so.VERSION >>{{.LOG_PATH__}} 2>&1
-		cp -r ./include/clang-c {{.SYSTEM_INC_PATH__}}/clang-c 					>>{{.LOG_PATH__}} 2>&1
+		make install	>>{{.LOG_PATH__}} 2>&1
 		`,
-		cmdOpt.RootDir, KLibClangPath,
+		cmdOpt.RootDir, KLLVMPath,
 	)
 
 	clean_script := fmt.Sprintf(`
@@ -342,20 +343,17 @@ func CRIB_LibClang(cmdOpt CmdOptions, buildConf BuildConfigs, logger *log.Logger
 		rm -rf share										>>{{.LOG_PATH__}} 2>&1
 		# clean local installation
 		rm -f {{.LOCAL_LIB_PATH__}}/libclang.so				>>{{.LOG_PATH__}} 2>&1
-		rm -f {{.LOCAL_LIB_PATH__}}/libclang.so.13			>>{{.LOG_PATH__}} 2>&1
-		rm -f {{.LOCAL_LIB_PATH__}}/libclang.so.VERSION		>>{{.LOG_PATH__}} 2>&1
+		rm -f {{.LOCAL_LIB_PATH__}}/libclang.so.20.0git		>>{{.LOG_PATH__}} 2>&1
+		rm -f {{.LOCAL_LIB_PATH__}}/libclang.so.20.0.0git	>>{{.LOG_PATH__}} 2>&1
 		rm -rf {{.LOCAL_INC_PATH__}}/clang-c				>>{{.LOG_PATH__}} 2>&1
 		# clean system installation
-		rm -f {{.SYSTEM_LIB_PATH__}}/libclang.so			>>{{.LOG_PATH__}} 2>&1
-		rm -f {{.SYSTEM_LIB_PATH__}}/libclang.so.13			>>{{.LOG_PATH__}} 2>&1
-		rm -f {{.SYSTEM_LIB_PATH__}}/libclang.so.VERSION	>>{{.LOG_PATH__}} 2>&1
-		rm -rf {{.SYSTEM_INC_PATH__}}/clang-c				>>{{.LOG_PATH__}} 2>&1
+		# never mind
 		`,
-		cmdOpt.RootDir, KLibClangPath,
+		cmdOpt.RootDir, KLLVMPath,
 	)
 
 	unitOpt := UnitOptions{
-		Name:          "LibClang",
+		Name:          "LLVM",
 		BuildScript:   build_script,
 		RunScript:     "",
 		InstallScript: install_script,

@@ -40,7 +40,7 @@ func CRIB_PhOS_CUDA_Autogen(cmdOpt CmdOptions, buildConf BuildConfigs, logger *l
 		rm -rf ./pos/include
 		mkdir -p ./pos/include
 		{{.CMD_COPY_COMMON_HEADER__}}
-
+		
 		rm -rf ./build
 		meson build 	>>{{.LOG_PATH__}} 2>&1
 		cd build

@@ -114,6 +114,14 @@ typedef struct pos_support_api_meta {
     //          cudaMemcpyD2H and cudaMemcpyD2D's parent
     std::string parent_name;
 
+    // manully record the prototype of some functions that
+    // we failed to extract prototype from vendor's header
+    // e.g., __cudaRegisterFatbin
+    std::string prototype;
+
+    // name of the library that this API locates at
+    std::string library_name;
+
     // type of the API
     pos_api_type_t api_type;
 
@@ -284,12 +292,14 @@ class POSAutogener {
      *  \param  header_file_meta            metadata of the parsed yaml file
      *  \param  need_init_header_file_meta  whether one needs to iniatialize header_file_meta
      *                                      only the first subfile should be true
+     *  \param  library_name                name of the API's library
      *  \return POS_SUCCESS for successfully parsed 
      */
     pos_retval_t __collect_pos_support_yaml(
         const std::string& file_path,
         pos_support_header_file_meta_t *header_file_meta,
-        bool need_init_header_file_meta
+        bool need_init_header_file_meta,
+        std::string library_name
     );
 
 
