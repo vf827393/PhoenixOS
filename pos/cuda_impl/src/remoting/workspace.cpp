@@ -24,6 +24,9 @@
 #include "pos/cuda_impl/workspace.h"
 
 
+extern "C" {
+
+
 POSWorkspace_CUDA* pos_create_workspace_cuda(){
     pos_retval_t retval = POS_SUCCESS;
     POSWorkspace_CUDA *pos_cuda_ws = nullptr;
@@ -34,7 +37,7 @@ POSWorkspace_CUDA* pos_create_workspace_cuda(){
         goto exit;
     }
 
-exit:
+ exit:
     if(unlikely(retval != POS_SUCCESS)){
         if(pos_cuda_ws != nullptr){ delete pos_cuda_ws; }
         pos_cuda_ws = nullptr;
@@ -78,3 +81,6 @@ int pos_process(
     }
     return pos_cuda_ws->pos_process(api_id, uuid, params);
 }
+
+
+} // extern "C"

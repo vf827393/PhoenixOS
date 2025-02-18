@@ -23,6 +23,8 @@
 #include "pos/include/agent.h"
 
 
+extern "C" {
+
 POSAgent* pos_create_agent(){
     POSAgent *pos_agent = nullptr;
     POS_CHECK_POINTER(pos_agent = new POSAgent());
@@ -35,3 +37,5 @@ int pos_destory_agent(POSAgent* pos_agent){
     delete pos_agent;
     return 0;
 }
+
+} // extern "C"
