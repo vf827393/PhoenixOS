@@ -179,7 +179,7 @@ func CRIB_PhOS_CUDA(cmdOpt CmdOptions, buildConf BuildConfigs, logger *log.Logge
                     tmux kill-session -t cargo_installer
                 fi
                 tmux new -s cargo_installer -d
-                tmux send -t cargo_installer "curl https://sh.rustup.rs -sSf | sh; exit 0" ENTER
+                tmux send -t cargo_installer "curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain nightly; exit 0" ENTER
                 tmux send-keys -t cargo_installer C-m
                 echo '. "$HOME/.cargo/env"' >> /etc/profile
                 `,
