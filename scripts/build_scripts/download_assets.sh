@@ -16,7 +16,7 @@
 
 # >>>>>>>>>> common variables <<<<<<<<<<
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-assets_dir=$script_dir/../../assets
+# assets_dir=$script_dir/../../assets
 docker_assets_dir=$script_dir/../../dockerfiles/assets
 third_party_dir=$script_dir/../../third_party
 download_url_prefix=https://github.com/SJTU-IPADS/PhoenixOS-Assets
@@ -44,7 +44,7 @@ wget -P $third_party_dir $download_url_prefix/releases/download/0.10/libclang-st
 tar -zxvf $third_party_dir/libclang-static-build.tar.gz -C $third_party_dir
 
 # go
-wget -P $assets_dir $download_url_prefix/releases/download/0.10/go1.23.2.linux-amd64.tar.gz
+wget -P $third_party_dir $download_url_prefix/releases/download/0.10/go1.23.2.linux-amd64.tar.gz
 
 # nsight system
-wget -P $docker_assets_dir $download_url_prefix/releases/download/0.10/NsightSystems-linux-cli-public-2023.4.1.97-3355750.deb
+# wget -P $docker_assets_dir $download_url_prefix/releases/download/0.10/NsightSystems-linux-cli-public-2023.4.1.97-3355750.deb
