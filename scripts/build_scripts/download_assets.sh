@@ -40,6 +40,11 @@ if [ ! -d "$docker_assets_dir" ]; then
 fi
 
 # libclang-static-build
-git lfs pull
+wget -P $third_party_dir $download_url_prefix/releases/download/0.10/libclang-static-build.tar.gz
 tar -zxvf $third_party_dir/libclang-static-build.tar.gz -C $third_party_dir
 
+# go
+wget -P $assets_dir $download_url_prefix/releases/download/0.10/go1.23.2.linux-amd64.tar.gz
+
+# nsight system
+wget -P $docker_assets_dir $download_url_prefix/releases/download/0.10/NsightSystems-linux-cli-public-2023.4.1.97-3355750.deb
