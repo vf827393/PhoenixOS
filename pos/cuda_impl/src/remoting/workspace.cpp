@@ -26,7 +26,7 @@
 
 extern "C" {
 
-
+// TODO(tianle): add metadata for creating new ws here
 POSWorkspace_CUDA* pos_create_workspace_cuda(){
     pos_retval_t retval = POS_SUCCESS;
     POSWorkspace_CUDA *pos_cuda_ws = nullptr;
