@@ -693,4 +693,76 @@ Returns a cudaPos based on input parameters.
 <td>✗</td>
 <td>✗</td>
 </tr>
+
+<tr>
+<td colspan=3>
+<code>cudaError_t cudaMemcpyH2D ( void* dst, const void* src, size_t count, cudaMemcpyKind kind )</code><br>
+Copies data between host and device (Host to device)
+</td>
+</tr>
+<tr>
+<td>320</td>
+<td>✗</td>
+<td>✗</td>
+</tr>
+
+<tr>
+<td colspan=3>
+<code>cudaError_t cudaMemcpyD2H ( void* dst, const void* src, size_t count, cudaMemcpyKind kind )</code><br>
+Copies data between host and device (Device to host)
+</td>
+</tr>
+<tr>
+<td>321</td>
+<td>✗</td>
+<td>✗</td>
+</tr>
+
+<tr>
+<td colspan=3>
+<code>cudaError_t cudaMemcpyD2D ( void* dst, const void* src, size_t count, cudaMemcpyKind kind )</code><br>
+Copies data between host and device (Device to device)
+</td>
+</tr>
+<tr>
+<td>322</td>
+<td>✗</td>
+<td>✗</td>
+</tr>
+
+<tr>
+<td colspan=3>
+<code>​cudaError_t cudaMemcpyAsyncH2D ( void* dst, const void* src, size_t count, cudaMemcpyKind kind, cudaStream_t stream = 0 )</code><br>
+Copies data between host and device (Host to device)
+</td>
+</tr>
+<tr>
+<td>323</td>
+<td>✗</td>
+<td>✗</td>
+</tr>
+
+<tr>
+<td colspan=3>
+<code>​cudaError_t cudaMemcpyAsyncD2H ( void* dst, const void* src, size_t count, cudaMemcpyKind kind, cudaStream_t stream = 0 )</code><br>
+Copies data between host and device (Device to host)
+</td>
+</tr>
+<tr>
+<td>324</td>
+<td>✗</td>
+<td>✗</td>
+</tr>
+
+<tr>
+<td colspan=3>
+<code>​cudaError_t cudaMemcpyAsyncD2D ( void* dst, const void* src, size_t count, cudaMemcpyKind kind, cudaStream_t stream = 0 )</code><br>
+Copies data between host and device (Device to device)
+</td>
+</tr>
+<tr>
+<td>325</td>
+<td>✗</td>
+<td>✗</td>
+</tr>
 </table>

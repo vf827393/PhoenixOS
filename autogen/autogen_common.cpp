@@ -150,7 +150,6 @@ pos_retval_t POSAutogener::collect_vendor_header_files(){
             // entry.path() == /usr/local/cuda-11.3/include/crt/host_runtime.h
             // the diff should be crt/host_runtime.h
             relative_path = std::filesystem::path(entry.path()).lexically_relative(header_file_path);
-            printf("%s\n", relative_path.c_str());
 
             if(this->_supported_header_file_meta_map.count(relative_path) == 0){
                 POS_BACK_LINE;
@@ -319,7 +318,7 @@ pos_retval_t POSAutogener::collect_vendor_header_files(){
                     retval = POS_FAILED_NOT_EXIST;
                     goto exit;
                 } else {
-                    POS_ASSERT(support_api_meta->parser_type == "customized" and support_api_meta->worker_type == "customized");
+                    // POS_ASSERT(support_api_meta->parser_type == "customized" and support_api_meta->worker_type == "customized");
 
                     // we append the clang parsing of the API here
                     retval = __parse_api_prototype(support_api_meta->prototype, vendor_header_file_meta);

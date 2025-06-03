@@ -34,6 +34,8 @@ uint32_t get_handle_type_by_name(std::string& handle_type){
         return kPOS_ResourceTypeId_CUDA_Stream;
     } else if(handle_type == std::string("cuda_event")){
         return kPOS_ResourceTypeId_CUDA_Event;
+    } else if(handle_type == std::string("cublas_context")){
+        return kPOS_ResourceTypeId_cuBLAS_Context;
     } else {
         POS_ERROR_DETAIL(
             "invalid parameter type detected: given_type(%s)", handle_type.c_str()

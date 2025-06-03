@@ -15,14 +15,35 @@
 # CUDA: 11.3
 # Type: cuBLAS Helper Functions
 
-header_file_name: "cublas_v2.h"
+header_file_name: "cublas_api.h"
 dependent_headers:
   - "cublas_v2.h"
 successful_retval: "CUBLAS_STATUS_SUCCESS"
 apis:
+  # cublasStatus_t cublasCreate_v2(cublasHandle_t *handle)
   - name: "cublasCreate"
     index: 1100
     supported: false
+    parent_name: "cublasCreate_v2"
+    # FIXME(zhuobin): our autogen failed to parse cublas header (cublas_v2.h, cublas_api.h)
+    prototype: "cublasStatus_t cublasCreate_v2(cublasHandle_t *handle)"
+    parser_type: "default"
+    worker_type: "default"
+    is_sync: true
+    # parser
+    type: "create_resource"
+    create_edges:
+    delete_edges:
+    in_edges:
+      - param_index: 0
+        handle_type: "cuda_context"
+        handle_source: "from_last_used"
+    out_edges:
+    inout_edges:
+    # worker
+    involve_membus: false
+    need_stream_sync: false
+    constant_params:
 
   - name: "cublasDestroy"
     index: 1101
@@ -36,9 +57,33 @@ apis:
     index: 1103
     supported: false
 
+  # cublasStatus_t cublasSetStream(cublasHandle_t handle, cudaStream_t streamId)
   - name: "cublasSetStream"
     index: 1104
     supported: false
+    parent_name: "cublasSetStream_v2"
+    # FIXME(zhuobin): our autogen failed to parse cublas header (cublas_v2.h, cublas_api.h)
+    prototype: "cublasStatus_t cublasSetStream(cublasHandle_t handle, cudaStream_t streamId)"
+    parser_type: "default"
+    worker_type: "default"
+    is_sync: false
+    # parser
+    type: "create_resource"
+    create_edges:
+    delete_edges:
+    in_edges:
+      - param_index: 2
+        handle_type: "cuda_stream"
+        handle_source: "from_param"
+    out_edges:
+      - param_index: 1
+        handle_type: "cublas_context"
+        handle_source: "from_param"
+    inout_edges:
+    # worker
+    involve_membus: false
+    need_stream_sync: false
+    constant_params:
 
   - name: "cublasSetWorkspace"
     index: 1105
@@ -96,9 +141,30 @@ apis:
     index: 1118
     supported: false
 
+  # cublasStatus_t cublasSetMathMode(cublasHandle_t handle, cublasMath_t mode)
   - name: "cublasSetMathMode"
     index: 1119
     supported: false
+    parent_name: "cublasSetMathMode"
+    # FIXME(zhuobin): our autogen failed to parse cublas header (cublas_v2.h, cublas_api.h)
+    prototype: "cublasStatus_t cublasSetMathMode(cublasHandle_t handle, cublasMath_t mode)"
+    parser_type: "default"
+    worker_type: "default"
+    is_sync: false
+    # parser
+    type: "create_resource"
+    create_edges:
+    delete_edges:
+    in_edges:
+    out_edges:
+      - param_index: 1
+        handle_type: "cublas_context"
+        handle_source: "from_param"
+    inout_edges:
+    # worker
+    involve_membus: false
+    need_stream_sync: false
+    constant_params:
 
   - name: "cublasGetMathMode"
     index: 1120
@@ -114,4 +180,4 @@ apis:
 
   - name: "cublasSetLoggerCallback"
     index: 1123
-    supported: false 
+    supported: false
