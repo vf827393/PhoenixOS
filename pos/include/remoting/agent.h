@@ -42,6 +42,14 @@ int pos_destory_agent(POSAgent* pos_agent);
 
 
 /*!
+ *  \brief  get agent uuid
+ *  \param  pos_agent pointer to the agent to be queried
+ *  \return uuid of the agent
+ */
+uint64_t pos_agent_get_uuid(POSAgent* pos_agent);
+
+
+/*!
  *  \brief  query agent ready state
  *  \param  pos_agent pointer to the agent to be queried
  *  \return 0 for non-ready

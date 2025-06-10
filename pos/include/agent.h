@@ -125,6 +125,15 @@ class POSAgent {
     inline bool is_ready(){ return this->_ready; }
 
 
+    /*!
+     *  \brief  get the uuid of the client
+     *  \return uuid of the client
+     */
+    inline pos_client_uuid_t get_uuid() const {
+        return this->_uuid;
+    }
+
+
  private:
     // pointer to the out-of-band client
     POSOobClient *_pos_oob_client;
