@@ -38,4 +38,10 @@ int pos_destory_agent(POSAgent* pos_agent){
     return 0;
 }
 
+
+int pos_query_agent_ready_state(POSAgent* pos_agent){
+    POS_CHECK_POINTER(pos_agent);
+    return pos_agent->is_ready() == true;
+}
+
 } // extern "C"

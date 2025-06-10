@@ -140,8 +140,7 @@ void POSParser::__daemon(){
 
             // set the return code
             apicxt_wqe->api_cxt->return_code = this->_ws->api_mgnr->cast_pos_retval(
-                /* pos_retval */ parser_retval, 
-                /* library_id */ api_meta.library_id
+                /* pos_retval */ parser_retval
             );
 
             if(unlikely(POS_SUCCESS != parser_retval)){

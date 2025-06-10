@@ -40,6 +40,7 @@ sources = []
 # current directory of this meson file
 meson_file_dir = meson.current_source_dir()
 
+scan_src_path = meson.current_source_dir() + '/scripts/utils/glob_src.py'
 
 # >>>>>>>>>>>>>> setup configurations >>>>>>>>>>>>>>
 
@@ -294,7 +295,7 @@ endif
 if conf_runtime_target == 'cuda'
     sources += [
         # common source files
-        'pos/cuda_impl/src/api_context.cpp',
+        # 'pos/cuda_impl/src/api_context.cpp',
         'pos/cuda_impl/src/workspace.cpp',
         'pos/cuda_impl/src/handle.cpp',
         'pos/cuda_impl/src/client.cpp',
@@ -302,15 +303,15 @@ if conf_runtime_target == 'cuda'
         'pos/cuda_impl/src/utils/fatbin.cpp',
 
         # parser functions
-        'pos/cuda_impl/src/parser/cublas.cpp',
-        'pos/cuda_impl/src/parser/cuda_driver.cpp',
-        'pos/cuda_impl/src/parser/cuda_runtime.cpp',
-        'pos/cuda_impl/src/parser/remoting.cpp',
+        # 'pos/cuda_impl/src/parser/cublas.cpp',
+        # 'pos/cuda_impl/src/parser/cuda_driver.cpp',
+        # 'pos/cuda_impl/src/parser/cuda_runtime.cpp',
+        # 'pos/cuda_impl/src/parser/remoting.cpp',
 
         # worker functions
-        'pos/cuda_impl/src/worker/cublas.cpp',
-        'pos/cuda_impl/src/worker/cuda_driver.cpp',
-        'pos/cuda_impl/src/worker/cuda_runtime.cpp',
+        # 'pos/cuda_impl/src/worker/cublas.cpp',
+        # 'pos/cuda_impl/src/worker/cuda_driver.cpp',
+        # 'pos/cuda_impl/src/worker/cuda_runtime.cpp',
 
         # cuda handles
         'pos/cuda_impl/src/handle/context.cpp',
@@ -340,6 +341,13 @@ if conf_runtime_target == 'cuda'
 endif
 
 inc_dirs += ['./']
+
+
+# >>>>>>>>>>>>>> setup autogen source and includes >>>>>>>>>>>>>>
+
+sources +=  run_command('python3', files(scan_src_path), 'autogen/generated', check: false).stdout().strip().split('\n')
+inc_dirs += ['autogen/generated']
+
 
 # >>>>>>>>>>>>>> setup third party dependencies >>>>>>>>>>>>>>
 ld_args += ['-lyaml-cpp']                   # for loading client-side configurations

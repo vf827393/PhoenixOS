@@ -206,8 +206,7 @@ void POSWorker::__daemon_ckpt_sync(){
 
             // cast return code
             wqe->api_cxt->return_code = _ws->api_mgnr->cast_pos_retval(
-                /* pos_retval */ launch_retval, 
-                /* library_id */ api_meta.library_id
+                /* pos_retval */ launch_retval
             );
 
             // check whether the execution is success
@@ -718,8 +717,7 @@ void POSWorker::__daemon_ckpt_async(){
 
             // cast return code
             wqe->api_cxt->return_code = _ws->api_mgnr->cast_pos_retval(
-                /* pos_retval */ launch_retval, 
-                /* library_id */ api_meta.library_id
+                /* pos_retval */ launch_retval
             );
 
             // check whether the execution is success

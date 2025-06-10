@@ -17,6 +17,7 @@
 
 header_file_name: "cuda_runtime_api.h"
 dependent_headers:
+  - "driver_types.h"
   - "cuda_runtime_api.h"
   - "cuda.h"
 successful_retval: "cudaSuccess"

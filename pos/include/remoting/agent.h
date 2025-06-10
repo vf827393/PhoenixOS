@@ -28,7 +28,9 @@
  */
 extern "C" {
 
+
 POSAgent* pos_create_agent();
+
 
 /*!
  *  \brief  destory agent
@@ -37,5 +39,15 @@ POSAgent* pos_create_agent();
  *          1 for failed
  */
 int pos_destory_agent(POSAgent* pos_agent);
+
+
+/*!
+ *  \brief  query agent ready state
+ *  \param  pos_agent pointer to the agent to be queried
+ *  \return 0 for non-ready
+ *          1 for ready
+ */
+int pos_query_agent_ready_state(POSAgent* pos_agent);
+
 
 } // extern "C"

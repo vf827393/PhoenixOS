@@ -116,6 +116,15 @@ class POSAgent {
      */
     inline void set_uuid(pos_client_uuid_t id){ _uuid = id; }
 
+
+    /*!
+     *  \brief  query the ready state of the agent
+     *  \return true for ready
+     *          false for non-ready
+     */
+    inline bool is_ready(){ return this->_ready; }
+
+
  private:
     // pointer to the out-of-band client
     POSOobClient *_pos_oob_client;
@@ -125,6 +134,9 @@ class POSAgent {
 
     // configuration of the agent
     POSAgentConf _agent_conf;
+
+    // state marked whether ready for remoting execution
+    bool _ready;
 };
 
 extern POSAgent *pos_agent;

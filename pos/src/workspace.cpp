@@ -487,7 +487,7 @@ int POSWorkspace::pos_process(
         }
     } else {
         // if this is a async call, we directly return success
-        retval = api_mgnr->cast_pos_retval(POS_SUCCESS, api_meta.library_id);
+        retval = api_mgnr->cast_pos_retval(POS_SUCCESS);
     }
 
 exit:

@@ -99,7 +99,7 @@ exit:
 }
 
 
-POSAgent::POSAgent() : _agent_conf(this) {
+POSAgent::POSAgent() : _agent_conf(this), _ready(true) {
     oob_functions::agent_register_client::oob_call_data_t call_data;
 
     // load configurations
