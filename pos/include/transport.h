@@ -79,7 +79,7 @@ class POSTransport_RDMA : public POSTransport<is_server> {
     * \param   dev_name       name of the IB device to be used
     */
    POSTransport_RDMA(std::string dev_name){ 
-      pos_retval_t tmp_retval;
+        pos_retval_t tmp_retval;
 
         // make sure ib device exist
         // TODO: temp comment this out

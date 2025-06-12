@@ -607,6 +607,7 @@ pos_retval_t POSAutogener::__generate_api_worker(
     
     // add basic headers to the worker file
     worker_file->add_preprocess("#include <iostream>");
+    worker_file->add_preprocess("#include <cstdint>");
     worker_file->add_preprocess("#include \"pos/include/common.h\"");
     worker_file->add_preprocess("#include \"pos/include/client.h\"");
     for(i=0; i<support_api_meta->dependent_headers.size(); i++){
@@ -846,11 +847,17 @@ pos_retval_t POSAutogener::__generate_auxiliary_files(
 
         // define POSApiManager_TARGET::cast_pos_retval(pos_retval_t)
         retval = class_POSApiManager_TARGET->allocate_block(
-            /* field name */ std::string("int cast_pos_retval(pos_retval_t pos_retval) override;"),
+            /* field name */ std::string("int cast_pos_retval(pos_retval_t pos_retval) override"),
             /* new_block */ &class_POSApiManager_TARGET_function_declare_cast_pos_retval,
-            /* need_braces */ false
+            /* need_braces */ true
         );
         POS_CHECK_POINTER(class_POSApiManager_TARGET_function_declare_cast_pos_retval);
+        class_POSApiManager_TARGET_function_declare_cast_pos_retval->append_content(
+            "if(pos_retval == POS_SUCCESS)\n"
+            "   return 0;\n"
+            "else\n"
+            "   return -1;\n"
+        );
 
         // declare pos_is_hijacked function
         func_declare_pos_is_hijacked = new POSCodeGen_CppBlock(
@@ -891,7 +898,7 @@ pos_retval_t POSAutogener::__generate_auxiliary_files(
         api_context_cpp = new POSCodeGen_CppSourceFile(
             this->gen_directory
             + std::string("/")
-            + std::string("api_context.cpp")
+            + std::string("api_context.cu")
         );
         POS_CHECK_POINTER(api_context_cpp);
 
@@ -939,21 +946,21 @@ pos_retval_t POSAutogener::__generate_auxiliary_files(
         );
 
         // define POSApiManager_TARGET::cast_pos_retval
-        function_cast_pos_retval = new POSCodeGen_CppBlock(
-            /* field name */ std::format("int POSApiManager_{}::cast_pos_retval(pos_retval_t pos_retval)", target_uppercase),
-            /* need_braces */ true,
-            /* foot_comment */ "",
-            /* need_ended_semicolon */ false,
-            /* level */ 0
-        );
-        POS_CHECK_POINTER(function_cast_pos_retval);
-        api_context_cpp->add_block(function_cast_pos_retval);
-        function_cast_pos_retval->append_content(
-            "if(pos_retval == POS_SUCCESS)\n"
-            "   return 0;\n"
-            "else\n"
-            "   return -1;\n"
-        );
+        // function_cast_pos_retval = new POSCodeGen_CppBlock(
+        //     /* field name */ std::format("int POSApiManager_{}::cast_pos_retval(pos_retval_t pos_retval)", target_uppercase),
+        //     /* need_braces */ true,
+        //     /* foot_comment */ "",
+        //     /* need_ended_semicolon */ false,
+        //     /* level */ 0
+        // );
+        // POS_CHECK_POINTER(function_cast_pos_retval);
+        // api_context_cpp->add_block(function_cast_pos_retval);
+        // function_cast_pos_retval->append_content(clear
+        //     "if(pos_retval == POS_SUCCESS)\n"
+        //     "   return 0;\n"
+        //     "else\n"
+        //     "   return -1;\n"
+        // );
 
         // define pos_is_hijacked function
         function_pos_is_hijacked = new POSCodeGen_CppBlock(

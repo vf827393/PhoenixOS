@@ -89,22 +89,19 @@ int pos_remoting_stop_query(POSWorkspace_CUDA *pos_cuda_ws, uint64_t uuid){
 
     POS_CHECK_POINTER(pos_cuda_ws);
 
-    if(unlikely(this->_client_list.size() <= uuid)){
-        POS_WARN_C("try to require access to non-exist client: uuid(%lu)", uuid);
-        return 0;
-    }
-
-    client = this->_client_list[uuid];
-    if(unlikely(client == nullptr)){
-        POS_WARN_C("try to require access to non-exist client: uuid(%lu)", uuid);
-        retval = 1;
+    if(unlikely(
+        nullptr == (client = pos_cuda_ws->get_client_by_pid(uuid))
+    )){
+        POS_WARN("try to require access to non-exist client: uuid(%lu)", uuid);
+        retval = 0;
         goto exit;
     }
+    POS_CHECK_POINTER(client);
 
     if(unlikely(client->offline_counter > 0)){
         // confirm to the pos worker thread
         if(client->offline_counter == 1){
-            POS_DEBUG_C("confirm client offline: uuid(%lu)", uuid);
+            POS_DEBUG("confirm client offline: uuid(%lu)", uuid);
             client->offline_counter += 1;
         }
         retval = 1;
@@ -122,21 +119,17 @@ int pos_remoting_stop_confirm(POSWorkspace_CUDA *pos_cuda_ws, uint64_t uuid){
 
     POS_CHECK_POINTER(pos_cuda_ws);
 
-    if(unlikely(this->_client_list.size() <= uuid)){
-        POS_WARN_C("try to require access to non-exist client: uuid(%lu)", uuid);
-        retval = -1;
+    if(unlikely(
+        nullptr == (client = pos_cuda_ws->get_client_by_pid(uuid))
+    )){
+        POS_WARN("try to require access to non-exist client: uuid(%lu)", uuid);
+        retval = 0;
         goto exit;
     }
-
-    client = this->_client_list[uuid];
-    if(unlikely(client == nullptr)){
-        POS_WARN_C("try to require access to non-exist client: uuid(%lu)", uuid);
-        retval = -1;
-        goto exit;
-    }
+    POS_CHECK_POINTER(client);
 
     POS_ASSERT(client->offline_counter == 1);
-    POS_DEBUG_C("confirm remoting stop: uuid(%lu)", uuid);
+    POS_DEBUG("confirm remoting stop: uuid(%lu)", uuid);
     client->offline_counter += 1;
 
 exit:

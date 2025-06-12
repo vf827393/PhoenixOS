@@ -97,7 +97,7 @@ enum pos_apicxt_typeid_t : uint8_t {
 class POSApiManager {
  public:
     POSApiManager(){}
-    ~POSApiManager() = default;
+    ~POSApiManager(){};
 
     /*!
      *  \brief  register metadata of all API on the platform to the manager
@@ -418,10 +418,13 @@ typedef struct POSAPIContext_QE {
 
 
 #define pos_api_input_handle_offset_server_addr(qe_ptr, index)  \
-    ((void*)((uint64_t)(qe_ptr->input_handle_views[index].handle->server_addr) + (qe_ptr->input_handle_views[index].offset)))
+    ((uint64_t)(qe_ptr->input_handle_views[index].handle->server_addr) + (qe_ptr->input_handle_views[index].offset))
+    // ((void*)((uint64_t)(qe_ptr->input_handle_views[index].handle->server_addr) + (qe_ptr->input_handle_views[index].offset)))
 
 #define pos_api_output_handle_offset_server_addr(qe_ptr, index)  \
-    ((void*)((uint64_t)(qe_ptr->output_handle_views[index].handle->server_addr) + (qe_ptr->output_handle_views[index].offset)))
+    ((uint64_t)(qe_ptr->output_handle_views[index].handle->server_addr) + (qe_ptr->output_handle_views[index].offset))
+    // ((void*)((uint64_t)(qe_ptr->output_handle_views[index].handle->server_addr) + (qe_ptr->output_handle_views[index].offset)))
 
 #define pos_api_inout_handle_offset_server_addr(qe_ptr, index)  \
-    ((void*)((uint64_t)(qe_ptr->inout_handle_views[index].handle->server_addr) + (qe_ptr->inout_handle_views[index].offset)))
+    ((uint64_t)(qe_ptr->inout_handle_views[index].handle->server_addr) + (qe_ptr->inout_handle_views[index].offset))
+    // ((void*)((uint64_t)(qe_ptr->inout_handle_views[index].handle->server_addr) + (qe_ptr->inout_handle_views[index].offset)))

@@ -70,7 +70,7 @@ pos_retval_t POSAutogener::__collect_pos_support_yaml(
         pos_retval_t retval = POS_SUCCESS;
         uint64_t j, k;
         pos_support_edge_meta_t *edge_meta, *related_edge_meta;
-        std::string handle_type, handle_source, related_handle_type, related_handle_source;
+        std::string handle_type_str, handle_source, related_handle_type, related_handle_source;
         std::vector<pos_support_edge_meta_t*>* related_handles;
 
         POS_CHECK_POINTER(api_meta);
@@ -94,8 +94,9 @@ pos_retval_t POSAutogener::__collect_pos_support_yaml(
             edge_meta->index = edge["param_index"].as<uint32_t>();
 
             // [2] type of the handle involved in this edge
-            handle_type = edge["handle_type"].as<std::string>();
-            edge_meta->handle_type = get_handle_type_by_name(handle_type);
+            handle_type_str = edge["handle_type"].as<std::string>();
+            edge_meta->handle_type = get_handle_type_by_name(handle_type_str);
+            edge_meta->handle_type_str = handle_type_str;
 
             // [3] source of the handle value involved in this edge
             handle_source = edge["handle_source"].as<std::string>();

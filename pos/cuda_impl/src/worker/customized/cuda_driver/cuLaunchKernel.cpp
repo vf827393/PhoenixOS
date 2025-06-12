@@ -58,13 +58,13 @@ namespace cu_launch_kernel {
         }
         wqe->api_cxt->return_code = cuLaunchKernel(
             /* f */ (CUfunction)(function_handle->server_addr),
-            /* gridDimX */ pos_api_param_value(wqe, 1),
-            /* gridDimY */ pos_api_param_value(wqe, 2),
-            /* gridDimZ */ pos_api_param_value(wqe, 3),
-            /* blockDimX */ pos_api_param_value(wqe, 4),
-            /* blockDimY */ pos_api_param_value(wqe, 5),
-            /* blockDimZ */ pos_api_param_value(wqe, 6),
-            /* sharedMemBytes */ pos_api_param_value(wqe, 7),
+            /* gridDimX */ pos_api_param_value(wqe, 1, unsigned int),
+            /* gridDimY */ pos_api_param_value(wqe, 2, unsigned int),
+            /* gridDimZ */ pos_api_param_value(wqe, 3, unsigned int),
+            /* blockDimX */ pos_api_param_value(wqe, 4, unsigned int),
+            /* blockDimY */ pos_api_param_value(wqe, 5, unsigned int),
+            /* blockDimZ */ pos_api_param_value(wqe, 6, unsigned int),
+            /* sharedMemBytes */ pos_api_param_value(wqe, 7, unsigned int),
             /* hStream */ (CUstream)(stream_handle->server_addr),
             /* kernelParams */ cuda_args,
             /* extra */ nullptr

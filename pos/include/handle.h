@@ -714,6 +714,7 @@ class POSHandleManager {
     /* ================================ basic ================================ */
  public:
     // range of the mocked client-side address
+    // NOTE(wei): use different address range for different processes
     #define kPOS_ResourceBaseAddr   0x555500000000
     #define kPOS_ResourceEndAddr    0xFFFFFFFFFFF0
 

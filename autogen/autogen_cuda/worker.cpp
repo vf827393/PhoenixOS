@@ -42,7 +42,7 @@ pos_retval_t POSAutogener::__insert_code_worker_for_target(
         uint16_t create_handle_param_index;
         pos_vendor_param_meta_t *api_param;
         pos_support_edge_meta_t *other_edge;
-        std::string param_list_str, param_str;
+        std::string param_list_str, param_str, type_str;
         bool is_var_duplicated, is_param_formed;
 
         // if this API is for creating new resource, we need to declare the corresponding
@@ -64,6 +64,7 @@ pos_retval_t POSAutogener::__insert_code_worker_for_target(
         param_list_str.clear();
         for(i=0; i<vendor_api_meta->params.size(); i++){
             param_str.clear();
+            type_str.clear();
             POS_CHECK_POINTER(api_param = vendor_api_meta->params[i]);
 
             // find out what is the kind of current parameter
@@ -106,13 +107,11 @@ pos_retval_t POSAutogener::__insert_code_worker_for_target(
                     }
                 }
                 if (support_api_meta->api_type == kPOS_API_Type_Delete_Resource && !is_param_formed) {
+                    POS_ASSERT(support_api_meta->delete_edges.size() == 1);
                     POS_CHECK_POINTER(other_edge = support_api_meta->delete_edges[0]);
                     POS_ASSERT(other_edge->index > 0);
-                    if(other_edge->index - 1 == i){
-                        param_str = std::format("pos_api_delete_handle(wqe, 0)->server_addr");
-                        is_param_formed = true;
-                        break;
-                    }
+                    param_str = std::format("pos_api_delete_handle(wqe, 0)->server_addr");
+                    is_param_formed = true;
                 }
 
                 // try form as values

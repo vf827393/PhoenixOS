@@ -139,7 +139,7 @@ pos_retval_t POSAutogener::__insert_code_parser_for_target(
                     ");\n"
                     "if(unlikely(retval != POS_SUCCESS)){{\n"
                     "   POS_WARN(\n"
-                    "       \"parse({}): no {} was founded: client_addr(%p)\"\n"
+                    "       \"parse({}): no {} was founded: client_addr(%p)\",\n"
                     "       (void*)pos_api_param_value(wqe, {}, uint64_t)\n"
                     "   );\n"
                     "   goto exit;\n"

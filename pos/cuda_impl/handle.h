@@ -19,6 +19,7 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
+#include <set>
 
 #include <sys/resource.h>
 #include <stdint.h>
@@ -44,6 +45,21 @@ enum : pos_resource_typeid_t {
 
     /*! \note   library handle types, define in pos/cuda_impl/handle/xxx.h */
     kPOS_ResourceTypeId_cuBLAS_Context
+};
+
+
+/*!
+ *  \brief  set of supported CUDA handle types
+ */
+static std::set<std::string> set_pos_supported_cuda_handle = {
+    "cuda_context",
+    "cuda_module",
+    "cuda_function",
+    "cuda_var",
+    "cuda_device",
+    "cuda_memory",
+    "cuda_stream",
+    "cuda_event"
 };
 
 

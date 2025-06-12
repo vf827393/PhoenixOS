@@ -22,8 +22,6 @@
 #include "pos/include/workspace.h"
 #include "pos/include/transport.h"
 #include "pos/include/parser.h"
-
-#include "pos/cuda_impl/api_index.h"
 #include "pos/cuda_impl/parser_functions.h"
 
 class POSClient_CUDA;

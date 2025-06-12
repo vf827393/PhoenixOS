@@ -1,5 +1,5 @@
 # >>> project definition
-project('PhoenixOS', ['CPP'],
+project('PhoenixOS', ['cpp', 'cuda'],
 	# Get version number from file.
 	version: run_command(find_program('cat'),files('./VERSION'), check: true).stdout().strip(),
 )
@@ -7,6 +7,7 @@ project_name = 'phoenix_os'
 project_name_abbreviation = 'pos'
 
 add_project_arguments('-O3',  language : 'cpp')
+add_project_arguments('-O3',  language : 'cuda')
 
 # >>>>>>>>>>>>>> build prepare >>>>>>>>>>>>>>
 # get environment variables of the build process
@@ -345,7 +346,11 @@ inc_dirs += ['./']
 
 # >>>>>>>>>>>>>> setup autogen source and includes >>>>>>>>>>>>>>
 
-sources +=  run_command('python3', files(scan_src_path), 'autogen/generated', check: false).stdout().strip().split('\n')
+sources += run_command('python3', files(scan_src_path), 'autogen/generated', check: false).stdout().strip().split('\n')
+if conf_runtime_target == 'cuda'
+    sources += run_command('python3', files(scan_src_path), 'pos/cuda_impl/src/parser', check: false).stdout().strip().split('\n')
+    sources += run_command('python3', files(scan_src_path), 'pos/cuda_impl/src/worker', check: false).stdout().strip().split('\n')
+endif
 inc_dirs += ['autogen/generated']
 
 

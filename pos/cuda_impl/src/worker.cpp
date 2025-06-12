@@ -30,8 +30,6 @@
 #include "pos/include/transport.h"
 #include "pos/include/worker.h"
 #include "pos/include/checkpoint.h"
-
-#include "pos/cuda_impl/api_index.h"
 #include "pos/cuda_impl/handle/memory.h"
 #include "pos/cuda_impl/worker.h"
 
