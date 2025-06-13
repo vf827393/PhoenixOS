@@ -125,7 +125,7 @@ apis:
     delete_edges:
     in_edges:
       - param_index: 0
-        handle_type: "cuda_device"
+        handle_type: "cuda_context"
         handle_source: "from_last_used"
       - param_index: 0
         handle_type: "cuda_stream"

@@ -59,8 +59,13 @@ POSAPIContext::POSAPIContext(uint64_t api_id_, uint64_t retval_size)
 
 
 POSAPIContext_QE::POSAPIContext_QE(
-    uint64_t api_id, pos_client_uuid_t uuid, std::vector<POSAPIParamDesp_t>& param_desps,
-    uint64_t inst_id, void* retval_data, uint64_t retval_size, POSClient* pos_client
+    uint64_t api_id,
+    pos_client_uuid_t uuid, 
+    std::vector<POSAPIParamDesp_t>& param_desps,
+    uint64_t inst_id,
+    void* retval_data,
+    uint64_t retval_size,
+    POSClient* pos_client
 ) : client_id(uuid), client(pos_client), id(inst_id), has_return(false),
     status(kPOS_API_Execute_Status_Init), type(ApiCxt_TypeId_Normal)
 {

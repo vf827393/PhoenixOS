@@ -240,6 +240,7 @@ func CRIB_PhOS_CUDA(cmdOpt CmdOptions, buildConf BuildConfigs, logger *log.Logge
 
 	// ==================== CRIB UnitTest ====================
 	if cmdOpt.WithUnitTest || cmdOpt.DoClean {
+		CRIB_LibGoogleTest(cmdOpt, buildConf, logger)
 		CRIB_PhOS_UnitTest(cmdOpt, buildConf, logger)
 	}
 }

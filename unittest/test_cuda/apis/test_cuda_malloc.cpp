@@ -18,24 +18,21 @@
 
 TEST_F(PhOSCudaTest, cudaMalloc) {
     uint64_t i;
-
-    POSWorkspace_CUDA *ws;
-    POSClient_CUDA *clnt;
-
     cudaError cuda_retval;
-    void *mem_ptr;
+    void *mem_ptr = nullptr;
     std::vector<void*> mem_ptrs;
-    std::vector<size_t> mem_sizes({ 16, 512, KB(1), KB(2), KB(4), KB(8) });
+    std::vector<size_t> mem_sizes({ 
+        16, 32, 64, 128, 256, 512, KB(1), KB(2), KB(4), KB(8)
+    });
 
-    for(size_t mem_size : mem_sizes){
+    for(uint64_t& mem_size : mem_sizes){
         cuda_retval = (cudaError)this->_ws->pos_process( 
-            /* api_id */ CUDA_MALLOC, 
+            /* api_id */ PosApiIndex_cudaMalloc, 
             /* uuid */ this->_clnt->id,
             /* param_desps */ {
+                { .value = &mem_ptr, .size = sizeof(void*) },
                 { .value = &mem_size, .size = sizeof(size_t) }
-            },
-            /* ret_data */ &(mem_ptr),
-            /* ret_data_len */ sizeof(uint64_t)
+            }
         );
         EXPECT_EQ(cudaSuccess, cuda_retval);
         mem_ptrs.push_back(mem_ptr);

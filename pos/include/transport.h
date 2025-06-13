@@ -306,20 +306,20 @@ class POSTransport_RDMA : public POSTransport<is_server> {
    }
 
    // IB device handle
-   struct ibv_device *_ib_dev;
+   struct ibv_device *_ib_dev = nullptr;
 
    // IB context of current process
-	 struct ibv_context *_ib_ctx;
+	 struct ibv_context *_ib_ctx = nullptr;
 
    // IB port attributes
    struct ibv_port_attr _port_attr;
       
    // structures for IB queues
-   ibv_pd *_pd;
-   ibv_cq *_cq;
-   ibv_qp *_qp;
+   ibv_pd *_pd = nullptr;
+   ibv_cq *_cq = nullptr;
+   ibv_qp *_qp = nullptr;
 
    // OOB server / client
-   POSOobServer *_oob_server;
-   POSOobClient *_oob_client;
+   POSOobServer *_oob_server = nullptr;
+   POSOobClient *_oob_client = nullptr;
 };
