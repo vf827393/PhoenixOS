@@ -97,16 +97,17 @@ class POSHandle_CUDA_Module final : public POSHandle_CUDA {
 
 
     /* ==================== checkpoint add/commit/persist ==================== */
- protected:
+ public:
     /*!
      *  \brief  initialize checkpoint bag of this handle
      *  \note   it must be implemented by different implementations of stateful 
      *          handle, as they might require different allocators and deallocators
      *  \return POS_SUCCESS for successfully initialization
      */
-    pos_retval_t __init_ckpt_bag() override;
+    pos_retval_t init_ckpt_bag() override;
 
 
+ protected:
     /*!
      *  \brief  add the state of the resource behind this handle to on-device memory
      *  \param  version_id  version of this checkpoint

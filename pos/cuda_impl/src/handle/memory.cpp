@@ -42,13 +42,6 @@ POSHandle_CUDA_Memory::POSHandle_CUDA_Memory(size_t size_, void* hm, pos_u64id_t
     : POSHandle_CUDA(size_, hm, id_, state_size_)
 {
     this->resource_type_id = kPOS_ResourceTypeId_CUDA_Memory;
-
-#if POS_CONF_EVAL_CkptOptLevel > 0 || POS_CONF_EVAL_MigrOptLevel > 0
-    // initialize checkpoint bag
-    if(unlikely(POS_SUCCESS != this->__init_ckpt_bag())){
-        POS_ERROR_C_DETAIL("failed to inilialize checkpoint bag");
-    }
-#endif
 }
 
 
@@ -124,7 +117,7 @@ exit:
 }
 
 
-pos_retval_t POSHandle_CUDA_Memory::__init_ckpt_bag(){ 
+pos_retval_t POSHandle_CUDA_Memory::init_ckpt_bag(){ 
     this->ckpt_bag = new POSCheckpointBag(
         this->state_size,
         this->__checkpoint_allocator,
@@ -497,27 +490,35 @@ void* POSHandle_CUDA_Memory::__checkpoint_allocator(uint64_t state_size) {
         return nullptr;
     }
 
-    cuda_rt_retval = cudaMallocHost(&ptr, state_size);
-    if(unlikely(cuda_rt_retval != cudaSuccess)){
-        POS_WARN_DETAIL(
-            "failed cudaMallocHost, error(%d), state_size(%lu)",
-            cuda_rt_retval, state_size
-        );
-        return nullptr;
-    }
+    // TODO(zhuobin): sometimes pageable memory could failed, need to debug
+    // cuda_rt_retval = cudaMallocHost(&ptr, state_size);
+    // if(unlikely(cuda_rt_retval != cudaSuccess)){
+    //     POS_WARN_DETAIL(
+    //         "failed cudaMallocHost, error(%d), state_size(%lu)",
+    //         cuda_rt_retval, state_size
+    //     );
+    //     return nullptr;
+    // }
+
+    // NOTE(zhuobin): tmp fixing
+    POS_CHECK_POINTER(ptr = malloc(state_size));
 
     return ptr;
 }
 
 
 void POSHandle_CUDA_Memory::__checkpoint_deallocator(void* data){
-    cudaError_t cuda_rt_retval;
-    if(likely(data != nullptr)){
-        cuda_rt_retval = cudaFreeHost(data);
-        if(unlikely(cuda_rt_retval != cudaSuccess)){
-            POS_WARN_DETAIL("failed cudaFreeHost, error: %d", cuda_rt_retval);
-        }
-    }
+    // TODO(zhuobin): sometimes pageable memory could failed, need to debug
+    // cudaError_t cuda_rt_retval;
+    // if(likely(data != nullptr)){
+    //     cuda_rt_retval = cudaFreeHost(data);
+    //     if(unlikely(cuda_rt_retval != cudaSuccess)){
+    //         POS_WARN_DETAIL("failed cudaFreeHost, error: %d", cuda_rt_retval);
+    //     }
+    // }
+
+    // NOTE(zhuobin): tmp fixing
+    if(likely(data != nullptr)){ free(data); }
 }
 
 

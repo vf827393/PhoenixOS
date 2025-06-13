@@ -104,6 +104,20 @@ namespace cuda_malloc {
             goto exit;
         }
 
+        #if POS_CONF_EVAL_CkptOptLevel > 0 || POS_CONF_EVAL_MigrOptLevel > 0
+            // initialize checkpoint bag
+            if(unlikely(POS_SUCCESS != (
+                retval = memory_handle->init_ckpt_bag()
+            ))){
+                POS_WARN_DETAIL(
+                    "failed to inilialize checkpoint bag of the mamoery handle: client_addr(%p), state_size(%lu)",
+                    memory_handle->client_addr, memory_handle->state_size
+                );
+                retval = POS_FAILED;
+                goto exit;
+            }
+        #endif
+
         memory_handle->mark_status(kPOS_HandleStatus_Active);
 
     exit:

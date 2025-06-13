@@ -16,13 +16,16 @@
 
 #include "test_cuda/test_cuda_common.h"
 
-TEST_F(PhOSCudaTest, cudaMalloc) {
+TEST_F(PhOSCudaTest, cudaMallocFree) {
     uint64_t i;
     cudaError cuda_retval;
     void *mem_ptr = nullptr;
-    std::vector<void*> mem_ptrs;
+    void **mem_ptr_ = &mem_ptr;
+    std::vector<void*> allocated_mem_ptrs;
     std::vector<size_t> mem_sizes({ 
-        16, 32, 64, 128, 256, 512, KB(1), KB(2), KB(4), KB(8)
+        1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 
+        KB(1), KB(2), KB(4), KB(8), KB(16), KB(32), KB(64), KB(128), KB(256), KB(512),
+        MB(1), MB(2), MB(4), MB(8), MB(16), MB(32), MB(64), MB(128), MB(256), MB(512)
     });
 
     for(uint64_t& mem_size : mem_sizes){
@@ -30,11 +33,22 @@ TEST_F(PhOSCudaTest, cudaMalloc) {
             /* api_id */ PosApiIndex_cudaMalloc, 
             /* uuid */ this->_clnt->id,
             /* param_desps */ {
-                { .value = &mem_ptr, .size = sizeof(void*) },
+                { .value = &mem_ptr_, .size = sizeof(void**) },
                 { .value = &mem_size, .size = sizeof(size_t) }
             }
         );
         EXPECT_EQ(cudaSuccess, cuda_retval);
-        mem_ptrs.push_back(mem_ptr);
+        allocated_mem_ptrs.push_back(mem_ptr);
+    }
+
+    for(void*& allocated_mem_ptr : allocated_mem_ptrs){
+        cuda_retval = (cudaError)this->_ws->pos_process( 
+            /* api_id */ PosApiIndex_cudaFree, 
+            /* uuid */ this->_clnt->id,
+            /* param_desps */ {
+                { .value = &allocated_mem_ptr, .size = sizeof(void*) }
+            }
+        );
+        EXPECT_EQ(cudaSuccess, cuda_retval);
     }
 }

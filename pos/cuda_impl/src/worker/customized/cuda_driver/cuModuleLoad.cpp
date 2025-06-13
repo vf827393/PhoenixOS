@@ -45,7 +45,6 @@ namespace cu_module_load {
         );
         if(likely(CUDA_SUCCESS == wqe->api_cxt->return_code)){
             module_handle->set_server_addr((void*)module);
-            module_handle->mark_status(kPOS_HandleStatus_Active); // TODO: remove this
         } else {
             POS_WARN("failed to cuModuleLoadData normal module")
         }
@@ -61,6 +60,32 @@ namespace cu_module_load {
         // } else {
         //     POS_WARN("failed to cuModuleLoadData patched module")
         // }
+
+        #if POS_CONF_EVAL_CkptOptLevel > 0 || POS_CONF_EVAL_MigrOptLevel > 0
+            // initialize checkpoint bag
+            if(unlikely(POS_SUCCESS != (
+                retval = module_handle->init_ckpt_bag()
+            ))){
+                POS_WARN_DETAIL("failed to inilialize checkpoint bag of module handle");
+                retval = POS_FAILED;
+                goto exit;
+            }
+
+            // set host checkpoint record
+            if(unlikely(POS_SUCCESS != (
+                retval = module_handle->checkpoint_commit_host(
+                    /* version_id */ wqe->id,
+                    /* data */ pos_api_param_addr(wqe, 1),
+                    /* size */ pos_api_param_size(wqe, 1)
+                )
+            ))){
+                POS_WARN_DETAIL("failed to checkpoint commit host of module handle");
+                retval = POS_FAILED;
+                goto exit;
+            }
+        #endif
+
+        module_handle->mark_status(kPOS_HandleStatus_Active);
 
         if(unlikely(CUDA_SUCCESS != wqe->api_cxt->return_code)){ 
             POSWorker::__restore(ws, wqe);

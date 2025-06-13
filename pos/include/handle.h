@@ -337,6 +337,13 @@ class POSHandle {
      *  \return POS_SUCCESS for successfully tear down
      */
     virtual pos_retval_t tear_down(){ return POS_FAILED_NOT_IMPLEMENTED; }
+
+
+ protected:
+    /*!
+     *  \note   the belonging handle manager
+     */
+    void *_hm;
     /* ====================== basic handle management ======================== */
 
 
@@ -468,9 +475,18 @@ class POSHandle {
      *  \brief  bag of checkpoints, implemented by different ckpt optimization level
      *  \note   it must be initialized by different implementations of stateful handle,
      *          as they might require different allocators and deallocators, see function
-     *          __init_ckpt_bag
+     *          init_ckpt_bag
      */
     POSCheckpointBag *ckpt_bag;
+
+
+    /*!
+     *  \brief  initialize checkpoint bag of this handle
+     *  \note   it must be implemented by different implementations of stateful 
+     *          handle, as they might require different allocators and deallocators
+     *  \return POS_SUCCESS for successfully initialization
+     */
+    virtual pos_retval_t init_ckpt_bag(){ return POS_FAILED_NOT_IMPLEMENTED; }
 
 
     /*!
@@ -686,22 +702,6 @@ class POSHandle {
      */
     virtual pos_retval_t __sync_stream(uint64_t stream_id=0){ return POS_FAILED_NOT_IMPLEMENTED; }
     /* ===================== platform-specific functions ===================== */
-
-
- protected:
-    /*!
-     *  \note   the belonging handle manager
-     */
-    void *_hm;
-
-
-    /*!
-     *  \brief  initialize checkpoint bag of this handle
-     *  \note   it must be implemented by different implementations of stateful 
-     *          handle, as they might require different allocators and deallocators
-     *  \return POS_SUCCESS for successfully initialization
-     */
-    virtual pos_retval_t __init_ckpt_bag(){ return POS_FAILED_NOT_IMPLEMENTED; }
 };
 
 
