@@ -46,6 +46,31 @@ func GetPkgInstallCmd(pkgName string, logger *log.Logger) string {
 	return ""
 }
 
+
+func GetPkgCheckCmd(pkgName string, logger *log.Logger) string {
+	switch os := GetOS(logger); os {
+	case "ubuntu":
+		return fmt.Sprintf("dpkg -s %s", pkgName)
+	default:
+		logger.Fatalf("failed to get pkg installation command: unsupported OS type %s", os)
+	}
+
+	return ""
+}
+
+
+func GetPkgUnInstallCmd(pkgName string, logger *log.Logger) string {
+	switch os := GetOS(logger); os {
+	case "ubuntu":
+		return fmt.Sprintf("apt-get remove -y %s", pkgName)
+	default:
+		logger.Fatalf("failed to get pkg uninstallation command: unsupported OS type %s", os)
+	}
+
+	return ""
+}
+
+
 func CheckCommandExists(command string, logger *log.Logger) error {
 	// output, err := BashCommandGetOutput(fmt.Sprintf("whereis %s", command), false, logger)
 	_, err := exec.LookPath(command)
@@ -143,6 +168,23 @@ func CheckAndInstallPackage(command string, pkgName string, custorm_install, pos
 	}
 }
 
+
+func CheckPackageViaOsPkgManager(pkgName string, logger *log.Logger) bool {
+    if pkgName == "" {
+        logger.Fatalf("no package name provided")
+    }
+
+    logger.Infof("checking if %s is installed via OS pkg manager...", pkgName)
+    checkCmd := GetPkgCheckCmd(pkgName, logger)
+    if _, err := BashCommandGetOutput(checkCmd, true, logger); err != nil {
+        logger.Infof("%s is NOT installed: %v", pkgName, err)
+        return false
+    }
+    logger.Infof("%s is already installed", pkgName)
+    return true
+}
+
+
 func CheckAndInstallPackageViaOsPkgManager(pkgName string, logger *log.Logger) {
 	if len(pkgName) == 0 {
 		logger.Fatalf("no package name provided")
@@ -155,4 +197,19 @@ func CheckAndInstallPackageViaOsPkgManager(pkgName string, logger *log.Logger) {
 	}
 	ClearLastLine()
 	logger.Infof("installed %s", pkgName)
+}
+
+
+func UnInstallPackageViaOsPkgManager(pkgName string, logger *log.Logger) {
+	if len(pkgName) == 0 {
+		logger.Fatalf("no package name provided")
+	}
+
+	logger.Infof("uninstalling %s via OS pkg manager...", pkgName)
+	uninstallCmd := GetPkgUnInstallCmd(pkgName, logger)
+	if _, err := BashCommandGetOutput(uninstallCmd, false, logger); err != nil {
+		logger.Fatalf("failed to uninstall pkg %s via OS pkg manager: %s", pkgName, err)
+	}
+	ClearLastLine()
+	logger.Infof("uninstalled %s", pkgName)
 }
