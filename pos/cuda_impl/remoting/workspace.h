@@ -62,4 +62,22 @@ int pos_process(
 );
 
 
+/*!
+ *  \brief  query whether the remoting is need to be stopped for checkpoint
+ *  \param  pos_cuda_ws pointer to the CUDA workspace
+ *  \param  uuid        uuid of the client
+ *  \return 0 for continue, 1 for stop
+ */
+int pos_remoting_stop_query(POSWorkspace_CUDA *pos_cuda_ws, uint64_t uuid);
+
+
+/*!
+ *  \brief  confirm that the remoting framework is stopped
+ *  \param  pos_cuda_ws pointer to the CUDA workspace
+ *  \param  uuid        uuid of the client
+ *  \return 0 for continue, 1 for stop
+ */
+int pos_remoting_stop_confirm(POSWorkspace_CUDA *pos_cuda_ws, uint64_t uuid);
+
+
 } // extern "C"

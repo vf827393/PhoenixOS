@@ -26,7 +26,7 @@
 namespace wk_functions {
 
 namespace cuda_launch_kernel {
-#define POS_CUDA_LAUNCH_KERNEL_MAX_NB_PARAMS    512
+    #define POS_CUDA_LAUNCH_KERNEL_MAX_NB_PARAMS    512
 
     static void* cuda_args[POS_CUDA_LAUNCH_KERNEL_MAX_NB_PARAMS] = {0};
 

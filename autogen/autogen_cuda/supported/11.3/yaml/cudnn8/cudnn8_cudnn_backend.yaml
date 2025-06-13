@@ -17,7 +17,6 @@
 
 header_file_name: "cudnn.h"
 dependent_headers:
-  - "cudnn.h"
   - "cuda_runtime_api.h"
   - "cudnn_backend.h"
 successful_retval: "CUDNN_STATUS_SUCCESS"

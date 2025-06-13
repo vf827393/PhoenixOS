@@ -39,10 +39,10 @@ enum pos_cuda_library_id_t : uint8_t {
 /*!
  *  \brief  manager of CUDA APIs
  */
-class POSApiManager_CUDA : public POSApiManager {
+class POSApiManager_CUDA final : public POSApiManager {
  public:
     POSApiManager_CUDA(){}
-    ~POSApiManager_CUDA() = default;
+    ~POSApiManager_CUDA(){}
 
     /*!
      *  \brief  register metadata of all API on the platform to the manager
@@ -264,7 +264,7 @@ class POSApiManager_CUDA : public POSApiManager {
                     /* is_sync */       true,
                     /* api_type */      kPOS_API_Type_Delete_Resource,
                     /* library_id */    kPOS_CUDA_Library_Id_Runtime,
-                    /* api_name */      "cudaEventDestory"
+                    /* api_name */      "cudaEventDestroy"
                 }
             },
             { 

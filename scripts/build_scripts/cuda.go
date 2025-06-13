@@ -54,7 +54,7 @@ func CRIB_PhOS_CUDA_Autogen(cmdOpt CmdOptions, buildConf BuildConfigs, logger *l
 		#!/bin/bash
 		set -e
 		cd %s/%s/build
-		LD_LIBRARY_PATH=../../lib/ ./pos_autogen -t cuda -s ../autogen_cuda/supported/%s/yaml -d /usr/local/cuda-%s/include,/usr/include -g ../generated >>{{.LOG_PATH__}} 2>&1
+		LD_LIBRARY_PATH=../../lib/ ./pos_autogen -t cuda -s ../autogen_cuda/supported/%s/yaml -d /usr/local/cuda-%s/include,/usr/include -g ../generated/pos/cuda_impl >>{{.LOG_PATH__}} 2>&1
 		`,
 		cmdOpt.RootDir, kPhOSAutoGenPath,
 		buildConf.RuntimeTargetVersion,
@@ -240,6 +240,7 @@ func CRIB_PhOS_CUDA(cmdOpt CmdOptions, buildConf BuildConfigs, logger *log.Logge
 
 	// ==================== CRIB UnitTest ====================
 	if cmdOpt.WithUnitTest || cmdOpt.DoClean {
+		CRIB_LibGoogleTest(cmdOpt, buildConf, logger)
 		CRIB_PhOS_UnitTest(cmdOpt, buildConf, logger)
 	}
 }

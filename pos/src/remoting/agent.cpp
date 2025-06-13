@@ -38,4 +38,17 @@ int pos_destory_agent(POSAgent* pos_agent){
     return 0;
 }
 
+
+uint64_t pos_agent_get_uuid(POSAgent* pos_agent){
+    POS_CHECK_POINTER(pos_agent);
+    return pos_agent->get_uuid();
+}
+
+
+int pos_query_agent_ready_state(POSAgent* pos_agent){
+    POS_CHECK_POINTER(pos_agent);
+    return pos_agent->is_ready() == true;
+}
+
+
 } // extern "C"

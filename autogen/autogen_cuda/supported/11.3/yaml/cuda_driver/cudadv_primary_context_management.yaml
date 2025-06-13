@@ -23,7 +23,7 @@ apis:
   # CUresult cuDevicePrimaryCtxGetState ( CUdevice dev, unsigned int* flags, int* active )
   - name: "cuDevicePrimaryCtxGetState"
     index: 670
-    supported: false
+    supported: true
     parent_name: "cuDevicePrimaryCtxGetState"
     parser_type: "default"
     worker_type: "default"

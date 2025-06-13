@@ -44,7 +44,7 @@ c_args = []
 ld_args = [ '-L'+lib_path ]
 
 # include directories
-inc_dirs = [ './', '../lib', '../lib/pos/include', '../' ]
+inc_dirs = [ './', '../lib', '../lib/pos/include', '../autogen/generated', '../' ]
 
 # source files
 sources = []

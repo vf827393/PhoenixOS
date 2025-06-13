@@ -15,14 +15,59 @@
 # CUDA: 11.3
 # Type: cuBLAS Level-3 Functions
 
-header_file_name: "cublas_v2.h"
+header_file_name: "cublas_api.h"
 dependent_headers:
   - "cublas_v2.h"
 successful_retval: "CUBLAS_STATUS_SUCCESS"
 apis:
+  # cublasStatus_t cublasSgemm(
+  #   cublasHandle_t handle,
+  #   cublasOperation_t transa, 
+  #   cublasOperation_t transb,
+  #   int m, 
+  #   int n, 
+  #   int k,
+  #   const float *alpha,
+  #   const float *A, 
+  #   int lda,
+  #   const float *B, 
+  #   int ldb,
+  #   const float *beta,
+  #   float *C, 
+  #   int ldc
+  # )
   - name: "cublasSgemm"
     index: 1300
     supported: false
+    parent_name: "cublasSgemm_v2"
+    # FIXME(zhuobin): our autogen failed to parse cublas header (cublas_v2.h, cublas_api.h)
+    prototype: "cublasStatus_t cublasSgemm(cublasHandle_t handle, cublasOperation_t transa, cublasOperation_t transb, int m, int n, int k, const float *alpha, const float *A, int lda, const float *B, int ldb, const float *beta, float *C, int ldc)"
+    parser_type: "default"
+    worker_type: "default"
+    is_sync: false
+    # parser
+    type: "set_resource"
+    create_edges:
+    delete_edges:
+    in_edges:
+      - param_index: 1
+        handle_type: "cublas_context"
+        handle_source: "from_param"
+      - param_index: 8
+        handle_type: "cuda_memory"
+        handle_source: "from_param"
+      - param_index: 10
+        handle_type: "cuda_memory"
+        handle_source: "from_param"
+    out_edges:
+      - param_index: 13
+        handle_type: "cuda_memory"
+        handle_source: "from_param"
+    inout_edges:
+    # worker
+    involve_membus: false
+    need_stream_sync: false
+    constant_params:
 
   - name: "cublasDgemm"
     index: 1301
@@ -56,9 +101,58 @@ apis:
     index: 1308
     supported: false
 
+  # cublasStatus_t cublasSgemmStridedBatched(
+  #   cublasHandle_t handle,
+  #   cublasOperation_t transa,
+  #   cublasOperation_t transb,
+  #   int m,
+  #   int n,
+  #   int k,
+  #   const float *alpha,
+  #   const float *A,
+  #   int lda,
+  #   long long int strideA,
+  #   const float *B,
+  #   int ldb,
+  #   long long int strideB,
+  #   const float *beta,
+  #   float *C,
+  #   int ldc,
+  #   long long int strideC,
+  #   int batchCount
+  # )
   - name: "cublasSgemmBatched"
     index: 1309
     supported: false
+    parent_name: "cublasSgemmBatched_v2"
+    # FIXME(zhuobin): our autogen failed to parse cublas header (cublas_v2.h, cublas_api.h)
+    prototype: "cublasStatus_t cublasSgemmStridedBatched(cublasHandle_t handle, cublasOperation_t transa, cublasOperation_t transb, int m, int n, int k, const float *alpha, const float *A, int lda, long long int strideA, const float *B, int ldb, long long int strideB, const float *beta, float *C, int ldc, long long int strideC, int batchCount)"
+    parser_type: "default"
+    worker_type: "default"
+    is_sync: false
+    # parser
+    type: "set_resource"
+    create_edges:
+    delete_edges:
+    in_edges:
+      - param_index: 1
+        handle_type: "cublas_context"
+        handle_source: "from_param"
+      - param_index: 8
+        handle_type: "cuda_memory"
+        handle_source: "from_param"
+      - param_index: 11
+        handle_type: "cuda_memory"
+        handle_source: "from_param"
+    out_edges:
+      - param_index: 15
+        handle_type: "cuda_memory"
+        handle_source: "from_param"
+    inout_edges:
+    # worker
+    involve_membus: true
+    need_stream_sync: false
+    constant_params:
 
   - name: "cublasDgemmBatched"
     index: 1310

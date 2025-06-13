@@ -47,7 +47,8 @@ class POSWorkspace_CUDA : public POSWorkspace {
      *  \return POS_SUCCESS for successfully preserving
      */
     pos_retval_t preserve_resource(pos_resource_typeid_t rid, void *data) override;
- 
+
+
  protected:
     /*!
      *  \brief  create a specific-implemented client

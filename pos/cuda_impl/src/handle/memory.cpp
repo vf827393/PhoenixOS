@@ -490,7 +490,7 @@ exit:
 
 void* POSHandle_CUDA_Memory::__checkpoint_allocator(uint64_t state_size) {
     cudaError_t cuda_rt_retval;
-    void *ptr;
+    void *ptr = nullptr;
 
     if(unlikely(state_size == 0)){
         POS_WARN_DETAIL("try to allocate checkpoint with state size of 0");
@@ -499,7 +499,10 @@ void* POSHandle_CUDA_Memory::__checkpoint_allocator(uint64_t state_size) {
 
     cuda_rt_retval = cudaMallocHost(&ptr, state_size);
     if(unlikely(cuda_rt_retval != cudaSuccess)){
-        POS_WARN_DETAIL("failed cudaMallocHost, error: %d", cuda_rt_retval);
+        POS_WARN_DETAIL(
+            "failed cudaMallocHost, error(%d), state_size(%lu)",
+            cuda_rt_retval, state_size
+        );
         return nullptr;
     }
 

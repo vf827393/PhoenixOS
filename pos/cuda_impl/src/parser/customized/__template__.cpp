@@ -16,27 +16,24 @@
 
 #include <iostream>
 
-#include <cuda_runtime_api.h>
-#include <cublas_v2.h>
-#include <cublas_api.h>
-
 #include "pos/include/common.h"
-#include "pos/cuda_impl/worker.h"
+#include "pos/cuda_impl/handle.h"
+#include "pos/cuda_impl/parser.h"
+#include "pos/cuda_impl/client.h"
+#include "pos/cuda_impl/api_context.h"
 
 
-namespace wk_functions {
+namespace ps_functions {
 
-/*!
- *  \related    [Cricket Adapt] rpc_dinit
- *  \brief      disconnect of RPC connection
- */
-namespace remoting_deinit {
-    // execution function
-    POS_WK_FUNC_LAUNCH(){
-        POSWorker::__done(ws, wqe);
+namespace template {
+    POS_RT_FUNC_PARSER(){
+        pos_retval_t retval = POS_SUCCESS;
+        
+        goto exit;
+
     exit:
-        return POS_SUCCESS;
+        return retval;
     }
-} // namespace remoting_deinit
+} // namespace template
 
-} // namespace wk_functions
+} // namespace ps_functions

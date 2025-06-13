@@ -81,6 +81,7 @@ typedef struct pos_support_edge_meta {
 
     // type of the handle involved in this edge
     uint32_t handle_type;
+    std::string handle_type_str;
 
     // source of the handle value involved in this edge
     pos_handle_source_typeid_t handle_source;

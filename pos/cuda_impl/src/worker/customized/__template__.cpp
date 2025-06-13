@@ -17,36 +17,29 @@
 #include <iostream>
 
 #include "pos/include/common.h"
-#include "pos/include/handle.h"
-#include "pos/include/api_context.h"
+#include "pos/include/client.h"
+#include "pos/cuda_impl/worker.h"
 
-#include "pos/cuda_impl/handle.h"
-#include "pos/cuda_impl/parser.h"
-#include "pos/cuda_impl/client.h"
-#include "pos/cuda_impl/api_context.h"
+#include <cuda.h>
+#include <cuda_runtime_api.h>
 
-namespace ps_functions {
+namespace wk_functions {
 
-/*!
- *  \related    [Cricket Adapt] rpc_dinit
- *  \brief      disconnect of RPC connection
- */
-namespace remoting_deinit {
-    // parser function
-    POS_RT_FUNC_PARSER(){
+namespace template {
+    POS_WK_FUNC_LAUNCH(){
         pos_retval_t retval = POS_SUCCESS;
-        POSClient_CUDA *client;
-        POSAPIContext_QE *ckpt_wqe;
-
-        POS_CHECK_POINTER(wqe);
-        POS_CHECK_POINTER(ws);
-
-        // mark this sync call can be returned after parsing
-        wqe->status = kPOS_API_Execute_Status_Return_Without_Worker;
-
+        
+        goto exit
+        
     exit:
+        if(unlikely(CUDA_SUCCESS != wqe->api_cxt->return_code)){ 
+            POSWorker::__restore(ws, wqe);
+        } else {
+            POSWorker::__done(ws, wqe);
+        }
+
         return retval;
     }
-}; // namespace remoting_deinit
+} // namespace template
 
-}; // namespace ps_functions
+} // namespace wk_functions

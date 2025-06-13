@@ -17,7 +17,7 @@
 # >>>>>>>>>> common variables <<<<<<<<<<
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
-SUDO=
+SUDO=sudo
 
 # >>>>>>>>>> action configurations <<<<<<<<<<
 container_id=0
@@ -52,7 +52,6 @@ start_container() {
                     -v $PWD/pos:/root/pos                   \
                     -v $PWD/examples:/root/examples         \
                     -v $PWD/utils:/root/utils               \
-                    -v /data:/data                          \
                     --privileged --ipc=host --network=host  \
                     --name $container_name                  \
                     phoenixos/pytorch:11.3-ubuntu20.04
@@ -63,7 +62,6 @@ start_container() {
         cd $script_dir && cd .. && cd ..
         $SUDO docker run --gpus all -dit                    \
                     -v $PWD:/root                           \
-                    -v /data:/data                          \
                     --privileged --network=host --ipc=host  \
                     --name $container_name                  \
                     phoenixos/pytorch:11.3-ubuntu20.04

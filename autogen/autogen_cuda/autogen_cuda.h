@@ -17,6 +17,8 @@
 #pragma once
 
 #include "autogen_common.h"
+
+#include "pos/include/common.h"
 #include "pos/cuda_impl/handle.h"
 
 
@@ -26,3 +28,12 @@
  *  \return the corresponding handle type id
  */
 uint32_t get_handle_type_by_name(std::string& handle_type);
+
+/*!
+ *  \brief  obtain CUDA driver handle type by name
+            e.g., cuda_event -> CUevent
+ *  \param  name          given string
+ *  \param  cudv_handle_type  corresponding CUDA driver handle type
+ *  \return POS_SUCCESS if success
+ */
+pos_retval_t get_cudv_type_by_name(std::string& name, std::string& cudv_handle_type);

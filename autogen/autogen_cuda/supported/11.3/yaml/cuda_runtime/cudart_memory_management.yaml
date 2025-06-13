@@ -125,7 +125,7 @@ apis:
     delete_edges:
     in_edges:
       - param_index: 0
-        handle_type: "cuda_device"
+        handle_type: "cuda_context"
         handle_source: "from_last_used"
       - param_index: 0
         handle_type: "cuda_stream"
@@ -354,7 +354,7 @@ apis:
     supported: false
 
   # ​cudaError_t cudaMemcpy ( void* dst, const void* src, size_t count, cudaMemcpyKind kind ) 
-  - name: "cudaMemcpyHtod"
+  - name: "cudaMemcpyH2D"
     index: 320
     supported: true
     parent_name: "cudaMemcpy"
@@ -385,7 +385,7 @@ apis:
         value: "cudaMemcpyHostToDevice"
 
   # ​cudaError_t cudaMemcpy ( void* dst, const void* src, size_t count, cudaMemcpyKind kind )
-  - name: "cudaMemcpyDtoh"
+  - name: "cudaMemcpyD2H"
     index: 321
     supported: true
     parent_name: "cudaMemcpy"
@@ -416,7 +416,7 @@ apis:
         value: "cudaMemcpyDeviceToHost"
 
   # ​cudaError_t cudaMemcpy ( void* dst, const void* src, size_t count, cudaMemcpyKind kind )
-  - name: "cudaMemcpyDtod"
+  - name: "cudaMemcpyD2D"
     index: 322
     supported: true
     parent_name: "cudaMemcpy"
@@ -450,7 +450,7 @@ apis:
         value: "cudaMemcpyDeviceToDevice"
 
   # ​cudaError_t cudaMemcpyAsync ( void* dst, const void* src, size_t count, cudaMemcpyKind kind, cudaStream_t stream = 0 )
-  - name: "cudaMemcpyAsyncHtod"
+  - name: "cudaMemcpyAsyncH2D"
     index: 323
     supported: true
     parent_name: "cudaMemcpyAsync"
@@ -481,7 +481,7 @@ apis:
         value: "cudaMemcpyHostToDevice"
 
   # ​cudaError_t cudaMemcpyAsync ( void* dst, const void* src, size_t count, cudaMemcpyKind kind, cudaStream_t stream = 0 )
-  - name: "cudaMemcpyAsyncDtoh"
+  - name: "cudaMemcpyAsyncD2H"
     index: 324
     supported: true
     parent_name: "cudaMemcpyAsync"
@@ -512,7 +512,7 @@ apis:
         value: "cudaMemcpyHostToDevice"
 
   # ​cudaError_t cudaMemcpyAsync ( void* dst, const void* src, size_t count, cudaMemcpyKind kind, cudaStream_t stream = 0 )
-  - name: "cudaMemcpyAsyncDtod"
+  - name: "cudaMemcpyAsyncD2D"
     index: 325
     supported: true
     parent_name: "cudaMemcpyAsync"

@@ -101,7 +101,7 @@ func main() {
 
 	if cmdOpt.DoInstall {
 		// insert environment variable to /etc/profile file
-		envVars := "export phos=\"LD_PRELOAD=libxpuclient.so\" RUST_LOG=error\n"
+		envVars := "export phos=\"LD_PRELOAD=libxpuclient.so RUST_LOG=error\"\n"
 		exists, err := utils.CheckContentExists("/etc/profile", envVars)
 		if err != nil {
 			logger.Fatalf("failed to check file content of /etc/profile")
