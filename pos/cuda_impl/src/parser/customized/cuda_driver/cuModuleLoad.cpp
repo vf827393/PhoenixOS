@@ -179,15 +179,6 @@ namespace cu_module_load {
             goto exit;
         }
 
-    #if POS_CONF_EVAL_CkptOptLevel > 0 || POS_CONF_EVAL_MigrOptLevel > 0
-        // set host checkpoint record
-        retval = module_handle->checkpoint_commit_host(
-            /* version_id */ wqe->id,
-            /* data */ pos_api_param_addr(wqe, 1),
-            /* size */ pos_api_param_size(wqe, 1)
-        );
-    #endif
-
         // mark this sync call can be returned after parsing
         wqe->status = kPOS_API_Execute_Status_Return_After_Parse;
 

@@ -159,8 +159,6 @@ void POSParser::__daemon(){
             /*!
              *  \note       for api in type of Delete_Resource, one can directly send
              *              response to the client right after operating on mocked resources
-             *  \warning    we can't apply this rule for all Create_Resource, consider the memory
-             *              situation, which is passthrough addressed
              *  TODO: delete this block, should be implement in autogen system
              */
             if(unlikely(api_meta.api_type == kPOS_API_Type_Delete_Resource)){

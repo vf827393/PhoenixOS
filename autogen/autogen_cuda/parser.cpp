@@ -101,6 +101,7 @@ pos_retval_t POSAutogener::__insert_code_parser_for_target(
         if(     edge_direction == kPOS_Edge_Direction_In
             ||  edge_direction == kPOS_Edge_Direction_Out
             ||  edge_direction == kPOS_Edge_Direction_InOut
+            ||  edge_direction == kPOS_Edge_Direction_Delete
         ){
             // case: for in/out/inout edge, obtain handle from handle manager
             if(edge_meta->handle_source == kPOS_HandleSource_FromLastUsed){
@@ -152,6 +153,16 @@ pos_retval_t POSAutogener::__insert_code_parser_for_target(
                     api_snake_name,
                     hm_type,
                     edge_meta->index - 1,
+                    handle_name
+                ));
+            }
+
+            if(edge_direction == kPOS_Edge_Direction_Delete){
+                // case: for delete edge, mark handle as delete pending state
+                parser_function->append_content(std::format(
+                    "// mark handle as delete pending state, to remove it from handle manager\n"
+                    "{}->mark_status(kPOS_HandleStatus_Delete_Pending);"
+                    ,
                     handle_name
                 ));
             }
@@ -216,10 +227,10 @@ pos_retval_t POSAutogener::__insert_code_parser_for_target(
                 ");\n"
                 "if(unlikely(retval != POS_SUCCESS)){{\n"
                 "   POS_WARN(\"parse({}): failed to allocate mocked {} resource within the handler manager\");\n"
-                "   memset(pos_api_param_addr(wqe, {}), 0, sizeof(uint64_t));\n"
+                "   memset(pos_api_param_value(wqe, {}, void**), 0, sizeof(uint64_t));\n"
                 "   goto exit;\n"
                 "}} else {{\n"
-                "   memcpy(pos_api_param_addr(wqe, {}), &({}->client_addr), sizeof(uint64_t));\n"
+                "   memcpy(pos_api_param_value(wqe, {}, void**), &({}->client_addr), sizeof(uint64_t));\n"
                 "}}"
                 ,
                 hm_name,
@@ -236,14 +247,6 @@ pos_retval_t POSAutogener::__insert_code_parser_for_target(
                 handle_type,
                 edge_meta->index - 1,
                 edge_meta->index - 1,
-                handle_name
-            ));
-        } else if (edge_direction == kPOS_Edge_Direction_Delete){
-            // case: for delete edge, mark handle as delete pending state
-            parser_function->append_content(std::format(
-                "// mark handle as delete pending state, to remove it from handle manager\n"
-                "{}->mark_status(kPOS_HandleStatus_Delete_Pending);"
-                ,
                 handle_name
             ));
         } else {
@@ -552,10 +555,13 @@ pos_retval_t POSAutogener::__insert_code_parser_for_target(
     // step 7: exit processing
  insert_retval_code:
     parser_function->append_content("exit:", -3);
-    if(
-        support_api_meta->api_type == kPOS_API_Type_Create_Resource
-        || support_api_meta->worker_type == std::string("skipped")
-    ){
+    // if(
+    //     support_api_meta->api_type == kPOS_API_Type_Create_Resource
+    //     || support_api_meta->worker_type == std::string("skipped")
+    // ){
+    //     parser_function->append_content("wqe->status = kPOS_API_Execute_Status_Return_After_Parse;");
+    // }
+    if(support_api_meta->worker_type == std::string("skipped")){
         parser_function->append_content("wqe->status = kPOS_API_Execute_Status_Return_After_Parse;");
     }
     parser_function->append_content("return retval;");

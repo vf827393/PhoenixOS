@@ -31,13 +31,6 @@ POSHandle_CUDA_Module::POSHandle_CUDA_Module(void *client_addr_, size_t size_, v
     : POSHandle_CUDA(client_addr_, size_, hm, id_, state_size_)
 {
     this->resource_type_id = kPOS_ResourceTypeId_CUDA_Module;
-
-    // initialize checkpoint bag
-    #if POS_CONF_EVAL_CkptOptLevel > 0 || POS_CONF_EVAL_MigrOptLevel > 0
-        if(unlikely(POS_SUCCESS != this->__init_ckpt_bag())){
-            POS_ERROR_C_DETAIL("failed to inilialize checkpoint bag");
-        }
-    #endif
 }
 
 
@@ -74,7 +67,7 @@ exit:
 }
 
 
-pos_retval_t POSHandle_CUDA_Module::__init_ckpt_bag(){ 
+pos_retval_t POSHandle_CUDA_Module::init_ckpt_bag(){ 
     this->ckpt_bag = new POSCheckpointBag(
         /* fixed_state_size */ this->state_size,
         /* allocator */ nullptr,

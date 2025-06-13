@@ -127,9 +127,6 @@ apis:
       - param_index: 0
         handle_type: "cuda_context"
         handle_source: "from_last_used"
-      - param_index: 0
-        handle_type: "cuda_stream"
-        handle_source: "from_default"
     out_edges:
     inout_edges:
     # worker

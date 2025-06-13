@@ -85,6 +85,16 @@ class POSHandle_CUDA_Memory final : public POSHandle_CUDA {
 
 
     /* ==================== checkpoint add/commit/persist ==================== */
+ public:
+    /*!
+     *  \brief  initialize checkpoint bag of this handle
+     *  \note   it must be implemented by different implementations of stateful 
+     *          handle, as they might require different allocators and deallocators
+     *  \return POS_SUCCESS for successfully initialization
+     */
+    pos_retval_t init_ckpt_bag() override;
+
+
  protected:
     /*!
      *  \brief  allocator of the host-side checkpoint memory
@@ -112,15 +122,6 @@ class POSHandle_CUDA_Memory final : public POSHandle_CUDA {
      *  \param  data    pointer of the buffer to be deallocated
      */
     static void __checkpoint_dev_deallocator(void* data);
-
-
-    /*!
-     *  \brief  initialize checkpoint bag of this handle
-     *  \note   it must be implemented by different implementations of stateful 
-     *          handle, as they might require different allocators and deallocators
-     *  \return POS_SUCCESS for successfully initialization
-     */
-    pos_retval_t __init_ckpt_bag() override;
 
 
     /*!
