@@ -246,11 +246,7 @@ apis:
     delete_edges:
     in_edges:
     out_edges:
-      - param_index: 0
-        handle_type: "cuda_context"
-        handle_source: "from_param"
-        side_effects:
-          - "set_as_last_used"
+      # TODO(zhuobin): we need to set context as last used
       - param_index: 1
         handle_type: "cuda_device"
         handle_source: "from_param"

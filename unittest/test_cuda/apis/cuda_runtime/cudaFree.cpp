@@ -16,7 +16,7 @@
 
 #include "test_cuda/test_cuda_common.h"
 
-TEST_F(PhOSCudaTest, cudaMallocFree) {
+TEST_F(PhOSCudaTest, cudaFree) {
     uint64_t i;
     cudaError cuda_retval;
     void *mem_ptr = nullptr;

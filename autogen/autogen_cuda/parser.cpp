@@ -128,14 +128,15 @@ pos_retval_t POSAutogener::__insert_code_parser_for_target(
                     hm_name,
                     handle_name,
                     api_snake_name,
-                    hm_type,
+                    handle_type,
                     handle_name
                 ));
-            } else {
+            } else { // from parameter
+                POS_DEBUG("api: %s, index: %lu, size: %lu", api_snake_name.c_str(), edge_meta->index - 1, vendor_api_meta->params.size());
                 parser_function->append_content(std::format(
                     "// obtain handle from hm (use handle specified by parameter)\n"
                     "retval = {}->get_handle_by_client_addr(\n"
-                    "   /* client_addr */ (void*)pos_api_param_value(wqe, {}, uint64_t),\n"
+                    "   /* client_addr */ reinterpret_cast<void*>((uint64_t)pos_api_param_value(wqe, {}, {})),\n"
                     "   /* handle */ &{}\n"
                     ");\n"
                     "if(unlikely(retval != POS_SUCCESS)){{\n"
@@ -149,9 +150,10 @@ pos_retval_t POSAutogener::__insert_code_parser_for_target(
                     ,
                     hm_name,
                     edge_meta->index - 1,
+                    vendor_api_meta->params[edge_meta->index-1]->type,
                     handle_name,
                     api_snake_name,
-                    hm_type,
+                    handle_type,
                     edge_meta->index - 1,
                     handle_name
                 ));

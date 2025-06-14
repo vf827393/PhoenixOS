@@ -49,12 +49,7 @@ namespace cuda_get_device_count {
         nb_handles = hm_device->get_nb_handles();
         nb_handles_int = (int)nb_handles;
 
-        POS_CHECK_POINTER(wqe->api_cxt->ret_data);
-        memcpy(
-            pos_api_param_addr(wqe, 0),
-            &nb_handles_int,
-            sizeof(int)
-        );
+        memcpy(pos_api_param_value(wqe, 0, int*), &nb_handles_int, sizeof(int));
 
         wqe->status = kPOS_API_Execute_Status_Return_After_Parse;
 
