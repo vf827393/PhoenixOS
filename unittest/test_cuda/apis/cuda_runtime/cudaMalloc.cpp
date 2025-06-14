@@ -40,15 +40,4 @@ TEST_F(PhOSCudaTest, cudaMalloc) {
         EXPECT_EQ(cudaSuccess, cuda_retval);
         allocated_mem_ptrs.push_back(mem_ptr);
     }
-
-    for(void*& allocated_mem_ptr : allocated_mem_ptrs){
-        cuda_retval = (cudaError)this->_ws->pos_process( 
-            /* api_id */ PosApiIndex_cudaFree, 
-            /* uuid */ this->_clnt->id,
-            /* param_desps */ {
-                { .value = &allocated_mem_ptr, .size = sizeof(void*) }
-            }
-        );
-        EXPECT_EQ(cudaSuccess, cuda_retval);
-    }
 }

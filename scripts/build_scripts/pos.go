@@ -228,7 +228,8 @@ func CRIB_PhOS_UnitTest(cmdOpt CmdOptions, buildConf BuildConfigs, logger *log.L
 		#!/bin/bash
 		set -e
 		cd %s/%s/build
-		LD_LIBRARY_PATH=../../lib/ ./pos_test >>{{.LOG_PATH__}} 2>&1
+		# TODO(zhuobin): remove the CUDA_VISIBLE_DEVICES=0
+		CUDA_VISIBLE_DEVICES=0 LD_LIBRARY_PATH=../../lib/ ./pos_test >>{{.LOG_PATH__}} 2>&1
 		`,
 		cmdOpt.RootDir, kPhOSUnitTestPath,
 	)
