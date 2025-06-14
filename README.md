@@ -78,16 +78,14 @@
 
     ```bash
     # enter repository
-    cd PhoenixOS
+    cd PhoenixOS/scripts/docker
 
-    # start container
-    sudo docker run -dit --gpus all                                         \
-                -v.:/root                                                   \
-                --privileged --network=host --ipc=host                      \
-                --name phos nvidia/cuda:11.3.1-cudnn8-devel-ubuntu20.04
+    # start and enter container with id 1
+    bash run_torch_cu113.sh -s 1
 
-    # enter container
-    sudo docker exec -it phos /bin/bash
+    # enter / close container (no need to execute here, just listed)
+    bash run_torch_cu113.sh -e 1    # enter container
+    bash run_torch_cu113.sh -c 1    # close container
     ```
 
     Note that it's important to execute docker container with root privilege, as CRIU needs the permission to C/R kernel-space memory pages.
@@ -98,16 +96,11 @@
 
     ```bash
     # inside container
-
-    # install basic dependencies from OS pkg manager
-    apt-get update
-    apt-get install git-lfs
     
     # download assets
     cd /root/scripts/build_scripts
     bash download_assets.sh
     ```
-
 
 4. **[Build]**
     Building PhOS is simple!
@@ -163,7 +156,8 @@
     # start building
     #   -3: the build process involves all third-parties
     #   -i: install after successful building
-    bash build.sh -3 -i
+    #   -u: build PhOS with unit test enable
+    bash build.sh -i -3 -u
     ```
 
     For customizing build options, please refers to and modify avaiable options under `scripts/build_scripts/build_config.yaml`.
