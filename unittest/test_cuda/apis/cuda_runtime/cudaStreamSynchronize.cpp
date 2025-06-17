@@ -6,7 +6,7 @@ TEST_F(PhOSCudaTest, cudaStreamSynchronize) {
     // create a new stream
     cudaStream_t new_stream = 0;
 
-    // sync a new stream
+    // sync  new stream
     cuda_retval = (cudaError)this->_ws->pos_process( 
         /* api_id */ PosApiIndex_cudaStreamSynchronize, 
         /* uuid */ this->_clnt->id,
