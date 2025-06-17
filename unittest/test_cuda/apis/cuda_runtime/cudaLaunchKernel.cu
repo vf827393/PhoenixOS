@@ -7,7 +7,13 @@ __global__ void vectorAddKernel(const float* A, const float* B, float* C, int N)
     }
 }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
 
+>>>>>>> 56802aa... fix(unittest/pos): pass all existing unittest
+=======
+>>>>>>> 2abf23a... x
 TEST_F(PhOSCudaTest, cudaLaunchKernel) {
     const int N = 256;
     const size_t size = N * sizeof(float);
