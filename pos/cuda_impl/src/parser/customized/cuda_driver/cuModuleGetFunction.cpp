@@ -45,10 +45,10 @@ namespace cu_module_get_function {
 
         // check whether given parameter is valid
     #if POS_CONF_RUNTIME_EnableDebugCheck
-        if(unlikely(wqe->api_cxt->params.size() != 2)){
+        if(unlikely(wqe->api_cxt->params.size() != 3)){
             POS_WARN(
                 "parse(cu_module_get_function): failed to parse, given %lu params, %lu expected",
-                wqe->api_cxt->params.size(), 2
+                wqe->api_cxt->params.size(), 3
             );
             retval = POS_FAILED_INVALID_INPUT;
             goto exit;
@@ -73,13 +73,13 @@ namespace cu_module_get_function {
         } else {
             if(unlikely(
                 POS_SUCCESS != hm_module->get_handle_by_client_addr(
-                    /* client_addr */ (void*)pos_api_param_value(wqe, 0, uint64_t),
+                    /* client_addr */ (void*)pos_api_param_value(wqe, 1, uint64_t),
                     /* handle */&module_handle
                 )
             )){
                 POS_WARN(
                     "parse(cu_module_get_function): failed to find module with client address %p",
-                    pos_api_param_value(wqe, 0, uint64_t)
+                    pos_api_param_value(wqe, 1, uint64_t)
                 );
                 retval = POS_FAILED_NOT_EXIST;
                 goto exit;
@@ -92,7 +92,7 @@ namespace cu_module_get_function {
             if(unlikely(
                 !strcmp(
                     module_handle->function_desps[i]->name.c_str(),
-                    (const char*)(pos_api_param_addr(wqe, 1))
+                    (const char*)(pos_api_param_value(wqe, 2, const char*))
                 )
             )){
                 function_desp = module_handle->function_desps[i];
@@ -103,7 +103,7 @@ namespace cu_module_get_function {
         if(unlikely(found_function_desp == false)){
             POS_WARN(
                 "parse(cu_module_get_function): failed to find function within the module: module_clnt_addr(%p), device_name(%s)",
-                pos_api_param_value(wqe, 0, uint64_t), pos_api_param_addr(wqe, 1)
+                pos_api_param_value(wqe, 1, uint64_t), pos_api_param_value(wqe, 2, const char*)
             );
             retval = POS_FAILED_NOT_EXIST;
             goto exit;
@@ -120,7 +120,7 @@ namespace cu_module_get_function {
         );
         if(unlikely(retval != POS_SUCCESS)){
             POS_WARN("parse(cu_module_get_function): failed to allocate mocked function within the CUDA function handler manager");
-            memset(pos_api_param_addr(wqe, 0), 0, sizeof(CUfunction));
+            memset(pos_api_param_value(wqe, 0, CUfunction*), 0, sizeof(CUfunction));
             goto exit;
         } else {
             POS_DEBUG(
@@ -128,7 +128,7 @@ namespace cu_module_get_function {
                 function_handle->client_addr, function_handle->size,
                 module_handle->server_addr
             )
-            memcpy(pos_api_param_addr(wqe, 0), &(function_handle->client_addr), sizeof(CUfunction));
+            memcpy(pos_api_param_value(wqe, 0, CUfunction*), &(function_handle->client_addr), sizeof(CUfunction));
         }
 
         // transfer function descriptions from the descriptor
