@@ -3,10 +3,10 @@
 TEST_F(PhOSCudaTest, cudaStreamSynchronize) {
     cudaError cuda_retval;
 
-    // 创建一个新的流
+    // create a new stream
     cudaStream_t new_stream = 0;
 
-    // 同步新创建的流
+    // sync a new stream
     cuda_retval = (cudaError)this->_ws->pos_process( 
         /* api_id */ PosApiIndex_cudaStreamSynchronize, 
         /* uuid */ this->_clnt->id,

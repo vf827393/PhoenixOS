@@ -4,7 +4,6 @@ TEST_F(PhOSCudaTest, cudaGetDevice) {
     cudaError cuda_retval;
     int device = -1;
 
-    // 获取当前设备
     
     cuda_retval = (cudaError)this->_ws->pos_process( 
         /* api_id */ PosApiIndex_cudaGetDevice, 
@@ -17,7 +16,6 @@ TEST_F(PhOSCudaTest, cudaGetDevice) {
     EXPECT_GE(device, 0);
     //EXPECT_GE(device, 0);
 
-    // // 测试空指针参数
     // POSAPIParamDesp null_param = { .value = nullptr, .size = sizeof(int) };
     // std::vector<POSAPIParamDesp> null_params = { null_param };
     

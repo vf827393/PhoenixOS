@@ -6,7 +6,7 @@ TEST_F(PhOSCudaTest, cudaMemsetAsync) {
     void *mem_ptr = nullptr;
     void **mem_ptr_ = &mem_ptr;
     std::vector<void*> allocated_mem_ptrs;
-    int value = 0x42;  // 设置的值
+    int value = 0x42;  
     cudaStream_t stream = 0;
     std::vector<size_t> mem_sizes({ 
         1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 

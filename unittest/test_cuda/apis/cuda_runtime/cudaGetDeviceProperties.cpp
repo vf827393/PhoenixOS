@@ -5,7 +5,6 @@ TEST_F(PhOSCudaTest, cudaGetDeviceProperties) {
     int device_count;
     cudaDeviceProp prop;
 
-    // 获取设备数量
     
     cuda_retval = (cudaError)this->_ws->pos_process( 
         /* api_id */ PosApiIndex_cudaGetDeviceCount, 
@@ -17,7 +16,6 @@ TEST_F(PhOSCudaTest, cudaGetDeviceProperties) {
     EXPECT_EQ(cudaSuccess, cuda_retval);
     EXPECT_GT(device_count, 0);
 
-    // 获取当前设备的属性
     
     cuda_retval = (cudaError)this->_ws->pos_process( 
         /* api_id */ PosApiIndex_cudaGetDeviceProperties, 
@@ -28,7 +26,6 @@ TEST_F(PhOSCudaTest, cudaGetDeviceProperties) {
     );
     EXPECT_EQ(cudaSuccess, cuda_retval);
 
-    // 验证一些基本属性
     EXPECT_GT(prop.major, 0);
     EXPECT_GE(prop.minor, 0);
     EXPECT_GT(prop.totalGlobalMem, 0);
@@ -43,7 +40,6 @@ TEST_F(PhOSCudaTest, cudaGetDeviceProperties) {
     EXPECT_GT(prop.maxThreadsDim[1], 0);
     EXPECT_GT(prop.maxThreadsDim[2], 0);
 
-    // 测试无效设备号
     int invalid_device = device_count;
     POSAPIParamDesp invalid_param1 = { .value = &invalid_device, .size = sizeof(int) };
     POSAPIParamDesp invalid_param2 = { .value = &prop, .size = sizeof(cudaDeviceProp) };

@@ -20,12 +20,11 @@ TEST_F(PhOSCudaTest, cudaFuncGetAttributes) {
 
     EXPECT_EQ(cudaSuccess, cuda_retval);
 
-    // 打印一些关键属性
     std::cout << "sharedSizeBytes: " << attr.sharedSizeBytes << std::endl;
     std::cout << "numRegs: " << attr.numRegs << std::endl;
     std::cout << "maxThreadsPerBlock: " << attr.maxThreadsPerBlock << std::endl;
 
-    // 检查属性是否在合理范围内
+
     EXPECT_GT(attr.maxThreadsPerBlock, 0);
     EXPECT_GE(attr.numRegs, 0);
 }

@@ -5,7 +5,6 @@ TEST_F(PhOSCudaTest, cudaSetDevice) {
     int device_count;
     int current_device;
 
-    // 获取设备数量
     
     cuda_retval = (cudaError)this->_ws->pos_process( 
         /* api_id */ PosApiIndex_cudaGetDeviceCount, 
@@ -17,7 +16,6 @@ TEST_F(PhOSCudaTest, cudaSetDevice) {
     EXPECT_EQ(cudaSuccess, cuda_retval);
     EXPECT_GT(device_count, 0);
 
-    // 获取当前设备
     
     cuda_retval = (cudaError)this->_ws->pos_process( 
         /* api_id */ PosApiIndex_cudaGetDevice, 
@@ -28,7 +26,6 @@ TEST_F(PhOSCudaTest, cudaSetDevice) {
     );
     EXPECT_EQ(cudaSuccess, cuda_retval);
 
-    // 如果有多个设备，测试切换到其他设备
     if (device_count > 1) {
         int new_device = (current_device + 1) % device_count;
         
