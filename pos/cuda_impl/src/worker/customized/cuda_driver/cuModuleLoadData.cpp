@@ -41,7 +41,7 @@ namespace cu_module_load_data {
         // create normal module
         wqe->api_cxt->return_code = cuModuleLoadData(
             /* module */ &module,
-            /* image */  pos_api_param_addr(wqe, 0)
+            /* image */  pos_api_param_addr(wqe, 1)
         );
         if(likely(CUDA_SUCCESS == wqe->api_cxt->return_code)){
             module_handle->set_server_addr((void*)module);

@@ -61,10 +61,10 @@ namespace cu_module_load_data {
     
         // check whether given parameter is valid
     #if POS_CONF_RUNTIME_EnableDebugCheck
-        if(unlikely(wqe->api_cxt->params.size() != 1)){
+        if(unlikely(wqe->api_cxt->params.size() != 2)){
             POS_WARN(
                 "parse(cu_module_load_data): failed to parse, given %lu params, %lu expected",
-                wqe->api_cxt->params.size(), 1
+                wqe->api_cxt->params.size(), 2
             );
             retval = POS_FAILED_INVALID_INPUT;
             goto exit;
@@ -97,7 +97,7 @@ namespace cu_module_load_data {
             /* size */ kPOS_HandleDefaultSize,
             /* use_expected_addr */ false,
             /* expected_addr */ 0,
-            /* state_size */ pos_api_param_size(wqe, 0)
+            /* state_size */ pos_api_param_size(wqe, 1)
         );
         if(unlikely(retval != POS_SUCCESS)){
             POS_WARN("parse(cu_module_load_data): failed to allocate mocked module within the CUDA module handler manager");
@@ -108,8 +108,7 @@ namespace cu_module_load_data {
                 module_handle->client_addr, module_handle->size,
                 hm_context->latest_used_handle->server_addr
             );
-            POS_CHECK_POINTER(wqe->api_cxt->ret_data);
-            memcpy(wqe->api_cxt->ret_data, &(module_handle->client_addr), sizeof(void*));
+            memcpy(pos_api_param_value(wqe, 0, CUmodule*), &(module_handle->client_addr), sizeof(CUmodule));
         }
 
         // set current handle as the latest used handle
@@ -122,8 +121,8 @@ namespace cu_module_load_data {
 
         // analyse the fatbin and stores the function attributes in the handle
         retval = POSUtil_CUDA_Fatbin::obtain_functions_from_cuda_binary(
-            /* binary_ptr */ (uint8_t*)(pos_api_param_addr(wqe, 0)),
-            /* binary_size */ pos_api_param_size(wqe, 0),
+            /* binary_ptr */ (uint8_t*)(pos_api_param_addr(wqe, 1)),
+            /* binary_size */ pos_api_param_size(wqe, 1),
             /* deps */ &(module_handle->function_desps),
             /* cached_desp_map */ hm_module->cached_function_desps
         );
@@ -135,7 +134,7 @@ namespace cu_module_load_data {
 
         // patched PTX within the fatbin
         // retval = POSUtil_CUDA_Kernel_Patcher::patch_fatbin_binary(
-        //     /* binary_ptr */ (uint8_t*)(pos_api_param_addr(wqe, 0)),
+        //     /* binary_ptr */ (uint8_t*)(pos_api_param_addr(wqe, 1)),
         //     /* patched_binary */ module_handle->patched_binary
         // );
         // if(unlikely(retval != POS_SUCCESS)){
