@@ -34,6 +34,18 @@ namespace cuda_get_device_count {
 
         POSHandleManager_CUDA_Device *hm_device;
         
+        #if POS_CONF_RUNTIME_EnableDebugCheck
+            // check whether given parameter is valid
+           if(unlikely(wqe->api_cxt->params.size() != 1)) {
+               POS_WARN(
+                   "parse(cuda_get_device_count): failed to parse, given %lu params, 1 expected",
+                   wqe->api_cxt->params.size()
+               );
+               retval = POS_FAILED_INVALID_INPUT;
+               goto exit;
+           }
+        #endif
+
         POS_CHECK_POINTER(wqe);
         POS_CHECK_POINTER(ws);
 
@@ -53,6 +65,7 @@ namespace cuda_get_device_count {
 
         wqe->status = kPOS_API_Execute_Status_Return_After_Parse;
 
+    exit:
         return retval;
     }
 } // namespace cuda_get_device_count

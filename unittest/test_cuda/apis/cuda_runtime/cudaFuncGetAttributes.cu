@@ -1,5 +1,6 @@
 #include"test_cuda/test_cuda_common.h"
 
+
 __global__ void dummyKernel(int *data) {
     int idx = threadIdx.x + blockIdx.x * blockDim.x;
     data[idx] = idx;

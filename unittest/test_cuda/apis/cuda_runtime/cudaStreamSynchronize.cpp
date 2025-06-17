@@ -2,17 +2,15 @@
 
 TEST_F(PhOSCudaTest, cudaStreamSynchronize) {
     cudaError cuda_retval;
+    cudaStream_t stream = 0;
 
-    // create a new stream
-    cudaStream_t new_stream = 0;
-
-    // sync  new stream
+    // sync stream
     cuda_retval = (cudaError)this->_ws->pos_process( 
         /* api_id */ PosApiIndex_cudaStreamSynchronize, 
         /* uuid */ this->_clnt->id,
         /* param_desps */ {
-            { .value = &new_stream, .size = sizeof(cudaStream_t) }
+            { .value = &stream, .size = sizeof(cudaStream_t) }
         }
     );
     EXPECT_EQ(cudaSuccess, cuda_retval);
-} 
+}

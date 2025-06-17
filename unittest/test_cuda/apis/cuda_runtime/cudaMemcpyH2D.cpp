@@ -46,4 +46,4 @@ TEST_F(PhOSCudaTest, cudaMemcpyH2D) {
         );
         EXPECT_EQ(cudaSuccess, cuda_retval);
     }
-} 
+}

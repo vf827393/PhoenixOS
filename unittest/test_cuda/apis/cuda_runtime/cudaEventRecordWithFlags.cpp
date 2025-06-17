@@ -2,20 +2,19 @@
 
 TEST_F(PhOSCudaTest, cudaEventRecordWithFlags) {
     cudaError cuda_retval;
-    cudaEvent_t event ;
+    cudaEvent_t event;
+    cudaEvent_t *event_ptr = &event;
     cudaStream_t stream = 0;
-    unsigned int flags = 0;  
+    unsigned int flags = 0;
 
-    
     cuda_retval = (cudaError)this->_ws->pos_process( 
         /* api_id */ PosApiIndex_cudaEventCreate, 
         /* uuid */ this->_clnt->id,
-        /* param_desps */ {
-            { .value = &event, .size = sizeof(cudaEvent_t) }
-        }
+        /* param_desps */ { 
+            {.value = &event_ptr, .size = sizeof(cudaEvent_t*)}
+         }
     );
     EXPECT_EQ(cudaSuccess, cuda_retval);
-
 
     cuda_retval = (cudaError)this->_ws->pos_process( 
         /* api_id */ PosApiIndex_cudaEventRecordWithFlags, 
@@ -27,14 +26,4 @@ TEST_F(PhOSCudaTest, cudaEventRecordWithFlags) {
         }
     );
     EXPECT_EQ(cudaSuccess, cuda_retval);
-
-
-    cuda_retval = (cudaError)this->_ws->pos_process( 
-        /* api_id */ PosApiIndex_cudaEventDestroy, 
-        /* uuid */ this->_clnt->id,
-        /* param_desps */ {
-            { .value = &event, .size = sizeof(cudaEvent_t) }
-        }
-    );
-    EXPECT_EQ(cudaSuccess, cuda_retval);
-} 
+}

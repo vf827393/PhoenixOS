@@ -35,6 +35,18 @@ namespace cuda_get_device {
         POS_CHECK_POINTER(wqe);
         POS_CHECK_POINTER(ws);
 
+        #if POS_CONF_RUNTIME_EnableDebugCheck
+            // check whether given parameter is valid
+           if(unlikely(wqe->api_cxt->params.size() != 1)) {
+               POS_WARN(
+                   "parse(cuda_get_device): failed to parse, given %lu params, 1 expected",
+                   wqe->api_cxt->params.size()
+               );
+               retval = POS_FAILED_INVALID_INPUT;
+               goto exit;
+           }
+        #endif
+
         client = (POSClient_CUDA*)(wqe->client);
         POS_CHECK_POINTER(client);
 
@@ -45,10 +57,8 @@ namespace cuda_get_device {
         POS_CHECK_POINTER(hm_device);
         POS_CHECK_POINTER(hm_device->latest_used_handle);
 
-        POS_CHECK_POINTER(wqe->api_cxt->ret_data);
-
         latest_device_id = static_cast<int>((uint64_t)(hm_device->latest_used_handle->client_addr));
-        memcpy(wqe->api_cxt->ret_data, &(latest_device_id), sizeof(int));
+        memcpy(pos_api_param_value(wqe, 0, int*), &(latest_device_id), sizeof(int));
 
         // the api is finish, one can directly return
         wqe->status = kPOS_API_Execute_Status_Return_Without_Worker;

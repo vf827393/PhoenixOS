@@ -25,7 +25,7 @@ apis:
   - name: "cudaEventCreate"
     index: 200
     supported: true
-    parent_name: "cudaEventCreateWithFlags"
+    parent_name: "cudaEventCreate"
     parser_type: "default"
     worker_type: "default"
     is_sync: true
@@ -39,6 +39,9 @@ apis:
         expected_addr_param_index: 0
     delete_edges:
     in_edges:
+      - param_index: 0
+        handle_type: "cuda_context"
+        handle_source: "from_last_used"
     out_edges:
     inout_edges:
     # worker
@@ -64,6 +67,9 @@ apis:
         expected_addr_param_index: 0
     delete_edges:
     in_edges:
+      - param_index: 0
+        handle_type: "cuda_context"
+        handle_source: "from_last_used"
     out_edges:
     inout_edges:
     # worker
@@ -152,7 +158,7 @@ apis:
   - name: "cudaEventRecordWithFlags"
     index: 206
     supported: true
-    parent_name: "cudaEventRecord"
+    parent_name: "cudaEventRecordWithFlags"
     parser_type: "default"
     worker_type: "default"
     is_sync: true
