@@ -97,8 +97,8 @@ namespace cu_module_load {
                 /* handles */ std::vector<POSHandle*>({hm_context->latest_used_handle}) 
             }}),
             /* size */ kPOS_HandleDefaultSize,
-            /* use_expected_addr */ true,
-            /* expected_addr */ pos_api_param_value(wqe, 0, uint64_t),
+            /* use_expected_addr */ false,
+            /* expected_addr */ 0,
             /* state_size */ pos_api_param_size(wqe, 1)
         );
         if(unlikely(retval != POS_SUCCESS)){

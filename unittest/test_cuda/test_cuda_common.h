@@ -18,6 +18,7 @@
 
 #include <iostream>
 #include <vector>
+#include <filesystem>
 
 #include <cuda.h>
 #include <cuda_runtime_api.h>
