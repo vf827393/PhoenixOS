@@ -66,15 +66,13 @@ apis:
   # cublasStatus_t cublasSetStream(cublasHandle_t handle, cudaStream_t streamId)
   - name: "cublasSetStream"
     index: 1104
-    supported: false
+    supported: true
     parent_name: "cublasSetStream_v2"
-    # FIXME(zhuobin): our autogen failed to parse cublas header (cublas_v2.h, cublas_api.h)
-    prototype: "cublasStatus_t cublasSetStream(cublasHandle_t handle, cudaStream_t streamId)"
     parser_type: "default"
     worker_type: "default"
     is_sync: false
     # parser
-    type: "create_resource"
+    type: "set_resource"
     create_edges:
     delete_edges:
     in_edges:
