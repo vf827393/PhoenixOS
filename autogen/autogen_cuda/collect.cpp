@@ -351,6 +351,11 @@ pos_retval_t POSAutogener::__collect_vendor_header_file(
                     param_meta->name = std::string(clang_getCString(clang_getCursorSpelling(arg_cursor)));
                     param_meta->type = std::string(clang_getCString(clang_getTypeSpelling(clang_getCursorType(arg_cursor))));
                     param_meta->is_pointer = clang_getCursorType(arg_cursor).kind == CXType_Pointer;
+
+                    // cast [] to * if it exist in type, e.g., const float [] within cuBLAS APIs
+                    if (param_meta->type.size() >= 2 && param_meta->type.ends_with("[]")) {
+                        param_meta->type.replace(param_meta->type.size()-2, 2, "*");
+                    }
                 }
             }
 

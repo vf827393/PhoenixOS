@@ -79,7 +79,9 @@ pos_retval_t POSAutogener::__insert_code_parser_for_target(
         // step 1: declare pointers of handle manager and handle
         is_hm_duplicated = parser_function->declare_var(std::format("{} *{};", hm_type, hm_name));
         is_handle_duplicated = parser_function->declare_var(std::format("{} *{};", handle_type, handle_name));
-        POS_ASSERT(is_handle_duplicated == false);
+        if(unlikely(is_handle_duplicated)){
+            POS_ERROR_C_DETAIL("handle name duplicated: %s", handle_name.c_str());
+        }
 
         // step 2: obtain handle manager
         if(is_hm_duplicated == false){
@@ -331,12 +333,11 @@ pos_retval_t POSAutogener::__insert_code_parser_for_target(
         std::string handle_name, handle_typeid;
 
         for(pos_support_edge_meta_t* edge_meta : *edge_list){
-            //! \note   we maintain a handle variable map to
-            //          avoid confliction of handle variable name
+            //! \note   we maintain a handle variable map to avoid confliction of handle variable name
             if(handle_var_map.count(edge_meta->handle_type) == 0){
                 handle_var_map[edge_meta->handle_type] = 0;
             } else {
-                handle_var_map[edge_meta->handle_type] = 1;
+                handle_var_map[edge_meta->handle_type] += 1;
             }
 
             switch(edge_meta->handle_type){

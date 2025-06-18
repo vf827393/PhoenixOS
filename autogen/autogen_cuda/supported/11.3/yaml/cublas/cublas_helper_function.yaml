@@ -148,15 +148,13 @@ apis:
   # cublasStatus_t cublasSetMathMode(cublasHandle_t handle, cublasMath_t mode)
   - name: "cublasSetMathMode"
     index: 1119
-    supported: false
+    supported: true
     parent_name: "cublasSetMathMode"
-    # FIXME(zhuobin): our autogen failed to parse cublas header (cublas_v2.h, cublas_api.h)
-    prototype: "cublasStatus_t cublasSetMathMode(cublasHandle_t handle, cublasMath_t mode)"
     parser_type: "default"
     worker_type: "default"
     is_sync: false
     # parser
-    type: "create_resource"
+    type: "set_resource"
     create_edges:
     delete_edges:
     in_edges:
