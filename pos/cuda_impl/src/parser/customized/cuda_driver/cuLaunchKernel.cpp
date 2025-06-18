@@ -114,10 +114,10 @@ namespace cu_launch_kernel {
         
         // check whether given parameter is valid
         #if POS_CONF_RUNTIME_EnableDebugCheck
-            if(unlikely(wqe->api_cxt->params.size() != 6)){
+            if(unlikely(wqe->api_cxt->params.size() != 11)){
                 POS_WARN(
                     "parse(cu_launch_kernel): failed to parse, given %lu params, %lu expected",
-                    wqe->api_cxt->params.size(), 6
+                    wqe->api_cxt->params.size(), 11
                 );
                 retval = POS_FAILED_INVALID_INPUT;
                 goto exit;
@@ -193,9 +193,7 @@ namespace cu_launch_kernel {
              *  \note   sometimes one would launch kernel with some pointer params are nullptr (at least pytorch did),
              *          this is probably normal, so we just ignore this situation
              */
-            if(unlikely(arg_value == nullptr)){
-                continue;
-            }
+            if(unlikely(arg_value == nullptr)){ continue; }
 
             tmp_retval = hm_memory->get_handle_by_client_addr(
                 /* client_addr */ arg_value,
@@ -421,15 +419,16 @@ namespace cu_launch_kernel {
     #if POS_PRINT_DEBUG
         // typedef struct __dim3 { uint32_t x; uint32_t y; uint32_t z; } __dim3_t;
         POS_DEBUG(
-            "parse(cuda_launch_kernel): function(%s), stream(%p), grid_dim(%u,%u,%u), block_dim(%u,%u,%u), SM_size(%lu)",
-            function_handle->name.c_str(), stream_handle->server_addr,
-            pos_api_param_addr(wqe, 1),
-            pos_api_param_addr(wqe, 2),
-            pos_api_param_addr(wqe, 3),
-            pos_api_param_addr(wqe, 4),
-            pos_api_param_addr(wqe, 5),
-            pos_api_param_addr(wqe, 6),
-            pos_api_param_value(wqe, 7, size_t)
+            "parse(cuda_launch_kernel): function(%s), stream(%p), grid_dim(%u,%u,%u), block_dim(%u,%u,%u), shared_memory_size(%lu)",
+            function_handle->name.c_str(),
+            stream_handle->server_addr,
+            pos_api_param_value(wqe, 1, uint32_t),
+            pos_api_param_value(wqe, 2, uint32_t),
+            pos_api_param_value(wqe, 3, uint32_t),
+            pos_api_param_value(wqe, 4, uint32_t),
+            pos_api_param_value(wqe, 5, uint32_t),
+            pos_api_param_value(wqe, 6, uint32_t),
+            pos_api_param_value(wqe, 7, uint32_t)
         );
     #endif
 

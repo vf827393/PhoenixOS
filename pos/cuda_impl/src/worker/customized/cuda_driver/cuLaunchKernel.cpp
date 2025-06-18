@@ -36,7 +36,7 @@ namespace cu_launch_kernel {
         POSHandle *memory_handle;
         uint64_t i, j, nb_involved_memory;
         // void **cuda_args = nullptr;
-        void *args, *args_values, *arg_addr;
+        void *args;
         uint64_t *addr_list;
 
         POS_CHECK_POINTER(ws);
@@ -49,13 +49,14 @@ namespace cu_launch_kernel {
         POS_CHECK_POINTER(stream_handle);
 
         // the 10th parameter of the API call contains parameter to launch the kernel
-        args = pos_api_param_addr(wqe, 10);
+        args = pos_api_param_addr(wqe, 9);
         POS_CHECK_POINTER(args);
 
         for(i=0; i<function_handle->nb_params; i++){
             cuda_args[i] = args + function_handle->param_offsets[i];
             POS_CHECK_POINTER(cuda_args[i]);
         }
+
         wqe->api_cxt->return_code = cuLaunchKernel(
             /* f */ (CUfunction)(function_handle->server_addr),
             /* gridDimX */ pos_api_param_value(wqe, 1, unsigned int),
@@ -69,6 +70,7 @@ namespace cu_launch_kernel {
             /* kernelParams */ cuda_args,
             /* extra */ nullptr
         );
+        
 
         if(unlikely(CUDA_SUCCESS != wqe->api_cxt->return_code)){ 
             POSWorker::__restore(ws, wqe);

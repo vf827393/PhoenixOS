@@ -134,10 +134,11 @@ enum pos_api_execute_status_t : uint8_t {
  */
 typedef struct POSAPIParam {
     // payload of the parameter
-    void *param_value;
+    void *param_value = nullptr;
 
     // size of the parameter
-    size_t param_size;
+    size_t param_size = 0;
+
 
     /*!
      *  \brief  constructor
@@ -145,15 +146,21 @@ typedef struct POSAPIParam {
      *  \param  size        size of the parameter
      */
     POSAPIParam(void *src_value, size_t size) : param_size(size) {
-        POS_CHECK_POINTER(param_value = malloc(size));
-        memcpy(param_value, src_value, param_size);
+        if(size > 0){
+            POS_CHECK_POINTER(param_value = malloc(size));
+            memcpy(param_value, src_value, param_size);
+        }
     }
+
 
     /*!
      *  \brief  deconstructor
      */
     ~POSAPIParam(){
-        POS_CHECK_POINTER(param_value); free(param_value);
+        if(this->param_size > 0){
+            POS_CHECK_POINTER(param_value);
+            free(param_value);
+        }
     }
 } POSAPIParam_t;
 
