@@ -28,7 +28,7 @@ apis:
     supported: true
     parent_name: "cudaFuncGetAttributes"
     parser_type: "default"
-    worker_type: "default"
+    worker_type: "customized"
     is_sync: true
     # parser
     type: "get_resource"
