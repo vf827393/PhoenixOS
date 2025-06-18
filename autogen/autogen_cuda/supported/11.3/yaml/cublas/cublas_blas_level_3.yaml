@@ -15,7 +15,7 @@
 # CUDA: 11.3
 # Type: cuBLAS Level-3 Functions
 
-header_file_name: "cublas_api.h"
+header_file_name: "cublas_v2.h"
 dependent_headers:
   - "cublas_v2.h"
 successful_retval: "CUBLAS_STATUS_SUCCESS"

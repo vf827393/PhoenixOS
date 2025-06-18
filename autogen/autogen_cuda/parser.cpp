@@ -460,6 +460,21 @@ pos_retval_t POSAutogener::__insert_code_parser_for_target(
                     /* in_edge_map */ in_edge_map
                 );
                 break;
+            case kPOS_ResourceTypeId_cuBLAS_Context:
+                handle_name = std::string("cublas_context_handle_") + std::to_string(handle_var_map[edge_meta->handle_type]);
+                handle_typeid = std::string("kPOS_ResourceTypeId_cuBLAS_Context");
+                __insert_code_parse_handle(
+                    /* api_snake_name */ api_snake_name,
+                    /* edge_direction */ edge_direction,
+                    /* edge_meta */ edge_meta,
+                    /* hm_type */ "POSHandleManager_cuBLAS_Context",
+                    /* hm_name */ "hm_cublas_context",
+                    /* handle_typeid */ handle_typeid,
+                    /* handle_type */ "POSHandle_cuBLAS_Context",
+                    /* handle_name */ handle_name,
+                    /* in_edge_map */ in_edge_map
+                );
+                break;
             default:
                 POS_ERROR_C_DETAIL("shouldn't be here, this is a bug");
             }

@@ -23,6 +23,7 @@
 #include <cuda.h>
 #include <cuda_runtime.h>
 #include <cuda_runtime_api.h>
+#include <cublas_v2.h>
 
 #include "gtest/gtest.h"
 

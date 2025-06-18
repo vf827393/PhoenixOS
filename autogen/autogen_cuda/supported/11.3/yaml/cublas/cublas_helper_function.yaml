@@ -15,28 +15,34 @@
 # CUDA: 11.3
 # Type: cuBLAS Helper Functions
 
-header_file_name: "cublas_api.h"
+header_file_name: "cublas_v2.h"
 dependent_headers:
   - "cublas_v2.h"
 successful_retval: "CUBLAS_STATUS_SUCCESS"
 apis:
   # cublasStatus_t cublasCreate_v2(cublasHandle_t *handle)
-  - name: "cublasCreate"
+  - name: "cublasCreate_v2"
     index: 1100
-    supported: false
+    supported: true
     parent_name: "cublasCreate_v2"
-    # FIXME(zhuobin): our autogen failed to parse cublas header (cublas_v2.h, cublas_api.h)
-    prototype: "cublasStatus_t cublasCreate_v2(cublasHandle_t *handle)"
     parser_type: "default"
     worker_type: "default"
     is_sync: true
     # parser
     type: "create_resource"
     create_edges:
+      - param_index: 1
+        handle_type: "cublas_context"
+        handle_source: "to_param"
+        state_size_param_index: 0
+        expected_addr_param_index: 0
     delete_edges:
     in_edges:
       - param_index: 0
         handle_type: "cuda_context"
+        handle_source: "from_last_used"
+      - param_index: 0
+        handle_type: "cuda_stream"
         handle_source: "from_last_used"
     out_edges:
     inout_edges:
