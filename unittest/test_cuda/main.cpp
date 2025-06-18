@@ -16,10 +16,10 @@
 
 #include "test_cuda_common.h"
 
+
 /*
     this listener ensures that the process exits immediately once any test case fails 
 */
-
 class AbortOnFailureListener : public testing::EmptyTestEventListener {
 
     void OnTestStart(const testing::TestInfo& test_info) override {
@@ -47,6 +47,7 @@ class AbortOnFailureListener : public testing::EmptyTestEventListener {
             test_info.test_suite_name(), test_info.name());
     }
 };
+
 
 int main(int argc, char *argv[]){
     ::testing::InitGoogleTest(&argc, argv);

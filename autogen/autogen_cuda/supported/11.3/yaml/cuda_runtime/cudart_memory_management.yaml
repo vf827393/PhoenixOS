@@ -112,21 +112,13 @@ apis:
     supported: true
     parent_name: "cudaMalloc"
     type: "create_resource"
-    parser_type: "default"
+    parser_type: "customized"
     worker_type: "customized"
     is_sync: true
     # parser
     create_edges:
-      - param_index: 1
-        handle_type: "cuda_memory"
-        handle_source: "to_param"
-        state_size_param_index: 2
-        expected_addr_param_index: 0
     delete_edges:
     in_edges:
-      - param_index: 0
-        handle_type: "cuda_context"
-        handle_source: "from_last_used"
     out_edges:
     inout_edges:
     # worker

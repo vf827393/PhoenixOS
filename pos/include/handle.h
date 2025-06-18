@@ -1330,8 +1330,7 @@ pos_retval_t POSHandleManager<T_POSHandle>::__get_handle_by_client_addr(void* cl
          *          not in the map! 
          */
         POS_ASSERT(
-            (*handle)->status != kPOS_HandleStatus_Deleted 
-            && (*handle)->status != kPOS_HandleStatus_Delete_Pending
+            (*handle)->status != kPOS_HandleStatus_Deleted && (*handle)->status != kPOS_HandleStatus_Delete_Pending
         );
 
         if(unlikely(offset != nullptr)){
