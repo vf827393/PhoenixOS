@@ -2,7 +2,8 @@
 
 
 TEST_F(PhOSCudaTest, cuLaunchKernel) {
-    cudaError cuda_retval;
+    cudaError cuda_rt_retval;
+    CUresult cuda_dv_retval;
     CUmodule module;
     CUmodule *module_ptr = &module;
     CUfunction function;
@@ -41,7 +42,7 @@ TEST_F(PhOSCudaTest, cuLaunchKernel) {
     buffer << in.rdbuf();
 
     // load module first
-    cuda_retval = (cudaError)this->_ws->pos_process( 
+    cuda_rt_retval = (cudaError)this->_ws->pos_process( 
         /* api_id */ PosApiIndex_cuModuleLoadData, 
         /* uuid */ this->_clnt->id,
         /* param_desps */ { 
@@ -49,13 +50,13 @@ TEST_F(PhOSCudaTest, cuLaunchKernel) {
             { .value = buffer.str().data(), .size = buffer.str().size() }
         }
     );
-    EXPECT_EQ(cudaSuccess, cuda_retval);
+    EXPECT_EQ(cudaSuccess, cuda_rt_retval);
 
     function_name = "_Z15squareMatrixMulPKiS0_Pii";
     function_name_ptr = function_name.data();
     
     // get function
-    cuda_retval = (cudaError)this->_ws->pos_process( 
+    cuda_rt_retval = (cudaError)this->_ws->pos_process( 
         /* api_id */ PosApiIndex_cuModuleGetFunction, 
         /* uuid */ this->_clnt->id,
         /* param_desps */ { 
@@ -64,10 +65,10 @@ TEST_F(PhOSCudaTest, cuLaunchKernel) {
             { .value = &function_name_ptr, .size = sizeof(const char*) }
         }
     );
-    EXPECT_EQ(cudaSuccess, cuda_retval);
+    EXPECT_EQ(cudaSuccess, cuda_rt_retval);
 
     // allocate memory for computation
-    cuda_retval = (cudaError)this->_ws->pos_process( 
+    cuda_rt_retval = (cudaError)this->_ws->pos_process( 
         /* api_id */ PosApiIndex_cudaMalloc, 
         /* uuid */ this->_clnt->id,
         /* param_desps */ {
@@ -75,9 +76,9 @@ TEST_F(PhOSCudaTest, cuLaunchKernel) {
             { .value = &mem_size, .size = sizeof(uint64_t) }
         }
     );
-    EXPECT_EQ(cudaSuccess, cuda_retval);
+    EXPECT_EQ(cudaSuccess, cuda_rt_retval);
 
-    cuda_retval = (cudaError)this->_ws->pos_process( 
+    cuda_rt_retval = (cudaError)this->_ws->pos_process( 
         /* api_id */ PosApiIndex_cudaMalloc, 
         /* uuid */ this->_clnt->id,
         /* param_desps */ {
@@ -85,9 +86,9 @@ TEST_F(PhOSCudaTest, cuLaunchKernel) {
             { .value = &mem_size, .size = sizeof(uint64_t) }
         }
     );
-    EXPECT_EQ(cudaSuccess, cuda_retval);
+    EXPECT_EQ(cudaSuccess, cuda_rt_retval);
 
-    cuda_retval = (cudaError)this->_ws->pos_process( 
+    cuda_rt_retval = (cudaError)this->_ws->pos_process( 
         /* api_id */ PosApiIndex_cudaMalloc, 
         /* uuid */ this->_clnt->id,
         /* param_desps */ {
@@ -95,7 +96,7 @@ TEST_F(PhOSCudaTest, cuLaunchKernel) {
             { .value = &mem_size, .size = sizeof(uint64_t) }
         }
     );
-    EXPECT_EQ(cudaSuccess, cuda_retval);
+    EXPECT_EQ(cudaSuccess, cuda_rt_retval);
 
     // formup parameters list of the kernel
     list_params_size = sizeof(mem_A) + sizeof(mem_B) + sizeof(mem_C) + sizeof(N);
@@ -116,7 +117,7 @@ TEST_F(PhOSCudaTest, cuLaunchKernel) {
     sharedMemBytes = 0;
 
     // launch kernel
-    cuda_retval = (cudaError)this->_ws->pos_process( 
+    cuda_dv_retval = (CUresult)this->_ws->pos_process( 
         /* api_id */ PosApiIndex_cuLaunchKernel, 
         /* uuid */ this->_clnt->id,
         /* param_desps */ { 
@@ -133,20 +134,20 @@ TEST_F(PhOSCudaTest, cuLaunchKernel) {
             { .value = list_extra, .size = 0 }
         }
     );
-    EXPECT_EQ(cudaSuccess, cuda_retval);
+    EXPECT_EQ(CUDA_SUCCESS, cuda_dv_retval);
 
     // we can free list_params right after launch kernel
     free(list_params);
 
     // stream synchronize
-    cuda_retval = (cudaError)this->_ws->pos_process( 
+    cuda_rt_retval = (cudaError)this->_ws->pos_process( 
         /* api_id */ PosApiIndex_cudaStreamSynchronize, 
         /* uuid */ this->_clnt->id,
         /* param_desps */ {
             { .value = &stream, .size = sizeof(CUstream) }
         }
     );
-    EXPECT_EQ(cudaSuccess, cuda_retval);
+    EXPECT_EQ(cudaSuccess, cuda_rt_retval);
 
 exit:
     if(in.is_open()){

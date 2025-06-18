@@ -20,9 +20,25 @@ dependent_headers:
   - "cuda.h"
 successful_retval: "CUDA_SUCCESS"
 apis:
+  # CUresult cuDeviceGet ( CUdevice* device, int  ordinal )
   - name: "cuDeviceGet"
     index: 650
-    supported: false
+    supported: true
+    parent_name: "cuDeviceGet"
+    parser_type: "default"
+    worker_type: "default"
+    is_sync: true
+    # parser
+    type: "get_resource"
+    create_edges:
+    delete_edges:
+    in_edges:
+    out_edges:
+    inout_edges:
+    # worker
+    involve_membus: false
+    need_stream_sync: false
+    constant_params:
 
   - name: "cuDeviceGetAttribute"
     index: 651

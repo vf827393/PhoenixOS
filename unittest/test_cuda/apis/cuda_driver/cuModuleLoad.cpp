@@ -2,7 +2,7 @@
 
 
 TEST_F(PhOSCudaTest, cuModuleLoad) {
-    cudaError cuda_retval;
+    CUresult cuda_retval;
     CUmodule module;
     CUmodule *module_ptr = &module;
     std::ifstream in;
@@ -26,7 +26,7 @@ TEST_F(PhOSCudaTest, cuModuleLoad) {
     EXPECT_EQ(true, in.is_open());
     buffer << in.rdbuf();
 
-    cuda_retval = (cudaError)this->_ws->pos_process( 
+    cuda_retval = (CUresult)this->_ws->pos_process( 
         /* api_id */ PosApiIndex_cuModuleLoad, 
         /* uuid */ this->_clnt->id,
         /* param_desps */ { 
@@ -34,7 +34,7 @@ TEST_F(PhOSCudaTest, cuModuleLoad) {
             { .value = buffer.str().data(), .size = buffer.str().size() }
         }
     );
-    EXPECT_EQ(cudaSuccess, cuda_retval);
+    EXPECT_EQ(CUDA_SUCCESS, cuda_retval);
 
 exit:
     if(in.is_open()){

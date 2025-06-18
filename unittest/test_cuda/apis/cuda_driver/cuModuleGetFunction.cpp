@@ -2,7 +2,7 @@
 
 
 TEST_F(PhOSCudaTest, cuModuleGetFunction) {
-    cudaError cuda_retval;
+    CUresult cuda_retval;
     CUmodule module;
     CUmodule *module_ptr = &module;
     CUfunction function;
@@ -31,7 +31,7 @@ TEST_F(PhOSCudaTest, cuModuleGetFunction) {
     buffer << in.rdbuf();
 
     // load module first
-    cuda_retval = (cudaError)this->_ws->pos_process( 
+    cuda_retval = (CUresult)this->_ws->pos_process( 
         /* api_id */ PosApiIndex_cuModuleLoadData, 
         /* uuid */ this->_clnt->id,
         /* param_desps */ { 
@@ -39,13 +39,13 @@ TEST_F(PhOSCudaTest, cuModuleGetFunction) {
             { .value = buffer.str().data(), .size = buffer.str().size() }
         }
     );
-    EXPECT_EQ(cudaSuccess, cuda_retval);
+    EXPECT_EQ(CUDA_SUCCESS, cuda_retval);
 
     function_name = "_Z15squareMatrixMulPKiS0_Pii";
     function_name_ptr = function_name.data();
 
     // get function
-    cuda_retval = (cudaError)this->_ws->pos_process( 
+    cuda_retval = (CUresult)this->_ws->pos_process( 
         /* api_id */ PosApiIndex_cuModuleGetFunction, 
         /* uuid */ this->_clnt->id,
         /* param_desps */ { 
@@ -54,7 +54,7 @@ TEST_F(PhOSCudaTest, cuModuleGetFunction) {
             { .value = &function_name_ptr, .size = sizeof(const char*) }
         }
     );
-    EXPECT_EQ(cudaSuccess, cuda_retval);
+    EXPECT_EQ(CUDA_SUCCESS, cuda_retval);
 
 exit:
     if(in.is_open()){

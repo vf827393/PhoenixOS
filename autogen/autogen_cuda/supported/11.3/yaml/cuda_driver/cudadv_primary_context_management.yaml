@@ -59,4 +59,4 @@ apis:
 
   - name: "cuDevicePrimaryCtxSetFlags"
     index: 674
-    supported: false 
+    supported: false
