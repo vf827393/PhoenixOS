@@ -54,19 +54,6 @@ namespace cuda_launch_kernel {
         args = pos_api_param_addr(wqe, 3);
         POS_CHECK_POINTER(args);
 
-        // [Cricket Adapt] skip the metadata used by cricket
-        args += (sizeof(size_t) + sizeof(uint16_t) * function_handle->nb_params);
-
-        /*!
-         *  \note   the actual kernel parameter list passed to the cuLaunchKernel is 
-         *          an array of pointers, so we allocate a new array here to store
-         *          these pointers
-         */
-        // TODO: pre-allocated!
-        // if(likely(function_handle->nb_params > 0)){
-        //     POS_CHECK_POINTER(cuda_args = malloc(function_handle->nb_params * sizeof(void*)));
-        // }
-
         for(i=0; i<function_handle->nb_params; i++){
             cuda_args[i] = args + function_handle->param_offsets[i];
             POS_CHECK_POINTER(cuda_args[i]);

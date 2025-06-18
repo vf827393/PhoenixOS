@@ -1,7 +1,7 @@
-#include "test_cuda/test_cuda_common.h"
+#include"test_cuda/test_cuda_common.h"
 
 
-TEST_F(PhOSCudaTest, cuLaunchKernel) {
+TEST_F(PhOSCudaTest, cudaLaunchKernel) {
     cudaError cuda_retval;
     CUmodule module;
     CUmodule *module_ptr = &module;
@@ -18,8 +18,10 @@ TEST_F(PhOSCudaTest, cuLaunchKernel) {
     int N = 8;
     uint64_t mem_size = N * N * sizeof(int);
 
-    unsigned int gridDimX, gridDimY, gridDimZ, blockDimX, blockDimY, blockDimZ, sharedMemBytes;
-    void *list_params = nullptr, *list_extra = nullptr;
+    dim3 gridDim;
+    dim3 blockDim;
+    unsigned int sharedMemBytes;
+    void *list_params = nullptr;
     uint64_t list_params_size = 0;
 
     std::filesystem::path current_path = __FILE__;
@@ -107,30 +109,25 @@ TEST_F(PhOSCudaTest, cuLaunchKernel) {
 
     // formup launching parameters
     stream = 0;
-    gridDimX = 1;
-    gridDimY = 1;
-    gridDimZ = 1;
-    blockDimX = 32;
-    blockDimY = 32;
-    blockDimZ = 1;
+    gridDim.x = 1;
+    gridDim.y = 1;
+    gridDim.z = 1;
+    blockDim.x = 32;
+    blockDim.y = 32;
+    blockDim.z = 1;
     sharedMemBytes = 0;
 
     // launch kernel
     cuda_retval = (cudaError)this->_ws->pos_process( 
-        /* api_id */ PosApiIndex_cuLaunchKernel, 
+        /* api_id */ PosApiIndex_cudaLaunchKernel, 
         /* uuid */ this->_clnt->id,
         /* param_desps */ { 
             { .value = &function, .size = sizeof(CUfunction) },
-            { .value = &gridDimX, .size = sizeof(unsigned int) },
-            { .value = &gridDimY, .size = sizeof(unsigned int) },
-            { .value = &gridDimZ, .size = sizeof(unsigned int) },
-            { .value = &blockDimX, .size = sizeof(unsigned int) },
-            { .value = &blockDimY, .size = sizeof(unsigned int) },
-            { .value = &blockDimZ, .size = sizeof(unsigned int) },
+            { .value = &gridDim, .size = sizeof(dim3) },
+            { .value = &blockDim, .size = sizeof(dim3) },
+            { .value = list_params, .size = list_params_size },
             { .value = &sharedMemBytes, .size = sizeof(unsigned int) },
             { .value = &stream, .size = sizeof(CUstream) },
-            { .value = list_params, .size = list_params_size },
-            { .value = list_extra, .size = 0 }
         }
     );
     EXPECT_EQ(cudaSuccess, cuda_retval);
