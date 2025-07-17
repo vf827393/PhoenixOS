@@ -42,9 +42,8 @@ func CRIB_PhOS_Remoting(cmdOpt CmdOptions, buildConf BuildConfigs, logger *log.L
 		#!/bin/bash
 		set -e
 		{{.CMD_EXPRORT_ENV_VAR__}}
-		export POS_ENABLE=true
 		cd %s/%s
-		LIBPOS_PATH=../lib cargo build --features phos,async_api --release 	>>{{.LOG_PATH__}} 2>&1
+		LIBPOS_PATH=../lib cargo build --features phos --release 				>>{{.LOG_PATH__}} 2>&1
 		cd target/release
 		cp server {{.LOCAL_BIN_PATH__}}/xpu-server								>>{{.LOG_PATH__}} 2>&1
 		cp libclient.so {{.LOCAL_LIB_PATH__}}/libxpuclient.so					>>{{.LOG_PATH__}} 2>&1
