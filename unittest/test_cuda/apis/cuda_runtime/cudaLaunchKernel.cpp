@@ -1,6 +1,66 @@
 #include"test_cuda/test_cuda_common.h"
 
 
+static void printMatric(std::vector<int> &matrix, int N){
+    std::string row_str = "";
+    for(int i=0; i<N; i++){
+        row_str = "";
+        for(int j=0; j<N; j++){
+            row_str += std::format("{} ", matrix[N*i+j]);
+        }
+        printf("%s\n", row_str.c_str());
+    }
+}
+
+static bool verifyMatrixMultiplicationResult(
+    std::vector<int> &matrix_A, 
+    std::vector<int> &matrix_B, 
+    std::vector<int> &matrix_C,
+    int N
+  ){
+    std::vector<int> matrix_correct;
+
+    // precaluclate correct matrix
+    for(int i=0; i<N; i++){
+        for(int j=0; j<N; j++){
+            int tmp=0;
+            for(int k=0; k<N; k++){
+                tmp += matrix_A[N*i+k]*matrix_B[N*k+j];
+            }
+            matrix_correct.push_back(tmp);
+        }
+    }
+
+    // for every row of matrix_C
+    for(int i=0; i<N; i++){
+        // for every column of matrix_C
+        for(int j=0; j<N; j++){
+            // assertion
+            if(matrix_correct[i*N+j] != matrix_C[i*N+j]){
+                POS_WARN(
+                    "matmul not matched: "
+                    "row_id(%d), col_id(%d), "
+                    "expected(%d), obtain(%d)",
+                    i, j,
+                    matrix_correct[i*N+j], matrix_C[i*N+j]
+                );
+                POS_WARN("A:");
+                    printMatric(matrix_A, N);
+                POS_WARN("B:");
+                    printMatric(matrix_B, N);
+                POS_WARN("C:");
+                    printMatric(matrix_C, N);
+                POS_WARN("correct C:");
+                    printMatric(matrix_correct, N);
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+
 TEST_F(PhOSCudaTest, cudaLaunchKernel) {
     cudaError cuda_retval;
     CUmodule module;
@@ -12,11 +72,13 @@ TEST_F(PhOSCudaTest, cudaLaunchKernel) {
     std::stringstream buffer;
     std::string function_name;
     const char* function_name_ptr;
-
-    int *mem_A = nullptr, *mem_B = nullptr, *mem_C = nullptr;
-    int **mem_A_ptr = &mem_A, **mem_B_ptr = &mem_B, **mem_C_ptr = &mem_C;
-    int N = 8;
+    std::vector<int> matrix_A, matrix_B, matrix_C;
+    int *hmem_A = nullptr, *hmem_B = nullptr, *hmem_C = nullptr;
+    int *dmem_A = nullptr, *dmem_B = nullptr, *dmem_C = nullptr;
+    int **dmem_A_ptr = &dmem_A, **dmem_B_ptr = &dmem_B, **dmem_C_ptr = &dmem_C;
+    int N=8, i=0;
     uint64_t mem_size = N * N * sizeof(int);
+    cudaMemcpyKind kind = cudaMemcpyHostToDevice;
 
     dim3 gridDim;
     dim3 blockDim;
@@ -73,7 +135,7 @@ TEST_F(PhOSCudaTest, cudaLaunchKernel) {
         /* api_id */ PosApiIndex_cudaMalloc, 
         /* uuid */ this->_clnt->id,
         /* param_desps */ {
-            { .value = &mem_A_ptr, .size = sizeof(void**) },
+            { .value = &dmem_A_ptr, .size = sizeof(void**) },
             { .value = &mem_size, .size = sizeof(uint64_t) }
         }
     );
@@ -83,7 +145,7 @@ TEST_F(PhOSCudaTest, cudaLaunchKernel) {
         /* api_id */ PosApiIndex_cudaMalloc, 
         /* uuid */ this->_clnt->id,
         /* param_desps */ {
-            { .value = &mem_B_ptr, .size = sizeof(void**) },
+            { .value = &dmem_B_ptr, .size = sizeof(void**) },
             { .value = &mem_size, .size = sizeof(uint64_t) }
         }
     );
@@ -93,19 +155,59 @@ TEST_F(PhOSCudaTest, cudaLaunchKernel) {
         /* api_id */ PosApiIndex_cudaMalloc, 
         /* uuid */ this->_clnt->id,
         /* param_desps */ {
-            { .value = &mem_C_ptr, .size = sizeof(void**) },
+            { .value = &dmem_C_ptr, .size = sizeof(void**) },
             { .value = &mem_size, .size = sizeof(uint64_t) }
+        }
+    );
+    EXPECT_EQ(cudaSuccess, cuda_retval);
+
+    // initialize values in test matrices
+    matrix_A.resize(N*N);
+    matrix_B.resize(N*N);
+    matrix_C.resize(N*N);
+    for (i=0; i<N*N; i++){
+        matrix_A[i] = rand()%100;
+        matrix_B[i] = rand()%100;
+    }
+    hmem_A = matrix_A.data();
+    hmem_B = matrix_B.data();
+    hmem_C = matrix_C.data();
+
+    // copy matrix A
+    kind = cudaMemcpyHostToDevice;
+    cuda_retval = (cudaError)this->_ws->pos_process( 
+        /* api_id */ PosApiIndex_cudaMemcpyH2D, 
+        /* uuid */ this->_clnt->id,
+        /* param_desps */ {
+            { .value = &(dmem_A), .size = sizeof(void*) },
+            { .value = &(hmem_A), .size = sizeof(const void*) },
+            { .value = &(mem_size), .size = sizeof(size_t) },
+            { .value = &kind, .size = sizeof(cudaMemcpyKind) }
+        }
+    );
+    EXPECT_EQ(cudaSuccess, cuda_retval);
+
+    // copy matrix B
+    kind = cudaMemcpyHostToDevice;
+    cuda_retval = (cudaError)this->_ws->pos_process( 
+        /* api_id */ PosApiIndex_cudaMemcpyH2D, 
+        /* uuid */ this->_clnt->id,
+        /* param_desps */ {
+            { .value = &(dmem_B), .size = sizeof(void*) },
+            { .value = &(hmem_B), .size = sizeof(const void*) },
+            { .value = &(mem_size), .size = sizeof(size_t) },
+            { .value = &kind, .size = sizeof(cudaMemcpyKind) }
         }
     );
     EXPECT_EQ(cudaSuccess, cuda_retval);
 
     // formup parameters list of the kernel
-    list_params_size = sizeof(mem_A) + sizeof(mem_B) + sizeof(mem_C) + sizeof(N);
+    list_params_size = sizeof(dmem_A) + sizeof(dmem_B) + sizeof(dmem_C) + sizeof(N);
     POS_CHECK_POINTER(list_params = malloc(list_params_size));
-    memcpy(list_params, &mem_A, sizeof(mem_A));
-    memcpy(list_params + sizeof(mem_A), &mem_B, sizeof(mem_B));
-    memcpy(list_params + sizeof(mem_A) + sizeof(mem_B), &mem_C, sizeof(mem_C));
-    memcpy(list_params + sizeof(mem_A) + sizeof(mem_B) + sizeof(mem_C), &N, sizeof(N));
+    memcpy(list_params, &dmem_A, sizeof(dmem_A));
+    memcpy(list_params + sizeof(dmem_A), &dmem_B, sizeof(dmem_B));
+    memcpy(list_params + sizeof(dmem_A) + sizeof(dmem_B), &dmem_C, sizeof(dmem_C));
+    memcpy(list_params + sizeof(dmem_A) + sizeof(dmem_B) + sizeof(dmem_C), &N, sizeof(N));
 
     // formup launching parameters
     stream = 0;
@@ -144,6 +246,22 @@ TEST_F(PhOSCudaTest, cudaLaunchKernel) {
         }
     );
     EXPECT_EQ(cudaSuccess, cuda_retval);
+
+    // copy matrix C
+    kind = cudaMemcpyDeviceToHost;
+    cuda_retval = (cudaError)this->_ws->pos_process( 
+        /* api_id */ PosApiIndex_cudaMemcpyD2H, 
+        /* uuid */ this->_clnt->id,
+        /* param_desps */ {
+            { .value = &(hmem_C), .size = sizeof(void*) },
+            { .value = &(dmem_C), .size = sizeof(const void*) },
+            { .value = &(mem_size), .size = sizeof(size_t) },
+            { .value = &kind, .size = sizeof(cudaMemcpyKind) }
+        }
+    );
+
+    // verify matmul result
+    EXPECT_EQ(verifyMatrixMultiplicationResult(matrix_A, matrix_B, matrix_C, N), true);
 
 exit:
     if(in.is_open()){

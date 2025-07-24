@@ -37,7 +37,6 @@ namespace cuda_launch_kernel {
         POSHandle_CUDA_Stream *stream_handle;
         POSHandle *memory_handle;
         uint64_t i, j, nb_involved_memory;
-        // void **cuda_args = nullptr;
         void *args, *args_values, *arg_addr;
         uint64_t *addr_list;
 
@@ -73,8 +72,6 @@ namespace cuda_launch_kernel {
             /* kernelParams */ cuda_args,
             /* extra */ nullptr
         );
-
-        // if(likely(cuda_args != nullptr)){ free(cuda_args); }
         
         if(unlikely(CUDA_SUCCESS != wqe->api_cxt->return_code)){ 
             POSWorker::__restore(ws, wqe);
