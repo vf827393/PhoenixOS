@@ -259,6 +259,7 @@ TEST_F(PhOSCudaTest, cudaLaunchKernel) {
             { .value = &kind, .size = sizeof(cudaMemcpyKind) }
         }
     );
+    EXPECT_EQ(cudaSuccess, cuda_retval);
 
     // verify matmul result
     EXPECT_EQ(verifyMatrixMultiplicationResult(matrix_A, matrix_B, matrix_C, N), true);
