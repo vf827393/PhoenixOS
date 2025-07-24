@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"os/exec"
 	"time"
+	"strings"
 	
 	"github.com/charmbracelet/log"
 )
@@ -51,6 +52,23 @@ func GetPkgCheckCmd(pkgName string, logger *log.Logger) string {
 	switch os := GetOS(logger); os {
 	case "ubuntu":
 		return fmt.Sprintf("dpkg -s %s", pkgName)
+	default:
+		logger.Fatalf("failed to get pkg installation command: unsupported OS type %s", os)
+	}
+
+	return ""
+}
+
+func GetMultiPkgInstallCmd(pkgNames []string, logger *log.Logger) string {
+	switch os := GetOS(logger); os {
+	case "ubuntu":
+		if !isOSPkgMgrUpdate {
+			logger.Infof("updating apt-get...")
+			BashCommandGetOutput("apt-get update", true, logger)
+			ClearLastLine()
+			isOSPkgMgrUpdate = true
+		}
+		return fmt.Sprintf("apt-get install -y %s", strings.Join(pkgNames, " "))
 	default:
 		logger.Fatalf("failed to get pkg installation command: unsupported OS type %s", os)
 	}
@@ -197,6 +215,21 @@ func CheckAndInstallPackageViaOsPkgManager(pkgName string, logger *log.Logger) {
 	}
 	ClearLastLine()
 	logger.Infof("installed %s", pkgName)
+}
+
+
+func CheckAndInstallMultiPackagesViaOsPkgManager(pkgNames []string, logger *log.Logger) {
+	if len(pkgNames) == 0 {
+		logger.Fatalf("no package names provided")
+	}
+
+	logger.Infof("installing %s via OS pkg manager...", strings.Join(pkgNames, ", "))
+	installCmd := GetMultiPkgInstallCmd(pkgNames, logger)
+	if _, err := BashCommandGetOutput(installCmd, false, logger); err != nil {
+		logger.Fatalf("failed to install pkgs %s via OS pkg manager: %s", strings.Join(pkgNames, ", "), err)
+	}
+	ClearLastLine()
+	logger.Infof("installed %s", strings.Join(pkgNames, ", "))
 }
 
 
